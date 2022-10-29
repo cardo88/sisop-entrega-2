@@ -3,10 +3,15 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuDuplicate implements UcuInstruction {
+public class UcuDuplicate implements UcuCommand {
     @Override
     public String toString() {
         return "UcuDuplicate(duplicate)";
+    }
+
+    @Override
+    public String getCommandName() {
+        return "duplicate";
     }
 
     @Override

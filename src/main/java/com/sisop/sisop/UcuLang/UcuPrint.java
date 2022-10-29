@@ -3,10 +3,15 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuPrint implements UcuInstruction {
+public class UcuPrint implements UcuCommand {
     @Override
     public String toString() {
         return "UcuPrint(print)";
+    }
+
+    @Override
+    public String getCommandName() {
+        return "print";
     }
 
     @Override

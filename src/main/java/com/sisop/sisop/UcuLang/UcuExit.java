@@ -3,10 +3,15 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuExit implements UcuInstruction {
+public class UcuExit implements UcuCommand {
     @Override
     public String toString() {
         return "UcuExit(exit)";
+    }
+
+    @Override
+    public String getCommandName() {
+        return "exit";
     }
 
     @Override

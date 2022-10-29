@@ -3,10 +3,15 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuGraterThan implements UcuInstruction {
+public class UcuGraterThan implements UcuCommand {
     @Override
     public String toString() {
         return "UcuGreaterThan(>)";
+    }
+
+    @Override
+    public String getCommandName() {
+        return ">";
     }
 
     @Override

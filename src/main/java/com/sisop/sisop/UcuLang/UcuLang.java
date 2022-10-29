@@ -7,52 +7,38 @@ import java.util.LinkedList;
  *
  */
 public class UcuLang {
-    private final UcuInstruction[] instructions;
-    private final UcuContext context = new UcuContext();
+    private UcuInstruction[] instructions = new UcuInstruction[0];
+    private UcuContext context = new UcuContext();
 
-    public UcuLang(String src) {
-        instructions = compile(src);
+    public void compile(String src) {
+        compile(src, new UcuCommand[0]);
     }
 
-    public boolean next() {
-        if (context.getProgramCounter() < instructions.length) {
-            UcuInstruction instruction = instructions[context.getProgramCounter()];
-            if (instruction == null) {
-                context.nextInstruction();
-            } else {
-                instruction.execute(context);
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private UcuInstruction[] compile(String src) {
+    public void compile(String src, UcuCommand[] extraCommands) {
         LinkedList<UcuInstruction> compiledInstructions = new LinkedList<>();
 
-        var instructionMap = new HashMap<String, UcuInstruction>();
+        var instructionMap = commandsToMap(new UcuCommand[] {
+            new UcuAdd(),
+            new UcuSub(),
+            new UcuMul(),
+            new UcuDiv(),
+            new UcuGraterThan(),
+            new UcuGreaterThanOrEqual(),
+            new UcuLessThan(),
+            new UcuLessThanOrEqual(),
+            new UcuDuplicate(),
+            new UcuSwap(),
+            new UcuOver(),
+            new UcuDrop(),
+            new UcuExit(),
+            new UcuReturn(),
+            new UcuPrint(),
+            new UcuPrintLn(),
+        });
+        
+        instructionMap.putAll(commandsToMap(extraCommands));
 
-        instructionMap.put("+",         new UcuAdd());
-        instructionMap.put("-",         new UcuSub());
-        instructionMap.put("*",         new UcuMul());
-        instructionMap.put("/",         new UcuDiv());
-        instructionMap.put("+",         new UcuAdd()); 
-        instructionMap.put("-",         new UcuSub()); 
-        instructionMap.put("*",         new UcuMul()); 
-        instructionMap.put("/",         new UcuDiv()); 
-        instructionMap.put(">",         new UcuGraterThan()); 
-        instructionMap.put(">=",        new UcuGraterThan()); 
-        instructionMap.put("<",         new UcuLessThan()); 
-        instructionMap.put("<=",        new UcuLessThanOrEqual()); 
-        instructionMap.put("duplicate", new UcuDuplicate()); 
-        instructionMap.put("swap",      new UcuSwap()); 
-        instructionMap.put("over",      new UcuOver()); 
-        instructionMap.put("drop",      new UcuDrop()); 
-        instructionMap.put("exit",      new UcuExit()); 
-        instructionMap.put("return",    new UcuReturn()); 
-        instructionMap.put("print",     new UcuPrint()); 
-        instructionMap.put("println",   new UcuPrintLn()); 
+        context = new UcuContext();
 
         for (String line : src.split("\n")) {
             var parser = new UcuLangParser(line);
@@ -72,12 +58,36 @@ public class UcuLang {
                         if (ins == null) {
                             System.out.println("ERROR: Unkown instruction: " + token.token);        
                         }
-                        compiledInstructions.add(instructionMap.get(token.token));
+                        compiledInstructions.add(ins);
                     }
                 }
             }
         }
 
-        return compiledInstructions.toArray(UcuInstruction[]::new);
+        instructions = compiledInstructions.toArray(UcuInstruction[]::new);
+    }
+
+    public boolean next() {
+        if (context.getProgramCounter() < instructions.length) {
+            UcuInstruction instruction = instructions[context.getProgramCounter()];
+            if (instruction == null) {
+                context.nextInstruction();
+            } else {
+                instruction.execute(context);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private HashMap<String, UcuCommand> commandsToMap(UcuCommand[] commands) {
+        var result = new HashMap<String, UcuCommand>();
+
+        for (var cmd : commands) {
+            result.put(cmd.getCommandName(), cmd);
+        }
+
+        return result;
     }
 }

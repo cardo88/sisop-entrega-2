@@ -3,10 +3,15 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuSub implements UcuInstruction {
+public class UcuSub implements UcuCommand {
     @Override
     public String toString() {
         return "UcuSub(-)";
+    }
+
+    @Override
+    public String getCommandName() {
+        return "-";
     }
 
     @Override

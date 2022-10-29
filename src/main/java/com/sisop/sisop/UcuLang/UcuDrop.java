@@ -3,10 +3,15 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuDrop implements UcuInstruction {
+public class UcuDrop implements UcuCommand {
     @Override
     public String toString() {
         return "UcuDrop(drop)";
+    }
+
+    @Override
+    public String getCommandName() {
+        return "drop";
     }
 
     @Override

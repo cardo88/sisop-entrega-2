@@ -3,10 +3,10 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuAdd implements UcuInstruction {
+public class UcuAdd implements UcuCommand {
     @Override
-    public String toString() {
-        return "UcuAdd(+)";
+    public String getCommandName() {
+        return "+";
     }
 
     @Override
@@ -15,5 +15,10 @@ public class UcuAdd implements UcuInstruction {
         UcuValue first = context.popValue();
         context.pushValue(first.add(second));
         context.nextInstruction();
+    }
+
+    @Override
+    public String toString() {
+        return "UcuAdd(+)";
     }
 }

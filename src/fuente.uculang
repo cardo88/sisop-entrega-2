@@ -11,8 +11,8 @@ $pos $meta < @iter
 (pepito) {Esto es otro comentario}
 
 "El factorial es: " print 9 (factorial) println
-"El factorial es: " print 6 (factorial-2) println
-"El factorial es: " print 6 (factorial-3) println
+"El factorial es: " print 9 (factorial-2) println
+"El factorial es: " print 9 (factorial-3) print emoji "" println
 
 exit
 

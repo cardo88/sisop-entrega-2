@@ -1,13 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
- */
-
 package com.sisop.sisop;
 
+import com.sisop.sisop.UcuLang.UcuCommand;
+import com.sisop.sisop.UcuLang.UcuContext;
 import com.sisop.sisop.UcuLang.UcuLang;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+class Emoji implements UcuCommand {
+    @Override
+    public String getCommandName() {
+        return "emoji";
+    }
+
+    @Override
+    public void execute(UcuContext context) {
+        System.out.println("🥸");
+        context.nextInstruction();
+    }
+}
 
 /**
  *
@@ -16,8 +26,14 @@ import java.io.IOException;
 public class SisOp {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
+        var uculang = new UcuLang();
+        uculang.compile(
+            FileReader.readFile("src/fuente.uculang"),
+            new UcuCommand[] {
+                new Emoji(),
+            }
+        );
 
-        var uculang = new UcuLang(FileReader.readFile("src/fuente.uculang"));
         while (uculang.next()) {}
     }
 }

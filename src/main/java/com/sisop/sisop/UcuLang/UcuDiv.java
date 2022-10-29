@@ -3,10 +3,15 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuDiv implements UcuInstruction {
+public class UcuDiv implements UcuCommand {
     @Override
     public String toString() {
         return "UcuDiv(/)";
+    }
+
+    @Override
+    public String getCommandName() {
+        return "/";
     }
 
     @Override
