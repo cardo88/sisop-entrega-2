@@ -1,0 +1,44 @@
+100 .pos 
+500 .meta 
+
+:iter 
+    $pos 100 + .pos 
+$pos $meta < @iter
+
+{Esto es un comentario}
+"FIN: " print $pos println
+
+(pepito) {Esto es otro comentario}
+
+"El factorial es: " print 9 (factorial) println
+"El factorial es: " print 6 (factorial-2) println
+"El factorial es: " print 6 (factorial-3) println
+
+exit
+
+
+:pepito
+    10 20 + .hola
+    "Hola es: " print $hola println
+    return
+
+:factorial 
+    duplicate 1 <= return
+    duplicate 1 - (factorial) * return
+
+:factorial-2
+    duplicate .factorial-2.i
+    :factorial-2-iter
+        duplicate 1 - $factorial-2.i * .factorial-2.i
+        1 - 
+        duplicate 1 > @factorial-2-iter
+    $factorial-2.i * return
+
+
+:factorial-3
+    duplicate 
+    duplicate 1 -
+    :factorial-3-iter
+        * swap 1 - swap over 1 -
+        duplicate 1 > @factorial-3-iter
+    drop over drop return

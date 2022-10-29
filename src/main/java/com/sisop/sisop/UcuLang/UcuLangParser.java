@@ -1,0 +1,105 @@
+package com.sisop.sisop.UcuLang;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ *
+ */
+public class UcuLangParser {
+    public enum TokenType {
+        Label,
+        Jump,
+        Call,
+        Number,
+        StrLiteral,
+        Comment,
+        VariableDefinition,
+        VariablePush,
+        Command,
+    }
+
+    public class Token {
+        public TokenType type;
+        public String token;
+
+        public Token(TokenType type, String token) {
+            this.type = type;
+            this.token = token;
+        }
+    }
+
+    // Matchea el final de la cadena.
+    private static final Pattern space = Pattern.compile("\\G\\s+");
+    private static final Pattern label = Pattern.compile("\\G:([^\\s]+)");
+    private static final Pattern jump = Pattern.compile("\\G@([^\\s]+)");
+    private static final Pattern call = Pattern.compile("\\G\\(([^\\s]+)\\)");
+    private static final Pattern varDef = Pattern.compile("\\G\\.([^\\s]+)");
+    private static final Pattern varPush = Pattern.compile("\\G\\$([^\\s]+)");
+    private static final Pattern number = Pattern.compile("\\G\\d+");
+    private static final Pattern strLiteral = Pattern.compile("\\G\"([^\"]*)\"");
+    private static final Pattern comment = Pattern.compile("\\G\\{[^\\}]*\\}");
+    private static final Pattern command = Pattern.compile("\\G[^\\s]+");
+
+    private final String code;
+
+    private Matcher matcher;
+
+    public UcuLangParser(String lineOfCode) {
+        code = lineOfCode;
+        matcher = space.matcher(code);
+    }
+    
+    public Token next() {
+        // Saltea espacios
+        matcher.usePattern(space);
+        matcher.find();
+
+        matcher.usePattern(strLiteral);
+        if (matcher.find()) {
+            return new Token(TokenType.StrLiteral, matcher.group(1));
+        }
+
+        matcher.usePattern(label);
+        if (matcher.find()) {
+            return new Token(TokenType.Label, matcher.group(1));
+        }
+
+        matcher.usePattern(jump);
+        if (matcher.find()) {
+            return new Token(TokenType.Jump, matcher.group(1));
+        }
+
+        matcher.usePattern(call);
+        if (matcher.find()) {
+            return new Token(TokenType.Call, matcher.group(1));
+        }
+
+        matcher.usePattern(comment);
+        if (matcher.find()) {
+            return new Token(TokenType.Comment, matcher.group());
+        }
+
+        matcher.usePattern(varDef);
+        if (matcher.find()) {
+            return new Token(TokenType.VariableDefinition, matcher.group(1));
+        }
+
+        matcher.usePattern(varPush);
+        if (matcher.find()) {
+            return new Token(TokenType.VariablePush, matcher.group(1));
+        }
+
+        matcher.usePattern(number);
+        if (matcher.find()) {
+            return new Token(TokenType.Number, matcher.group());
+        }
+
+        matcher.usePattern(command);
+        if (matcher.find()) {
+            return new Token(TokenType.Command, matcher.group());
+        }
+
+        return null;
+    }
+}
