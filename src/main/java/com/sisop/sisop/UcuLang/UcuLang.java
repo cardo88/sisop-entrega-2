@@ -26,6 +26,7 @@ public class UcuLang {
             new UcuGreaterThanOrEqual(),
             new UcuLessThan(),
             new UcuLessThanOrEqual(),
+            new UcuEquals(),
             new UcuDuplicate(),
             new UcuSwap(),
             new UcuOver(),

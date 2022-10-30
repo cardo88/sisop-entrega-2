@@ -14,13 +14,32 @@ $pos $meta < @iter
 "El factorial es: " print 9 (factorial-2) println
 "El factorial es: " print 9 (factorial-3) print " " print emoji println
 
+"Fib 0: " print 0 (fib) println
+"Fib 1: " print 1 (fib) println
+"Fib 2: " print 2 (fib) println
+"Fib 3: " print 3 (fib) println
+"Fib 4: " print 4 (fib) println
+"Fib 5: " print 5 (fib) println
+"Fib 6: " print 6 (fib) println
+
 exit
+
+
+:fib
+    duplicate 1 <= return
+    $R0 swap .R0
+    $R0 1 - (fib) 
+    $R0 2 - (fib)
+    + 
+    swap .R0
+    return
 
 
 :pepito
     10 20 + .hola
     "Hola es: " print $hola println
     return
+
 
 :factorial 
     duplicate 1 <= return

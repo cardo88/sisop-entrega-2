@@ -17,7 +17,11 @@ public class UcuPushVariable implements UcuInstruction {
 
     @Override
     public void execute(UcuContext context) {
-        context.pushValue(context.getVariable(variableName));
+        UcuValue value = context.getVariable(variableName);
+        if (value == null) {
+            value = new UcuValue(0.0);
+        }
+        context.pushValue(value);
         context.nextInstruction();
     }
 }
