@@ -20,10 +20,30 @@ $pos $meta < @iter
 "Fib 3: " print 3 (fib) println
 "Fib 4: " print 4 (fib) println
 "Fib 5: " print 5 (fib) println
-"Fib 6: " print 6 (fib) println
+"Fib 6: " print 30 (fib) println
+"Fib2 30: " print 30 (fib2) println 
+"Fib3 30: " print 30 (fib3) println 
 
 exit
 
+:fib3
+    duplicate 2 < return
+    2 - 1 1 rot
+    :fib3-iter
+        rot rot swap over + 
+        rot 1 - duplicate
+    0 > @fib3-iter
+    drop swap drop return
+
+:fib2
+    duplicate 2 < return
+    2 - .R0
+    1 1
+    :fib2-iter
+        swap over + 
+        $R0 1 - .R0
+    $R0 0 > @fib2-iter
+    swap drop return
 
 :fib
     duplicate 1 <= return

@@ -30,6 +30,7 @@ public class UcuLang {
             new UcuDuplicate(),
             new UcuSwap(),
             new UcuOver(),
+            new UcuRot(),
             new UcuDrop(),
             new UcuExit(),
             new UcuReturn(),
