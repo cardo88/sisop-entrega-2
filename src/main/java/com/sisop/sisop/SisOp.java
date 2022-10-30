@@ -3,6 +3,8 @@ package com.sisop.sisop;
 import com.sisop.sisop.UcuLang.UcuCommand;
 import com.sisop.sisop.UcuLang.UcuContext;
 import com.sisop.sisop.UcuLang.UcuLang;
+import com.sisop.sisop.UcuLang.UcuValue;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -14,7 +16,7 @@ class Emoji implements UcuCommand {
 
     @Override
     public void execute(UcuContext context) {
-        System.out.println("🥸");
+        context.pushValue(new UcuValue("🥸"));
         context.nextInstruction();
     }
 }

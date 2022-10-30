@@ -40,26 +40,23 @@ public class UcuLang {
 
         context = new UcuContext();
 
-        for (String line : src.split("\n")) {
-            var parser = new UcuLangParser(line);
-            for (var token = parser.next(); token != null; token = parser.next()) {
-
-                switch (token.type) {
-                    case Comment -> { /* Ignora Comentarios */}
-                    case Label -> context.setLabel(token.token, compiledInstructions.size());
-                    case Call -> compiledInstructions.add(new UcuCall(token.token));
-                    case Jump -> compiledInstructions.add(new UcuJump(token.token));
-                    case Number -> compiledInstructions.add(new UcuPushValue(new UcuValue(Double.valueOf(token.token))));
-                    case StrLiteral -> compiledInstructions.add(new UcuPushValue(new UcuValue(token.token)));
-                    case VariableDefinition -> compiledInstructions.add(new UcuDefineVariable(token.token));
-                    case VariablePush -> compiledInstructions.add(new UcuPushVariable(token.token));
-                    case Command -> {
-                        UcuInstruction ins = instructionMap.get(token.token);
-                        if (ins == null) {
-                            System.out.println("ERROR: Unkown instruction: " + token.token);        
-                        }
-                        compiledInstructions.add(ins);
+        var parser = new UcuLangParser(src);
+        for (var token = parser.next(); token != null; token = parser.next()) {
+            switch (token.type) {
+                case Comment -> { /* Ignora Comentarios */}
+                case Label -> context.setLabel(token.token, compiledInstructions.size());
+                case Call -> compiledInstructions.add(new UcuCall(token.token));
+                case Jump -> compiledInstructions.add(new UcuJump(token.token));
+                case Number -> compiledInstructions.add(new UcuPushValue(new UcuValue(Double.valueOf(token.token))));
+                case StrLiteral -> compiledInstructions.add(new UcuPushValue(new UcuValue(token.token)));
+                case VariableDefinition -> compiledInstructions.add(new UcuDefineVariable(token.token));
+                case VariablePush -> compiledInstructions.add(new UcuPushVariable(token.token));
+                case Command -> {
+                    UcuInstruction ins = instructionMap.get(token.token);
+                    if (ins == null) {
+                        System.out.println("ERROR: Unkown instruction: " + token.token);        
                     }
+                    compiledInstructions.add(ins);
                 }
             }
         }

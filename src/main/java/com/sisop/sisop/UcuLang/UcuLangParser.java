@@ -29,7 +29,6 @@ public class UcuLangParser {
         }
     }
 
-    // Matchea el final de la cadena.
     private static final Pattern space = Pattern.compile("\\G\\s+");
     private static final Pattern label = Pattern.compile("\\G:([^\\s]+)");
     private static final Pattern jump = Pattern.compile("\\G@([^\\s]+)");
@@ -45,8 +44,8 @@ public class UcuLangParser {
 
     private Matcher matcher;
 
-    public UcuLangParser(String lineOfCode) {
-        code = lineOfCode;
+    public UcuLangParser(String sourceCode) {
+        code = sourceCode;
         matcher = space.matcher(code);
     }
     

@@ -12,7 +12,7 @@ $pos $meta < @iter
 
 "El factorial es: " print 9 (factorial) println
 "El factorial es: " print 9 (factorial-2) println
-"El factorial es: " print 9 (factorial-3) print emoji "" println
+"El factorial es: " print 9 (factorial-3) print " " print emoji println
 
 exit
 
@@ -42,3 +42,15 @@ exit
         * swap 1 - swap over 1 -
         duplicate 1 > @factorial-3-iter
     drop over drop return
+
+
+{    
+    $arreglo size 
+
+    $arreglo 0 at 
+
+    $arreglo 100 append 
+    [1, 2, "hola"] size 
+    "Hola pepe" to-array 
+    10 to-array 
+}
