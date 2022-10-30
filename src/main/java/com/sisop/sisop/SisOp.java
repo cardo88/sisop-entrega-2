@@ -21,6 +21,25 @@ class Emoji implements UcuCommand {
     }
 }
 
+class Sleep implements UcuCommand {
+    @Override
+    public String getCommandName() {
+        return "sleep";
+    }
+
+    @Override
+    public void execute(UcuContext context) {
+        var value = context.popValue();
+        try {
+            Thread.sleep((long)((double)value.value));
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        context.nextInstruction();
+    }
+}
+
 /**
  *
  * @author ucu
@@ -33,6 +52,7 @@ public class SisOp {
             FileReader.readFile("src/fuente.uculang"),
             new UcuCommand[] {
                 new Emoji(),
+                new Sleep(),
             }
         );
 

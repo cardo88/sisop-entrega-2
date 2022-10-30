@@ -1,3 +1,23 @@
+[] 
+    "Hola" push
+    "Todo bien?" push
+    "Mi nombre es Pepe" push
+
+0 { índice en el arreglo }
+
+:bucle { arreglo, índice }
+    (2dup) at println
+    1 +
+    1000 sleep
+    over len over swap < @bucle
+drop 0 @bucle
+
+:2dup
+    over over return
+
+
+
+
 100 .pos 
 500 .meta 
 
@@ -23,6 +43,25 @@ $pos $meta < @iter
 "Fib 6: " print 30 (fib) println
 "Fib2 30: " print 30 (fib2) println 
 "Fib3 30: " print 30 (fib3) println 
+
+[] 10 push
+   "Hola" push 
+   15 push
+[] ":)" push
+   ":O" push
++ .arreglo
+
+"EL ARREGLO: " print $arreglo println
+"LARGO: " print $arreglo len println
+
+$arreglo 0 
+"ITER ------------" println
+:impr
+    " >> " print 
+    over over at println
+    1 +
+    over len over swap < @impr
+drop println
 
 exit
 

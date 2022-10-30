@@ -33,6 +33,9 @@ public class UcuLang {
             new UcuRot(),
             new UcuDrop(),
             new UcuExit(),
+            new UcuPush(),
+            new UcuLen(),
+            new UcuAt(),
             new UcuReturn(),
             new UcuPrint(),
             new UcuPrintLn(),
@@ -51,6 +54,7 @@ public class UcuLang {
                 case Jump -> compiledInstructions.add(new UcuJump(token.token));
                 case Number -> compiledInstructions.add(new UcuPushValue(new UcuValue(Double.valueOf(token.token))));
                 case StrLiteral -> compiledInstructions.add(new UcuPushValue(new UcuValue(token.token)));
+                case EmptyArray -> compiledInstructions.add(new UcuPushValue(new UcuValue(new LinkedList<>())));
                 case VariableDefinition -> compiledInstructions.add(new UcuDefineVariable(token.token));
                 case VariablePush -> compiledInstructions.add(new UcuPushVariable(token.token));
                 case Command -> {

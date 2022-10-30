@@ -13,6 +13,7 @@ public class UcuLangParser {
         Call,
         Number,
         StrLiteral,
+        EmptyArray,
         Comment,
         VariableDefinition,
         VariablePush,
@@ -37,6 +38,7 @@ public class UcuLangParser {
     private static final Pattern varPush = Pattern.compile("\\G\\$([^\\s]+)");
     private static final Pattern number = Pattern.compile("\\G\\d+");
     private static final Pattern strLiteral = Pattern.compile("\\G\"([^\"]*)\"");
+    private static final Pattern emptyArray = Pattern.compile("\\G\\[\\s*]\\s*");
     private static final Pattern comment = Pattern.compile("\\G\\{[^\\}]*\\}");
     private static final Pattern command = Pattern.compile("\\G[^\\s]+");
 
@@ -57,6 +59,11 @@ public class UcuLangParser {
         matcher.usePattern(strLiteral);
         if (matcher.find()) {
             return new Token(TokenType.StrLiteral, matcher.group(1));
+        }
+
+        matcher.usePattern(emptyArray);
+        if (matcher.find()) {
+            return new Token(TokenType.EmptyArray, matcher.group());
         }
 
         matcher.usePattern(label);
