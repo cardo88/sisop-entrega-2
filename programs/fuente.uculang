@@ -1,7 +1,20 @@
+[] 8 10 + + .miArreglo
+$miArreglo println
+
+$miArreglo 0 "HOLA" set
+$miArreglo println
+
+"Hola " 
+"Pepito" 
++
+println
+
+
 [] 
-    "Hola" push
-    "Todo bien?" push
-    "Mi nombre es Pepe" push
+    "Hola" + 
+    10 +
+    "Todo bien?" +
+    "Mi nombre es Pepe" +
 
 0 { índice en el arreglo }
 
@@ -32,7 +45,7 @@ $pos $meta < @iter
 
 "El factorial es: " print 9 (factorial) println
 "El factorial es: " print 9 (factorial-2) println
-"El factorial es: " print 9 (factorial-3) print " " print emoji println
+"El factorial es: " print 9 (factorial-3) println 
 
 "Fib 0: " print 0 (fib) println
 "Fib 1: " print 1 (fib) println
@@ -44,11 +57,11 @@ $pos $meta < @iter
 "Fib2 30: " print 30 (fib2) println 
 "Fib3 30: " print 30 (fib3) println 
 
-[] 10 push
-   "Hola" push 
-   15 push
-[] ":)" push
-   ":O" push
+[] 10 +
+   "Hola" + 
+   15 +
+[] ":)" +
+   ":O" +
 + .arreglo
 
 "EL ARREGLO: " print $arreglo println
@@ -120,15 +133,3 @@ exit
         * swap 1 - swap over 1 -
         duplicate 1 > @factorial-3-iter
     drop over drop return
-
-
-{    
-    $arreglo size 
-
-    $arreglo 0 at 
-
-    $arreglo 100 append 
-    [1, 2, "hola"] size 
-    "Hola pepe" to-array 
-    10 to-array 
-}

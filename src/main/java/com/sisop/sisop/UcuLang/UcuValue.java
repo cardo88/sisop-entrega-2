@@ -19,7 +19,7 @@ public class UcuValue {
     
     @Override
     public String toString() {
-        return "UcuValue(" + this.value.toString() + ")";
+        return this.value.toString();
     }
 
     public UcuValue add(UcuValue other) {
@@ -87,6 +87,12 @@ public class UcuValue {
             return (UcuValue) a.get(index);
         } else {
             return null;
+        } 
+    }
+
+    public void set(int index, UcuValue x) {
+        if (value instanceof LinkedList a) {
+            a.set(index, x);
         } 
     }
 

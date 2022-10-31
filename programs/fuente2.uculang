@@ -1,0 +1,13 @@
+[] "🤪" +
+   "😜" +
+   "🤣" +
+   "🙃" +
+   "🤩" + 
+0 { índice en el arreglo }
+
+:bucle { arreglo, índice }
+    over over at println
+    1 +
+    300 sleep
+    over len over swap < @bucle
+drop 0 @bucle

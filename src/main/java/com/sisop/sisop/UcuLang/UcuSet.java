@@ -3,22 +3,23 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuPush implements UcuCommand {
+public class UcuSet implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuPush(push)";
+        return "UcuSet(set)";
     }
 
     @Override
     public String getCommandName() {
-        return "push";
+        return "set";
     }
 
     @Override
     public void execute(UcuContext context) {
         var value = context.popValue();
-        var array = context.popValue();
-        context.pushValue(array.add(value));
+        var index = context.popValue();
+        var list = context.popValue();
+        list.set((int)((double) index.value), value);
         context.nextInstruction();
     }
 }

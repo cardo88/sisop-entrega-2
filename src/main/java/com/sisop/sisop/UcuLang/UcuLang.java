@@ -33,9 +33,9 @@ public class UcuLang {
             new UcuRot(),
             new UcuDrop(),
             new UcuExit(),
-            new UcuPush(),
             new UcuLen(),
             new UcuAt(),
+            new UcuSet(),
             new UcuReturn(),
             new UcuPrint(),
             new UcuPrintLn(),
@@ -49,7 +49,13 @@ public class UcuLang {
         for (var token = parser.next(); token != null; token = parser.next()) {
             switch (token.type) {
                 case Comment -> { /* Ignora Comentarios */}
-                case Label -> context.setLabel(token.token, compiledInstructions.size());
+                case Label -> {
+                    if (context.getLabel(token.token) == null) {
+                        context.setLabel(token.token, compiledInstructions.size());
+                    } else {
+                        throw new RuntimeException("Etiqueta duplicada: " + token.token);
+                    }
+                }
                 case Call -> compiledInstructions.add(new UcuCall(token.token));
                 case Jump -> compiledInstructions.add(new UcuJump(token.token));
                 case Number -> compiledInstructions.add(new UcuPushValue(new UcuValue(Double.valueOf(token.token))));
@@ -58,11 +64,11 @@ public class UcuLang {
                 case VariableDefinition -> compiledInstructions.add(new UcuDefineVariable(token.token));
                 case VariablePush -> compiledInstructions.add(new UcuPushVariable(token.token));
                 case Command -> {
-                    UcuInstruction ins = instructionMap.get(token.token);
-                    if (ins == null) {
-                        System.out.println("ERROR: Unkown instruction: " + token.token);        
+                    UcuInstruction instruction = instructionMap.get(token.token);
+                    if (instruction == null) {
+                        throw new RuntimeException("Unknown instruction: " + token.token);
                     }
-                    compiledInstructions.add(ins);
+                    compiledInstructions.add(instruction);
                 }
             }
         }

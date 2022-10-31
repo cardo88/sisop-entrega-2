@@ -36,7 +36,8 @@ public class UcuLangParser {
     private static final Pattern call = Pattern.compile("\\G\\(([^\\s]+)\\)");
     private static final Pattern varDef = Pattern.compile("\\G\\.([^\\s]+)");
     private static final Pattern varPush = Pattern.compile("\\G\\$([^\\s]+)");
-    private static final Pattern number = Pattern.compile("\\G\\d+");
+    // private static final Pattern number = Pattern.compile("\\G[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
+    private static final Pattern number = Pattern.compile("\\G[-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
     private static final Pattern strLiteral = Pattern.compile("\\G\"([^\"]*)\"");
     private static final Pattern emptyArray = Pattern.compile("\\G\\[\\s*]\\s*");
     private static final Pattern comment = Pattern.compile("\\G\\{[^\\}]*\\}");
