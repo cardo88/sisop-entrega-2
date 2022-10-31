@@ -1,0 +1,19 @@
+[] 
+"-=-=-=-=-=-=-=-=-=-=-=-=-" +
+"- Hola don Pepito" +
+"- Hola don José" +
+"- ¿Pasó usted ya por casa?" +
+"- Por su casa yo pasé" +
+"- ¿Vio usted a mi abuela?" +
+"- A su abuela yo la vi" +
+"- Adiós don Pepito" +
+"- Adiós Don José" +
+
+0 { índice en el arreglo }
+
+:bucle { arreglo, índice }
+    over over at println
+    1 +
+    1000 sleep
+    over len over swap < @bucle
+drop 0 @bucle

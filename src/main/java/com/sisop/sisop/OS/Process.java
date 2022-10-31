@@ -42,6 +42,10 @@ public class Process {
         return state;
     }
 
+    public UcuLang getCode() {
+        return code;
+    }
+
     public boolean step() {
         return code.next();
     }

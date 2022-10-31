@@ -15,10 +15,10 @@ public class ConsolePanel extends JPanel implements Console {
 
     public ConsolePanel() {
         textArea = new JTextArea();
-        textArea.setColumns(30);
-        textArea.setRows(15);
+        textArea.setColumns(41);
+        textArea.setRows(23);
         textArea.setEditable(false);
-        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 22));
+        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
 
         scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -33,4 +33,19 @@ public class ConsolePanel extends JPanel implements Console {
     public void print(String output) {
         textArea.append(output);
     }
+
+    @Override
+    public void clear() {
+        textArea.setText("");
+    }
+
+    // @Override
+    // public int getWidth() {
+    //     return 30;
+    // }
+
+    // @Override
+    // public int getHeight() {
+    //     return 15;
+    // }
 }

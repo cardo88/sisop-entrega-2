@@ -9,12 +9,15 @@ import java.util.LinkedList;
 public class UcuLang {
     private UcuInstruction[] instructions = new UcuInstruction[0];
     private UcuContext context = new UcuContext();
+    private String sourceCode; 
 
     public void compile(String src) {
         compile(src, new UcuCommand[0]);
     }
 
     public void compile(String src, UcuCommand[] extraCommands) {
+        sourceCode = src;
+
         LinkedList<UcuInstruction> compiledInstructions = new LinkedList<>();
 
         var instructionMap = commandsToMap(new UcuCommand[] {
@@ -74,6 +77,10 @@ public class UcuLang {
         }
 
         instructions = compiledInstructions.toArray(UcuInstruction[]::new);
+    }
+
+    public String getSourceCode() {
+        return sourceCode;
     }
 
     public boolean next() {

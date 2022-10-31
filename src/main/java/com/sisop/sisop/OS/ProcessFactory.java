@@ -7,6 +7,7 @@ import com.sisop.sisop.FileReader;
 import com.sisop.sisop.UcuLang.UcuCommand;
 import com.sisop.sisop.UcuLang.UcuContext;
 import com.sisop.sisop.UcuLang.UcuLang;
+import com.sisop.sisop.UcuLang.UcuValue;
     
 class Sleep implements UcuCommand {
     private final SleepTimer timer;
@@ -71,6 +72,63 @@ class PrintLn implements UcuCommand {
     }
 }
 
+class Clear implements UcuCommand {
+    private final Console console;
+
+    public Clear(Console console) {
+        this.console = console;
+    }
+
+    @Override
+    public String getCommandName() {
+        return "console.clear";
+    }
+
+    @Override
+    public void execute(UcuContext context) {
+        console.clear();
+        context.nextInstruction();
+    }
+}
+
+// class ConsoleWidth implements UcuCommand {
+//     private final Console console;
+
+//     public ConsoleWidth(Console console) {
+//         this.console = console;
+//     }
+
+//     @Override
+//     public String getCommandName() {
+//         return "console.width";
+//     }
+
+//     @Override
+//     public void execute(UcuContext context) {
+//         context.pushValue(new UcuValue((double)console.getWidth()));
+//         context.nextInstruction();
+//     }
+// }
+
+// class ConsoleHeight implements UcuCommand {
+//     private final Console console;
+
+//     public ConsoleHeight(Console console) {
+//         this.console = console;
+//     }
+
+//     @Override
+//     public String getCommandName() {
+//         return "console.height";
+//     }
+
+//     @Override
+//     public void execute(UcuContext context) {
+//         context.pushValue(new UcuValue((double)console.getHeight()));
+//         context.nextInstruction();
+//     }
+// }
+
 /**
  *
  */
@@ -91,6 +149,7 @@ public class ProcessFactory {
                 new Sleep(sleepTimer, pid),
                 new Print(console),
                 new PrintLn(console),
+                new Clear(console),
             }
         );
 
