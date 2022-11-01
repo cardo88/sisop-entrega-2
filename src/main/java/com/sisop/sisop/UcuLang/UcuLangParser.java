@@ -37,11 +37,11 @@ public class UcuLangParser {
     private static final Pattern varDef = Pattern.compile("\\G\\.([^\\s]+)");
     private static final Pattern varPush = Pattern.compile("\\G\\$([^\\s]+)");
     // private static final Pattern number = Pattern.compile("\\G[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
-    private static final Pattern number = Pattern.compile("\\G[-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
+    // private static final Pattern number = Pattern.compile("\\G[-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
     private static final Pattern strLiteral = Pattern.compile("\\G\"([^\"]*)\"");
     private static final Pattern emptyArray = Pattern.compile("\\G\\[\\s*]\\s*");
     private static final Pattern comment = Pattern.compile("\\G\\{[^\\}]*\\}");
-    private static final Pattern command = Pattern.compile("\\G[^\\s]+");
+    private static final Pattern anything = Pattern.compile("\\G[^\\s]+");
 
     private final String code;
 
@@ -97,16 +97,29 @@ public class UcuLangParser {
             return new Token(TokenType.VariablePush, matcher.group(1));
         }
 
-        matcher.usePattern(number);
-        if (matcher.find()) {
-            return new Token(TokenType.Number, matcher.group());
-        }
+        // matcher.usePattern(number);
+        // if (matcher.find()) {
+        //     return new Token(TokenType.Number, matcher.group());
+        // }
 
-        matcher.usePattern(command);
+        matcher.usePattern(anything);
         if (matcher.find()) {
-            return new Token(TokenType.Command, matcher.group());
+            if (isNumber(matcher.group())) {
+                return new Token(TokenType.Number, matcher.group());
+            } else {
+                return new Token(TokenType.Command, matcher.group());
+            }
         }
 
         return null;
+    }
+
+    private boolean isNumber(String value) {
+        try {
+            Double.valueOf(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

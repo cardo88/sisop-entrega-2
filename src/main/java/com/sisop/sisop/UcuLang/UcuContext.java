@@ -48,12 +48,20 @@ public class UcuContext {
     }
 
     public void jumpTo(String label) {
-        programCounter = labels.get(label);
+        var dir = labels.get(label);
+        if (dir == null) {
+            throw new RuntimeException("Unknown label: " + label);
+        }
+        programCounter = dir;
     }
 
     public void call(String label) {
         callStack.push(programCounter);
-        programCounter = labels.get(label);
+        var dir = labels.get(label);
+        if (dir == null) {
+            throw new RuntimeException("Unknown function: " + label);
+        }
+        programCounter = dir;
     }
 
     public void ret() {

@@ -6,7 +6,7 @@ public class UcuValue {
     public final Object value;
 
     public UcuValue(String value) {
-        this.value = value;
+        this.value = new StringBuilder(value);
     }
 
     public UcuValue(Double value) {
@@ -31,12 +31,15 @@ public class UcuValue {
             return new UcuValue(a + b);
         } else if (value instanceof Double a && other.value instanceof String b) {
             return new UcuValue(a + b);
-        } else if (value instanceof LinkedList a && !(other.value instanceof LinkedList)) {
+        } else if (value instanceof LinkedList a) {
             a.add(other);
             return this;
-        } else if (value instanceof LinkedList a && other.value instanceof LinkedList b) {
-            a.addAll(b);
-            return this;
+        // } else if (value instanceof LinkedList a && !(other.value instanceof LinkedList)) {
+        //     a.add(other);
+        //     return this;
+        // } else if (value instanceof LinkedList a && other.value instanceof LinkedList b) {
+        //     a.addAll(b);
+        //     return this;
         } else {
             return null;
         } 
@@ -69,7 +72,7 @@ public class UcuValue {
     public UcuValue len() {
         if (value instanceof Double) {
             return new UcuValue(0.0);
-        } else if (value instanceof String a) {
+        } else if (value instanceof StringBuilder a) {
             return new UcuValue((double) a.length());
         } else if (value instanceof LinkedList a) {
             return new UcuValue((double) a.size());
@@ -81,7 +84,7 @@ public class UcuValue {
     public UcuValue at(int index) {
         if (value instanceof Double) {
             return this;
-        } else if (value instanceof String a) {
+        } else if (value instanceof StringBuilder a) {
             return new UcuValue("" + a.charAt(index));
         } else if (value instanceof LinkedList a) {
             return (UcuValue) a.get(index);
@@ -93,13 +96,15 @@ public class UcuValue {
     public void set(int index, UcuValue x) {
         if (value instanceof LinkedList a) {
             a.set(index, x);
+        }  else if (value instanceof StringBuilder a) {
+            a.setCharAt(index, x.toString().charAt(0));
         } 
     }
 
     public boolean greaterThan(UcuValue other) {
         if (value instanceof Double a && other.value instanceof Double b) {
             return a > b;
-        } else if (value instanceof String a && other.value instanceof String b) {
+        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
             return a.compareTo(b) > 0;
         } else {
             return false;
@@ -109,7 +114,7 @@ public class UcuValue {
     public boolean greaterThanOrEqual(UcuValue other) {
         if (value instanceof Double a && other.value instanceof Double b) {
             return a >= b;
-        } else if (value instanceof String a && other.value instanceof String b) {
+        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
             return a.compareTo(b) >= 0;
         } else {
             return false;
@@ -119,7 +124,7 @@ public class UcuValue {
     public boolean lessThan(UcuValue other) {
         if (value instanceof Double a && other.value instanceof Double b) {
             return a < b;
-        } else if (value instanceof String a && other.value instanceof String b) {
+        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
             return a.compareTo(b) < 0;
         } else {
             return false;
@@ -129,7 +134,7 @@ public class UcuValue {
     public boolean lessThanOrEqual(UcuValue other) {
         if (value instanceof Double a && other.value instanceof Double b) {
             return a <= b;
-        } else if (value instanceof String a && other.value instanceof String b) {
+        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
             return a.compareTo(b) < 0;
         } else {
             return false;
@@ -139,7 +144,7 @@ public class UcuValue {
     public boolean equal(UcuValue other) {
         if (value instanceof Double a && other.value instanceof Double b) {
             return a.equals(b);
-        } else if (value instanceof String a && other.value instanceof String b) {
+        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
             return a.compareTo(b) == 0;
         } else if (value instanceof LinkedList a && other.value instanceof LinkedList b) {
             return a.equals(b);

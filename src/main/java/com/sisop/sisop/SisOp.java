@@ -111,6 +111,7 @@ public class SisOp {
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
+                        throw new RuntimeException("");
                     }
                 }
             });
@@ -136,6 +137,7 @@ public class SisOp {
                     });
                 } catch (InvocationTargetException | InterruptedException e) {
                     e.printStackTrace();
+                    throw new RuntimeException();
                 }
             }
         });
