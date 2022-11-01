@@ -1,4 +1,3 @@
-
 " " .M { Celda Muerta } 
 "#" .V { Celda Viva }
 
@@ -52,59 +51,66 @@
     "                              " +
 .tableroB
 
+@juego-de-la-vida
 
-:juegoDeLaVida
-    {
-        1. Any live cell with fewer than two live neighbours dies (referred to as underpopulation or exposure[2]).
-        2. Any live cell with more than three live neighbours dies (referred to as overpopulation or overcrowding).
-        3. Any live cell with two or three live neighbours lives, unchanged, to the next generation.
-        4. Any dead cell with exactly three live neighbours will come to life.
-    }
+:swap-tableros
+    $tableroB 
+    $tablero 
+    .tableroB 
+    .tablero
+    return
+
+
+:juego-de-la-vida
 
     console.clear
-    (imprimir-tablero) 
+    $tablero (imprimir-tablero) 
     100 sleep
 
-    1 .fila
-    :iterFila
-        $tablero $fila at .tabFila
-        1 .columna
-        :iterCol
-            $fila $columna (vecinosVivos)
-            $tabFila $columna at $M = @actualizar-muerta
-            $tabFila $columna at $V = @actualizar-viva
+    1 ..fila
+    ::iterFila
+        $tablero $$fila at ..tabFila
 
-            :SIGUIENTE
+        1 ..columna
+        ::iterCol
+            $$fila $$columna (vecinosVivos)
+
+            (:actualizar-muerta)
+            (:actualizar-viva)
+
             drop
-            $columna 1 + .columna
-        $columna $tabFila len 1 - < @iterCol
-        $fila 1 + .fila
-    $fila $tablero len 1 - < @iterFila
 
-    $tableroB $tablero .tableroB .tablero
+            $$columna 1 + ..columna
+        $$columna $$tabFila len 1 - < @:iterCol
+        $$fila 1 + ..fila
+    $$fila $tablero len 1 - < @:iterFila
+    
+    (swap-tableros)
 
-    @juegoDeLaVida
+    @juego-de-la-vida
 
-    :-set-muerta
-        $tableroB $fila at $columna $M set
+    ::set-muerta
+        $tableroB $$fila at $$columna $M set
         return 
 
-    :-set-viva
-        $tableroB $fila at $columna $V set
+    ::set-viva
+        $tableroB $$fila at $$columna $V set
         return 
 
-    :actualizar-viva
-        duplicate 2 < (-set-muerta)
-        duplicate 3 > (-set-muerta)
-        duplicate 2 = (-set-viva)
-        duplicate 3 = (-set-viva)
-        @SIGUIENTE
+    ::actualizar-viva
+        $$tabFila $$columna at $M = return
+        duplicate 2 < (:set-muerta)
+        duplicate 3 > (:set-muerta)
+        duplicate 2 = (:set-viva)
+        duplicate 3 = (:set-viva)
+        return
 
-    :actualizar-muerta
-        duplicate 3 = (-set-viva)
-        duplicate 3 < (-set-muerta)
-        duplicate 3 > (-set-muerta)
-        @SIGUIENTE
+    ::actualizar-muerta
+        $$tabFila $$columna at $V = return
+        duplicate 3 = (:set-viva)
+        duplicate 3 < (:set-muerta)
+        duplicate 3 > (:set-muerta)
+        return
 
 
 :vecinosVivos
@@ -117,46 +123,44 @@
                 * númeroDeCeldasVivas
     }
 
-    1 -            { indiceColumna - 1 }
-    swap 1 - swap  { indiceFila - 1 }
+    ..columna
+    ..fila
 
-    .vv-columna
-    .vv-fila
+    $$columna 1 - ..columna
+    $$fila 1 - ..fila
 
-    0 .vecinosVivosConteo
+    0 ..conteo
 
-    $tablero duplicate $vv-fila 0 + at $vv-columna 0 + at $V = (-vecinosVivos-Inc)
-    $tablero duplicate $vv-fila 0 + at $vv-columna 1 + at $V = (-vecinosVivos-Inc)
-    $tablero duplicate $vv-fila 0 + at $vv-columna 2 + at $V = (-vecinosVivos-Inc)
+    $tablero duplicate $$fila 0 + at $$columna 0 + at $V = (:incrementar)
+    $tablero duplicate $$fila 0 + at $$columna 1 + at $V = (:incrementar)
+    $tablero duplicate $$fila 0 + at $$columna 2 + at $V = (:incrementar)
 
-    $tablero duplicate $vv-fila 1 + at $vv-columna 0 + at $V = (-vecinosVivos-Inc)
-    $tablero duplicate $vv-fila 1 + at $vv-columna 2 + at $V = (-vecinosVivos-Inc)
+    $tablero duplicate $$fila 1 + at $$columna 0 + at $V = (:incrementar)
+    $tablero duplicate $$fila 1 + at $$columna 2 + at $V = (:incrementar)
 
-    $tablero duplicate $vv-fila 2 + at $vv-columna 0 + at $V = (-vecinosVivos-Inc)
-    $tablero duplicate $vv-fila 2 + at $vv-columna 1 + at $V = (-vecinosVivos-Inc)
-    $tablero duplicate $vv-fila 2 + at $vv-columna 2 + at $V = (-vecinosVivos-Inc)
+    $tablero duplicate $$fila 2 + at $$columna 0 + at $V = (:incrementar)
+    $tablero duplicate $$fila 2 + at $$columna 1 + at $V = (:incrementar)
+    $tablero duplicate $$fila 2 + at $$columna 2 + at $V = (:incrementar)
 
-    $vecinosVivosConteo
-    return
+    $$conteo return
 
-    :-vecinosVivos-Inc
-        $vecinosVivosConteo 1 + .vecinosVivosConteo
+    ::incrementar
+        $$conteo 1 + ..conteo
         return
 
 :imprimir-tablero
-    0 .impr-fila
-    :impr-iter-fila
-        {
-        $tablero $impr-fila at .impr-tablero-fila
-        0 .impr-col
-        :impr-iter-col
-            $impr-tablero-fila $impr-col at print
-            $impr-col 1 + .impr-col
-        $impr-col $impr-tablero-fila len < @impr-iter-col
-        }
-        $tablero $impr-fila at println
-        $impr-fila 1 + .impr-fila
-    $impr-fila $tablero len < @impr-iter-fila
+    {
+        Entrada:
+                * tablero
+    }
+
+    ..tablero
+
+    0 ..fila
+    ::iter
+        $$tablero $$fila at println
+        $$fila 1 + ..fila
+    $$fila $$tablero len < @:iter
 
     return
 

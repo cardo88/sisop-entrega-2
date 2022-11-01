@@ -19,7 +19,7 @@ public class UcuPushVariable implements UcuInstruction {
     public void execute(UcuContext context) {
         UcuValue value = context.getVariable(variableName);
         if (value == null) {
-            value = new UcuValue(0.0);
+            throw new RuntimeException("Variable no definida: " + variableName);
         }
         context.pushValue(value);
         context.nextInstruction();

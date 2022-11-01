@@ -142,8 +142,7 @@ public class ProcessFactory {
     public Process fromSource(String name, String src, Console console) {
         var pid = new ProcessId();
 
-        var ucuLang = new UcuLang();
-        ucuLang.compile(
+        var ucuLang = new UcuLang(
             src,
             new UcuCommand[] {
                 new Sleep(sleepTimer, pid),

@@ -1,6 +1,6 @@
 package com.sisop.sisop.UcuLang;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class UcuValue {
     public final Object value;
@@ -13,7 +13,7 @@ public class UcuValue {
         this.value = value;
     }
 
-    public UcuValue(LinkedList<UcuValue> value) {
+    public UcuValue(ArrayList<UcuValue> value) {
         this.value = value;
     }
     
@@ -31,7 +31,7 @@ public class UcuValue {
             return new UcuValue(a + b);
         } else if (value instanceof Double a && other.value instanceof String b) {
             return new UcuValue(a + b);
-        } else if (value instanceof LinkedList a) {
+        } else if (value instanceof ArrayList a) {
             a.add(other);
             return this;
         // } else if (value instanceof LinkedList a && !(other.value instanceof LinkedList)) {
@@ -74,7 +74,7 @@ public class UcuValue {
             return new UcuValue(0.0);
         } else if (value instanceof StringBuilder a) {
             return new UcuValue((double) a.length());
-        } else if (value instanceof LinkedList a) {
+        } else if (value instanceof ArrayList a) {
             return new UcuValue((double) a.size());
         } else {
             return null;
@@ -86,7 +86,7 @@ public class UcuValue {
             return this;
         } else if (value instanceof StringBuilder a) {
             return new UcuValue("" + a.charAt(index));
-        } else if (value instanceof LinkedList a) {
+        } else if (value instanceof ArrayList a) {
             return (UcuValue) a.get(index);
         } else {
             return null;
@@ -94,7 +94,7 @@ public class UcuValue {
     }
 
     public void set(int index, UcuValue x) {
-        if (value instanceof LinkedList a) {
+        if (value instanceof ArrayList a) {
             a.set(index, x);
         }  else if (value instanceof StringBuilder a) {
             a.setCharAt(index, x.toString().charAt(0));
@@ -146,7 +146,7 @@ public class UcuValue {
             return a.equals(b);
         } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
             return a.compareTo(b) == 0;
-        } else if (value instanceof LinkedList a && other.value instanceof LinkedList b) {
+        } else if (value instanceof ArrayList a && other.value instanceof ArrayList b) {
             return a.equals(b);
         } else {
             return false;

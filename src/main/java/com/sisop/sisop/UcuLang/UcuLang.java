@@ -1,24 +1,39 @@
 package com.sisop.sisop.UcuLang;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
- *
+ * 
  */
 public class UcuLang {
-    private UcuInstruction[] instructions = new UcuInstruction[0];
+    // Lista de instrucciones del programa compilado.
+    private ArrayList<UcuInstruction> instructions; 
+
+    // Contexto de ejecución del programa
     private UcuContext context = new UcuContext();
+
+    private String currentTopLevelLabel = "";
+
+    // Código fuente original
     private String sourceCode; 
 
-    public void compile(String src) {
-        compile(src, new UcuCommand[0]);
+    public UcuLang() {
+        compile("exit", new UcuCommand[0]);
     }
 
-    public void compile(String src, UcuCommand[] extraCommands) {
+    public UcuLang(String src) {
+        this(src, new UcuCommand[0]);
+    }
+
+    public UcuLang(String src, UcuCommand[] extraCommands) {
+        compile(src, extraCommands);
+    }
+
+    private void compile(String src, UcuCommand[] extraCommands) {
         sourceCode = src;
 
-        LinkedList<UcuInstruction> compiledInstructions = new LinkedList<>();
+        instructions = new ArrayList<>();
 
         var instructionMap = commandsToMap(new UcuCommand[] {
             new UcuAdd(),
@@ -52,31 +67,55 @@ public class UcuLang {
         for (var token = parser.next(); token != null; token = parser.next()) {
             switch (token.type) {
                 case Comment -> { /* Ignora Comentarios */}
-                case Label -> {
-                    if (context.getLabel(token.token) == null) {
-                        context.setLabel(token.token, compiledInstructions.size());
+                case LocalLabel -> {
+                    var label = getLocalLabelAbsoluteName(token.token);
+                    if (context.getLabel(label) == null) {
+                        context.setLabel(label, instructions.size());
                     } else {
-                        throw new RuntimeException("Etiqueta duplicada: " + token.token);
+                        throw new RuntimeException("Etiqueta local duplicada: " + token.token + " bajo la etiqueta: " + currentTopLevelLabel);
                     }
                 }
-                case Call -> compiledInstructions.add(new UcuCall(token.token));
-                case Jump -> compiledInstructions.add(new UcuJump(token.token));
-                case Number -> compiledInstructions.add(new UcuPushValue(new UcuValue(Double.valueOf(token.token))));
-                case StrLiteral -> compiledInstructions.add(new UcuPushValue(new UcuValue(token.token)));
-                case EmptyArray -> compiledInstructions.add(new UcuPushValue(new UcuValue(new LinkedList<>())));
-                case VariableDefinition -> compiledInstructions.add(new UcuDefineVariable(token.token));
-                case VariablePush -> compiledInstructions.add(new UcuPushVariable(token.token));
+                case Label -> {
+                    var label = token.token;
+                    if (context.getLabel(token.token) == null) {
+                        currentTopLevelLabel = label;
+                        context.setLabel(label, instructions.size());
+                    } else {
+                        throw new RuntimeException("Etiqueta duplicada: " + label);
+                    }
+                }
+                case Call -> {
+                    instructions.add(new UcuCall(token.token));
+                }
+                case LocalCall -> {
+                    instructions.add(new UcuCall(getLocalLabelAbsoluteName(token.token)));
+                }
+                case Jump -> {
+                    instructions.add(new UcuJump(token.token));
+                }
+                case LocalJump -> {
+                    instructions.add(new UcuJump(getLocalLabelAbsoluteName(token.token)));
+                }
+                case Number -> instructions.add(new UcuPushValue(new UcuValue(Double.valueOf(token.token))));
+                case StrLiteral -> instructions.add(new UcuPushValue(new UcuValue(token.token)));
+                case EmptyArray -> instructions.add(new UcuPushValue(new UcuValue(new ArrayList<>())));
+                case VariableDefinition -> instructions.add(new UcuDefineVariable(token.token));
+                case VariablePush -> instructions.add(new UcuPushVariable(token.token));
+                case LocalVariableDefinition -> {
+                    instructions.add(new UcuDefineVariable(getLocalVariableAbsoluteName(token.token)));
+                }
+                case LocalVariablePush -> {
+                    instructions.add(new UcuPushVariable(getLocalVariableAbsoluteName(token.token)));
+                }
                 case Command -> {
                     UcuInstruction instruction = instructionMap.get(token.token);
                     if (instruction == null) {
                         throw new RuntimeException("Unknown instruction: " + token.token);
                     }
-                    compiledInstructions.add(instruction);
+                    instructions.add(instruction);
                 }
             }
         }
-
-        instructions = compiledInstructions.toArray(UcuInstruction[]::new);
     }
 
     public String getSourceCode() {
@@ -84,8 +123,8 @@ public class UcuLang {
     }
 
     public boolean next() {
-        if (context.getProgramCounter() < instructions.length) {
-            UcuInstruction instruction = instructions[context.getProgramCounter()];
+        if (context.getProgramCounter() < instructions.size()) {
+            UcuInstruction instruction = instructions.get(context.getProgramCounter());
             if (instruction == null) {
                 context.nextInstruction();
             } else {
@@ -95,6 +134,20 @@ public class UcuLang {
         } else {
             return false;
         }
+    }
+
+    private String getLocalLabelAbsoluteName(String localLabel) {
+        if (currentTopLevelLabel.isEmpty()) {
+            throw new RuntimeException("Se intentó utilizar una etiqueta local sin una etiqueta padre: " + localLabel);
+        }
+        return currentTopLevelLabel + " " + localLabel;
+    }
+
+    private String getLocalVariableAbsoluteName(String localVariable) {
+        if (currentTopLevelLabel.isEmpty()) {
+            throw new RuntimeException("Se intentó utilizar una variable local sin una etiqueta padre: " + localVariable);
+        }
+        return currentTopLevelLabel + " " + localVariable;
     }
 
     private HashMap<String, UcuCommand> commandsToMap(UcuCommand[] commands) {
