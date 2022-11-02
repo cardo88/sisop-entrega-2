@@ -31,7 +31,7 @@ public class ProgramPanel extends JPanel {
         f.setLayout(new GridLayout(1, 3, 4, 1));
         var button = new JButton("Cerrar");
         var button2 = new JButton("Código Fuente");
-        var button3 = new JButton("Suspender");
+        // var button3 = new JButton("Suspender");
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,7 +40,7 @@ public class ProgramPanel extends JPanel {
             }
         });
         f.add(button2);
-        f.add(button3);
+        // f.add(button3);
         f.add(button);
 
         var h = new JPanel();

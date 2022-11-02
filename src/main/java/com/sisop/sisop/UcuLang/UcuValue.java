@@ -87,13 +87,13 @@ public class UcuValue {
                 return new UcuValue(cadena);
             }
         } else if (value instanceof ArrayList a) {
-            if (other.value instanceof Double b) {
-                var array = new ArrayList<UcuValue>();
-                for (int i = 0; i < b.intValue(); i++) {
-                    array.addAll(a);
-                }
-                return new UcuValue(array);
-            }
+            // if (other.value instanceof Double b) {
+            //     var array = new ArrayList<UcuValue>();
+            //     for (int i = 0; i < b.intValue(); i++) {
+            //         array.addAll(a);
+            //     }
+            //     return new UcuValue(array);
+            // }
         }
 
         throw new RuntimeException("Invalid operands (mul): " + value.getClass().getName() + " and " + other.value.getClass().getName());

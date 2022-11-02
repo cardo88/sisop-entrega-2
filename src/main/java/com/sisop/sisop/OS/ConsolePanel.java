@@ -38,14 +38,4 @@ public class ConsolePanel extends JPanel implements Console {
     public void clear() {
         textArea.setText("");
     }
-
-    // @Override
-    // public int getWidth() {
-    //     return 30;
-    // }
-
-    // @Override
-    // public int getHeight() {
-    //     return 15;
-    // }
 }
