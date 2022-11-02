@@ -99,17 +99,17 @@
 
     ::actualizar-viva
         $$tabFila $$columna at $M = return
-        duplicate 2 < (:set-muerta)
-        duplicate 3 > (:set-muerta)
-        duplicate 2 = (:set-viva)
-        duplicate 3 = (:set-viva)
+        dup 2 < (:set-muerta)
+        dup 3 > (:set-muerta)
+        dup 2 = (:set-viva)
+        dup 3 = (:set-viva)
         return
 
     ::actualizar-muerta
         $$tabFila $$columna at $V = return
-        duplicate 3 = (:set-viva)
-        duplicate 3 < (:set-muerta)
-        duplicate 3 > (:set-muerta)
+        dup 3 = (:set-viva)
+        dup 3 < (:set-muerta)
+        dup 3 > (:set-muerta)
         return
 
 
@@ -131,16 +131,16 @@
 
     0 ..conteo
 
-    $tablero duplicate $$fila 0 + at $$columna 0 + at $V = (:incrementar)
-    $tablero duplicate $$fila 0 + at $$columna 1 + at $V = (:incrementar)
-    $tablero duplicate $$fila 0 + at $$columna 2 + at $V = (:incrementar)
+    $tablero dup $$fila 0 + at $$columna 0 + at $V = (:incrementar)
+    $tablero dup $$fila 0 + at $$columna 1 + at $V = (:incrementar)
+    $tablero dup $$fila 0 + at $$columna 2 + at $V = (:incrementar)
 
-    $tablero duplicate $$fila 1 + at $$columna 0 + at $V = (:incrementar)
-    $tablero duplicate $$fila 1 + at $$columna 2 + at $V = (:incrementar)
+    $tablero dup $$fila 1 + at $$columna 0 + at $V = (:incrementar)
+    $tablero dup $$fila 1 + at $$columna 2 + at $V = (:incrementar)
 
-    $tablero duplicate $$fila 2 + at $$columna 0 + at $V = (:incrementar)
-    $tablero duplicate $$fila 2 + at $$columna 1 + at $V = (:incrementar)
-    $tablero duplicate $$fila 2 + at $$columna 2 + at $V = (:incrementar)
+    $tablero dup $$fila 2 + at $$columna 0 + at $V = (:incrementar)
+    $tablero dup $$fila 2 + at $$columna 1 + at $V = (:incrementar)
+    $tablero dup $$fila 2 + at $$columna 2 + at $V = (:incrementar)
 
     $$conteo return
 

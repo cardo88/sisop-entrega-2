@@ -3,10 +3,18 @@ package com.sisop.sisop.UcuLang;
 import java.util.ArrayList;
 
 public class UcuValue {
-    public final Object value;
+    public Object value;
 
     public UcuValue(String value) {
         this.value = new StringBuilder(value);
+    }
+
+    private UcuValue(Object value) {
+        this.value = value;
+    }
+
+    public UcuValue(StringBuilder value) {
+        this.value = value;
     }
 
     public UcuValue(Double value) {
@@ -16,6 +24,18 @@ public class UcuValue {
     public UcuValue(ArrayList<UcuValue> value) {
         this.value = value;
     }
+
+    public UcuValue clone() {
+        if (value instanceof StringBuilder
+            || value instanceof ArrayList) {
+            return new UcuValue(value);
+        } else if (value instanceof Double a) {
+            double x = (double) a;
+            return new UcuValue(x);
+        }
+
+        throw new RuntimeException("Unexpected type");
+    }
     
     @Override
     public String toString() {
@@ -23,50 +43,70 @@ public class UcuValue {
     }
 
     public UcuValue add(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return new UcuValue(a + b);
-        } else if (value instanceof String a && other.value instanceof String b) {
-            return new UcuValue(a + b);
-        } else if (value instanceof String a && other.value instanceof Double b) {
-            return new UcuValue(a + b);
-        } else if (value instanceof Double a && other.value instanceof String b) {
-            return new UcuValue(a + b);
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return new UcuValue(a + b);
+            }
+        } else if (value instanceof StringBuilder a) {
+            if (other.value instanceof Double b) {
+                a.append(b);
+                return this;
+            } else if (other.value instanceof StringBuilder b) {
+                a.append(b);
+                return this;
+            }
         } else if (value instanceof ArrayList a) {
             a.add(other);
             return this;
-        // } else if (value instanceof LinkedList a && !(other.value instanceof LinkedList)) {
-        //     a.add(other);
-        //     return this;
-        // } else if (value instanceof LinkedList a && other.value instanceof LinkedList b) {
-        //     a.addAll(b);
-        //     return this;
-        } else {
-            return null;
-        } 
+        }
+
+        throw new RuntimeException("Invalid operands (add): " + value.getClass().getName() + " and " + other.value.getClass().getName());
     }
 
     public UcuValue sub(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return new UcuValue(a - b);
-        } else {
-            return null;
-        } 
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return new UcuValue(a - b);
+            }
+        }
+
+        throw new RuntimeException("Invalid operands (sub): " + value.getClass().getName() + " and " + other.value.getClass().getName());
     }
 
     public UcuValue mul(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return new UcuValue(a * b);
-        } else {
-            return null;
-        } 
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return new UcuValue(a * b);
+            }
+        } else if (value instanceof StringBuilder a) {
+            if (other.value instanceof Double b) {
+                var cadena = new StringBuilder();
+                for (int i = 0; i < b.intValue(); i++) {
+                    cadena.append(a);
+                }
+                return new UcuValue(cadena);
+            }
+        } else if (value instanceof ArrayList a) {
+            if (other.value instanceof Double b) {
+                var array = new ArrayList<UcuValue>();
+                for (int i = 0; i < b.intValue(); i++) {
+                    array.addAll(a);
+                }
+                return new UcuValue(array);
+            }
+        }
+
+        throw new RuntimeException("Invalid operands (mul): " + value.getClass().getName() + " and " + other.value.getClass().getName());
     }
 
     public UcuValue div(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return new UcuValue(a / b);
-        } else {
-            return null;
-        } 
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return new UcuValue(a / b);
+            }
+        }
+
+        throw new RuntimeException("Invalid operands (div): " + value.getClass().getName() + " and " + other.value.getClass().getName());
     }
 
     public UcuValue len() {
@@ -76,80 +116,114 @@ public class UcuValue {
             return new UcuValue((double) a.length());
         } else if (value instanceof ArrayList a) {
             return new UcuValue((double) a.size());
-        } else {
-            return null;
         } 
+
+        throw new RuntimeException("Invalid operand (len): " + value.getClass().getName()); 
     }
 
     public UcuValue at(int index) {
-        if (value instanceof Double) {
-            return this;
-        } else if (value instanceof StringBuilder a) {
-            return new UcuValue("" + a.charAt(index));
+        if (value instanceof StringBuilder a) {
+            return new UcuValue(String.valueOf(a.charAt(index)));
         } else if (value instanceof ArrayList a) {
             return (UcuValue) a.get(index);
-        } else {
-            return null;
         } 
+
+        throw new RuntimeException("Invalid operand (at): " + value.getClass().getName()); 
     }
 
     public void set(int index, UcuValue x) {
         if (value instanceof ArrayList a) {
             a.set(index, x);
+            return;
         }  else if (value instanceof StringBuilder a) {
-            a.setCharAt(index, x.toString().charAt(0));
+            if (x.value instanceof StringBuilder b) {
+                if (b.length() > 0) {
+                    a.setCharAt(index, b.charAt(0));
+                } else {
+                    System.out.println("B: '" + b + "' " + b.length());
+                }
+                return; 
+            }
         } 
+
+        throw new RuntimeException("Invalid operand (set): " + value.getClass().getName() + " and " + x.value.getClass().getName()); 
     }
 
     public boolean greaterThan(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return a > b;
-        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
-            return a.compareTo(b) > 0;
-        } else {
-            return false;
-        } 
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return a > b;
+            }
+        } else if (value instanceof StringBuilder a) {
+            if (other.value instanceof StringBuilder b) {
+                return a.compareTo(b) > 0;
+            }
+        }
+
+        throw new RuntimeException("Invalid operands (greaterThan): " + value.getClass().getName() + " and " + other.value.getClass().getName());
     }
 
     public boolean greaterThanOrEqual(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return a >= b;
-        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
-            return a.compareTo(b) >= 0;
-        } else {
-            return false;
-        } 
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return a >= b;
+            }
+        } else if (value instanceof StringBuilder a) {
+            if (other.value instanceof StringBuilder b) {
+                return a.compareTo(b) >= 0;
+            }
+        }
+
+        throw new RuntimeException("Invalid operands (greaterThanOrEqual): " + value.getClass().getName() + " and " + other.value.getClass().getName());
     }
 
     public boolean lessThan(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return a < b;
-        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
-            return a.compareTo(b) < 0;
-        } else {
-            return false;
-        } 
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return a < b;
+            }
+        } else if (value instanceof StringBuilder a) {
+            if (other.value instanceof StringBuilder b) {
+                return a.compareTo(b) < 0;
+            }
+        }
+
+        throw new RuntimeException("Invalid operands (lessThan): " + value.getClass().getName() + " and " + other.value.getClass().getName());
     }
 
     public boolean lessThanOrEqual(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return a <= b;
-        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
-            return a.compareTo(b) < 0;
-        } else {
-            return false;
-        } 
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return a <= b;
+            }
+        } else if (value instanceof StringBuilder a) {
+            if (other.value instanceof StringBuilder b) {
+                return a.compareTo(b) <= 0;
+            }
+        }
+
+        throw new RuntimeException("Invalid operands (lessThanOrEqual): " + value.getClass().getName() + " and " + other.value.getClass().getName());
     }
 
     public boolean equal(UcuValue other) {
-        if (value instanceof Double a && other.value instanceof Double b) {
-            return a.equals(b);
-        } else if (value instanceof StringBuilder a && other.value instanceof StringBuilder b) {
-            return a.compareTo(b) == 0;
-        } else if (value instanceof ArrayList a && other.value instanceof ArrayList b) {
-            return a.equals(b);
-        } else {
-            return false;
-        } 
+        if (value instanceof Double a) {
+            if (other.value instanceof Double b) {
+                return a.equals(b);
+            }
+        } else if (value instanceof StringBuilder a) {
+            if (other.value instanceof StringBuilder b) {
+                return a.toString().equals(b.toString());
+            }
+        } else if (value instanceof ArrayList a) {
+            if (other.value instanceof ArrayList b) {
+                return a.equals(b);
+            }
+        }
+
+        throw new RuntimeException("Invalid operands (equal/notEqual): " + value.getClass().getName() + " and " + other.value.getClass().getName());
+    }
+
+    public boolean notEqual(UcuValue other) {
+        return !equal(other);
     }
 }

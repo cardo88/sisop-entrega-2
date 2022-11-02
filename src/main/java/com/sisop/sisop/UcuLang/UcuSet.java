@@ -19,7 +19,11 @@ public class UcuSet implements UcuCommand {
         var value = context.popValue();
         var index = context.popValue();
         var list = context.popValue();
-        list.set((int)((double) index.value), value);
+        // System.out.println("-----------------------");
+        // System.out.println("Set [ value ]: '" + value.toString() + "'");
+        // System.out.println("Set [ index ]: " + index.toString());
+        // System.out.println("Set [ list  ]: '" + list.toString() + "'");
+        list.set(((Double)index.value).intValue(), value);
         context.nextInstruction();
     }
 }
