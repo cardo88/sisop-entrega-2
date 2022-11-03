@@ -29,10 +29,13 @@ public class ProgramPanel extends JPanel {
     private final JButton debuggerButton;
     private final JPanel statusLinePanel;
 
+    private JFrame debuggerWindow;
+
     public ProgramPanel(Scheduler sch, Debugger dbg) {
         this.scheduler = sch;
         this.debugger = dbg;
         this.process = null;
+        this.debuggerWindow = null;
 
         setLayout(new BorderLayout());
 
@@ -60,8 +63,6 @@ public class ProgramPanel extends JPanel {
         add(consolePanel, BorderLayout.CENTER);
         add(statusLinePanel, BorderLayout.SOUTH);
 
-        setBounds(0, 0, consolePanel.getWidth() + 5, consolePanel.getHeight() + 5);
-
         update();
     }
 
@@ -81,6 +82,9 @@ public class ProgramPanel extends JPanel {
             var parent = getParent();
             parent.remove((Component) ProgramPanel.this);
             parent.repaint();
+            if (debuggerWindow != null) {
+                debuggerWindow.dispose();
+            }
         });
 
         removeActionListeners(sourceCodeButton);
@@ -92,8 +96,8 @@ public class ProgramPanel extends JPanel {
         removeActionListeners(debuggerButton);
         debuggerButton.addActionListener((ActionEvent e) -> {
             setStoppedColor();
-            var frame = new DebuggerFrame(process, debugger);
-            frame.setVisible(true);
+            debuggerWindow = new DebuggerFrame(process, debugger);
+            debuggerWindow.setVisible(true);
         });
     }
 

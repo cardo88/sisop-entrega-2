@@ -25,6 +25,11 @@ class Sleep implements UcuCommand {
     }
 
     @Override
+    public String toString() {
+        return getCommandName();
+    }
+
+    @Override
     public void execute(UcuContext context) {
         var value = context.popValue();
         long millis = value.asNumber().intValue();
@@ -43,6 +48,11 @@ class Print implements UcuCommand {
     @Override
     public String getCommandName() {
         return "print";
+    }
+
+    @Override
+    public String toString() {
+        return getCommandName();
     }
 
     @Override
@@ -66,6 +76,11 @@ class PrintLn implements UcuCommand {
     }
 
     @Override
+    public String toString() {
+        return getCommandName();
+    }
+
+    @Override
     public void execute(UcuContext context) {
         var value = context.popValue();
         console.print(value.value.toString() + "\n");
@@ -83,6 +98,11 @@ class Clear implements UcuCommand {
     @Override
     public String getCommandName() {
         return "console.clear";
+    }
+
+    @Override
+    public String toString() {
+        return getCommandName();
     }
 
     @Override
@@ -120,44 +140,6 @@ class Breakpoint implements UcuCommand {
         debugger.stop(pid);
     }
 }
-
-// class ConsoleWidth implements UcuCommand {
-//     private final Console console;
-
-//     public ConsoleWidth(Console console) {
-//         this.console = console;
-//     }
-
-//     @Override
-//     public String getCommandName() {
-//         return "console.width";
-//     }
-
-//     @Override
-//     public void execute(UcuContext context) {
-//         context.pushValue(new UcuValue((double)console.getWidth()));
-//         context.nextInstruction();
-//     }
-// }
-
-// class ConsoleHeight implements UcuCommand {
-//     private final Console console;
-
-//     public ConsoleHeight(Console console) {
-//         this.console = console;
-//     }
-
-//     @Override
-//     public String getCommandName() {
-//         return "console.height";
-//     }
-
-//     @Override
-//     public void execute(UcuContext context) {
-//         context.pushValue(new UcuValue((double)console.getHeight()));
-//         context.nextInstruction();
-//     }
-// }
 
 /**
  *

@@ -2,6 +2,7 @@ package com.sisop.sisop.UcuLang;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * 
@@ -28,7 +29,7 @@ public class UcuLang {
 
     private StepMode stepMode = StepMode.Play;
 
-    private DebuggerCallback debuggerCallback = null;
+    private LinkedList<DebuggerCallback> debuggerCallback = new LinkedList<>();
 
     public UcuLang() {
         compile("exit", new UcuCommand[0]);
@@ -54,15 +55,23 @@ public class UcuLang {
         return context;
     }
 
-    public void setDebuggerCallback(DebuggerCallback callback) {
-        debuggerCallback = callback;
+    public void addDebuggerCallback(DebuggerCallback callback) {
+        debuggerCallback.add(callback);
+    }
+
+    public void removeDebuggerCallback(DebuggerCallback callback) {
+        debuggerCallback.remove(callback);
+    }
+
+    public void clearAllDebuggerCallbacks() {
+        debuggerCallback.clear();
     }
 
     public void setStepMode(StepMode mode) {
         var pre = stepMode;
         stepMode = mode;
-        if (debuggerCallback != null) {
-            debuggerCallback.onStepModeChange(pre, mode);
+        for (var cb : debuggerCallback) {
+            cb.onStepModeChange(pre, mode);
         }
     }
 

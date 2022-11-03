@@ -43,7 +43,7 @@ public class OsFrame extends JFrame {
         this.sleepTimer = sleepTimer;
 
         setLayout(new BorderLayout());
-        setSize(1000, 500);
+        setSize(1500, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("UcuNix");
 

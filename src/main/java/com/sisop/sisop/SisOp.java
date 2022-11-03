@@ -47,7 +47,7 @@ public class SisOp {
             programPaths.add(program.getPath());
         }
 
-        var osFrame = new OsFrame(processFactory, scheduler, debugger, sleepTimer, programPaths.toArray(new String[0]), true);
+        var osFrame = new OsFrame(processFactory, scheduler, debugger, sleepTimer, programPaths.toArray(new String[0]), false);
         osFrame.setVisible(true);
     }
 }

@@ -3,7 +3,9 @@ package com.sisop.sisop.OS.UI;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,6 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import com.sisop.sisop.OS.Process;
 import com.sisop.sisop.OS.Scheduler;
 import com.sisop.sisop.OS.Resources.Debugger;
+import com.sisop.sisop.UcuLang.UcuLang.DebuggerCallback;
+import com.sisop.sisop.UcuLang.UcuLang.StepMode;
 
 import java.awt.BorderLayout;
 
@@ -36,24 +40,21 @@ public class DebuggerFrame extends JFrame {
         setLayout(new BorderLayout());
         setSize(1000, 700);
         setTitle("-=- UcuLang Debugger (" + process.getName() + ") -=-");
-        // setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
-                debugger.play(process.getPid());
+                debugger.dettach(process.getPid());
             }
         });
 
-        debugger.stop(process.getPid());
-
+        var compiledInstructions = process.getCode().getCompiledInstructions();
         instructionsTable = new JTable(
-            process.getCode().getCompiledInstructions()
-                .stream()
-                .map(x -> new String[] { x.toString() })
-                .collect(Collectors.toList())
-                .toArray(new String[0][0]),
-            new String[] { "Instrucciones" }
+            IntStream.range(0, compiledInstructions.size())
+                     .mapToObj(x -> new String[] { String.valueOf(x), compiledInstructions.get(x).toString() })
+                     .collect(Collectors.toList())
+                     .toArray(new String[0][0]),
+            new String[] { "PC", "Instrucciones" }
         );
 
         variablesTable = new JTable();
@@ -87,9 +88,6 @@ public class DebuggerFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 debugger.step(process.getPid());
-                updateVariablesTable();
-                updateStackTable();
-                updateInstructionTable();
             }
         });
 
@@ -98,9 +96,6 @@ public class DebuggerFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 debugger.stop(process.getPid());
-                updateVariablesTable();
-                updateStackTable();
-                updateInstructionTable();
             }
         });
 
@@ -115,6 +110,15 @@ public class DebuggerFrame extends JFrame {
         updateVariablesTable();
         updateStackTable();
         updateLabelsTable();
+
+        process.getCode().addDebuggerCallback((StepMode pre, StepMode post) -> {
+            if (post == StepMode.Stop) {
+                updateVariablesTable();
+                updateStackTable();
+                updateInstructionTable();
+            }
+        });
+        debugger.attach(process.getPid());
     }
 
     private void updateVariablesTable() {

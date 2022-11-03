@@ -1,10 +1,11 @@
 package com.sisop.sisop.OS.Resources;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.sisop.sisop.OS.ElapsedTime;
 import com.sisop.sisop.OS.ProcessId;
 import com.sisop.sisop.OS.Scheduler;
 
@@ -12,6 +13,20 @@ import com.sisop.sisop.OS.Scheduler;
  *
  */
 public class SleepTimer {
+    class ElapsedTime {
+        public Instant start;
+        public final long waitForMillis;
+
+        public ElapsedTime(long waitForMillis) {
+            start = Instant.now();
+            this.waitForMillis = waitForMillis;
+        }
+
+        public boolean isReady() {
+            return Duration.between(start, Instant.now()).toMillis() >= waitForMillis;
+        }
+    }
+
     public static final ResourceId resourceId = new ResourceId();
 
     private final HashMap<ProcessId, ElapsedTime> timers = new HashMap<>();
