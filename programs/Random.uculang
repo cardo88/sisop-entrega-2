@@ -1,0 +1,4 @@
+:bucle
+    random println
+    500 sleep
+    @bucle

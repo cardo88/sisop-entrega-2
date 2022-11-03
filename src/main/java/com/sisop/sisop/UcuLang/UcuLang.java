@@ -131,6 +131,7 @@ public class UcuLang {
             new UcuOver(),
             new UcuPrint(),
             new UcuPrintLn(),
+            new UcuRandom(),
             new UcuReturn(),
             new UcuRot(),
             new UcuSet(),

@@ -2,8 +2,6 @@ package com.sisop.sisop.OS.UI;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,9 +9,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import com.sisop.sisop.OS.Process;
-import com.sisop.sisop.OS.Scheduler;
 import com.sisop.sisop.OS.Resources.Debugger;
-import com.sisop.sisop.UcuLang.UcuLang.DebuggerCallback;
 import com.sisop.sisop.UcuLang.UcuLang.StepMode;
 
 import java.awt.BorderLayout;
@@ -76,27 +72,18 @@ public class DebuggerFrame extends JFrame {
         add(mainSplitPane, BorderLayout.CENTER);
 
         playButton = new JButton("Play");
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                debugger.play(process.getPid());
-            }
+        playButton.addActionListener((ActionEvent e) -> {
+            debugger.play(process.getPid());
         });
 
         stepButton = new JButton("Step");
-        stepButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                debugger.step(process.getPid());
-            }
+        stepButton.addActionListener((ActionEvent e) -> {
+            debugger.step(process.getPid());
         });
 
         stopButton = new JButton("Stop");
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                debugger.stop(process.getPid());
-            }
+        stopButton.addActionListener((ActionEvent e) -> {
+            debugger.stop(process.getPid());
         });
 
         actionsPanel = new JPanel();
