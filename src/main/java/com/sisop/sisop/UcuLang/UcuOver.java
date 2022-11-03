@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuOver implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuOver(over)";
+        return getCommandName();
     }
 
     @Override

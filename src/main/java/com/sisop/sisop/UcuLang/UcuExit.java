@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuExit implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuExit(exit)";
+        return getCommandName();
     }
 
     @Override

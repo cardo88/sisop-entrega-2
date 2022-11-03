@@ -12,7 +12,7 @@ public class UcuDefineVariable implements UcuInstruction {
 
     @Override
     public String toString() {
-        return "UcuDefineVariable(" + variableName + ")";
+        return "define variable (" + variableName + ")";
     }
 
     @Override

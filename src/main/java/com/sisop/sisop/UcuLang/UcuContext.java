@@ -39,6 +39,18 @@ public class UcuContext {
         return variables.get(name);
     }
 
+    public Map<String, UcuValue> getVariables() {
+        return variables;
+    }
+
+    public Map<String, Integer> getLabels() {
+        return labels;
+    }
+
+    public Stack<UcuValue> getStack() {
+        return stack;
+    }
+
     public void setLabel(String label, Integer index) {
         labels.put(label, index);
     }

@@ -1,7 +1,6 @@
-package com.sisop.sisop.OS;
+package com.sisop.sisop.OS.UI;
 
 import java.awt.Font;
-import java.awt.Rectangle;
 
 import javax.swing.*;
 

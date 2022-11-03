@@ -4,10 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.sisop.sisop.FileReader;
+import com.sisop.sisop.OS.Resources.Debugger;
+import com.sisop.sisop.OS.Resources.SleepTimer;
 import com.sisop.sisop.UcuLang.UcuCommand;
 import com.sisop.sisop.UcuLang.UcuContext;
 import com.sisop.sisop.UcuLang.UcuLang;
-import com.sisop.sisop.UcuLang.UcuValue;
     
 class Sleep implements UcuCommand {
     private final SleepTimer timer;
@@ -26,7 +27,7 @@ class Sleep implements UcuCommand {
     @Override
     public void execute(UcuContext context) {
         var value = context.popValue();
-        long millis = (long)((double)value.value);
+        long millis = value.asNumber().intValue();
         timer.addProcess(pid, millis);
         context.nextInstruction();
     }
@@ -91,6 +92,35 @@ class Clear implements UcuCommand {
     }
 }
 
+/**
+ *
+ */
+class Breakpoint implements UcuCommand {
+    private final ProcessId pid;
+    private final Debugger debugger;
+
+    public Breakpoint(ProcessId pid, Debugger debugger) {
+        this.pid = pid;
+        this.debugger = debugger;
+    }
+
+    @Override
+    public String getCommandName() {
+        return "breakpoint";
+    }
+
+    @Override
+    public String toString() {
+        return getCommandName();
+    }
+
+    @Override
+    public void execute(UcuContext context) {
+        context.nextInstruction();
+        debugger.stop(pid);
+    }
+}
+
 // class ConsoleWidth implements UcuCommand {
 //     private final Console console;
 
@@ -134,21 +164,24 @@ class Clear implements UcuCommand {
  */
 public class ProcessFactory {
     private final SleepTimer sleepTimer;
+    private final Debugger debugger;
 
-    public ProcessFactory(SleepTimer sleepTimer) {
+    public ProcessFactory(SleepTimer sleepTimer, Debugger debugger) {
         this.sleepTimer = sleepTimer;
+        this.debugger = debugger;
     }
 
     public Process fromSource(String name, String src, Console console) {
         var pid = new ProcessId();
 
-        var ucuLang = new UcuLang(
-            src,
-            new UcuCommand[] {
+        var ucuLang = new UcuLang();
+        ucuLang.compile(src,
+           new UcuCommand[] {
                 new Sleep(sleepTimer, pid),
                 new Print(console),
                 new PrintLn(console),
                 new Clear(console),
+                new Breakpoint(pid, debugger),
             }
         );
 

@@ -3,7 +3,7 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuGraterThan implements UcuCommand {
+public class UcuAppend implements UcuCommand {
     @Override
     public String toString() {
         return getCommandName();
@@ -11,18 +11,15 @@ public class UcuGraterThan implements UcuCommand {
 
     @Override
     public String getCommandName() {
-        return ">";
+        return "append";
     }
 
     @Override
     public void execute(UcuContext context) {
         UcuValue second = context.popValue();
         UcuValue first = context.popValue();
-
-        if (first.compareTo(second) > 0) {
-            context.nextInstruction();
-        } else {
-            context.skipOneInstruction();
-        }
+        first.append(second);
+        context.pushValue(first);
+        context.nextInstruction();
     }
 }

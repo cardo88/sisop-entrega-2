@@ -1,4 +1,4 @@
-package com.sisop.sisop.OS;
+package com.sisop.sisop.OS.UI;
 
 import java.awt.Font;
 
@@ -6,8 +6,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import com.sisop.sisop.OS.Console;
+
 /**
- *
+ * Panel con un TextArea que implementa la interfaz "Console"
+ * Los programas de UcuLang pueden escribir en esta consola.
  */
 public class ConsolePanel extends JPanel implements Console {
     public JTextArea textArea;

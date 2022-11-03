@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuLessThanOrEqual implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuGreaterThanOrEqual(<=)";
+        return getCommandName();
     }
 
     @Override
@@ -19,7 +19,7 @@ public class UcuLessThanOrEqual implements UcuCommand {
         UcuValue second = context.popValue();
         UcuValue first = context.popValue();
 
-        if (first.lessThanOrEqual(second)) {
+        if (first.compareTo(second) <= 0) {
             context.nextInstruction();
         } else {
             context.skipOneInstruction();

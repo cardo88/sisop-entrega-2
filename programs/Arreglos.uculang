@@ -6,13 +6,13 @@
 "<>" .B
 "  " .Z
 
-[] $Z +
-   $Z +
-   $Z +
-   $Z +
-   $Z +
-   $Z +
-   $Z + .linea
+[] $Z append
+   $Z append
+   $Z append
+   $Z append
+   $Z append
+   $Z append
+   $Z append .linea
 
 0 .index
 $linea len -1 + .index2

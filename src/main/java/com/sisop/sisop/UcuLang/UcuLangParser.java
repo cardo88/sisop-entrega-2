@@ -1,6 +1,5 @@
 package com.sisop.sisop.UcuLang;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,12 +76,12 @@ public class UcuLangParser {
         matcher.usePattern(strLiteral);
         if (matcher.find()) {
             String value = matcher.group(1);
-            return new Token(TokenType.StrLiteral, value, new UcuValue(value));
+            return new Token(TokenType.StrLiteral, value, new UcuValue(new UcuString(value)));
         }
 
         matcher.usePattern(emptyArray);
         if (matcher.find()) {
-            return new Token(TokenType.EmptyArray, matcher.group(), new UcuValue(new ArrayList<UcuValue>()));
+            return new Token(TokenType.EmptyArray, matcher.group(), new UcuValue(new UcuList()));
         }
 
         matcher.usePattern(localLabel);
@@ -144,7 +143,7 @@ public class UcuLangParser {
         if (matcher.find()) {
             Double number = tryParseNumber(matcher.group());
             if (number != null) {
-                return new Token(TokenType.Number, matcher.group(), new UcuValue(number));
+                return new Token(TokenType.Number, matcher.group(), new UcuValue(new UcuNumber(number)));
             } else {
                 return new Token(TokenType.Command, matcher.group());
             }

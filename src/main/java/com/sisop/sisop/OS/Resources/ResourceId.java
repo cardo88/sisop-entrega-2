@@ -1,15 +1,15 @@
-package com.sisop.sisop.OS;
+package com.sisop.sisop.OS.Resources;
 
 /**
  *
  */
-public class ProcessId {
+public class ResourceId {
     // FIXME: Esto requiere de sincronización en un contexto multihilo
     private static long nextId = 1;
 
     private final long id;
 
-    public ProcessId() {
+    public ResourceId() {
         id = nextId;
         nextId++;
     }

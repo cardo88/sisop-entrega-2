@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuLen implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuLen(len)";
+        return getCommandName();
     }
 
     @Override
@@ -17,7 +17,7 @@ public class UcuLen implements UcuCommand {
     @Override
     public void execute(UcuContext context) {
         var value = context.popValue();
-        context.pushValue(value.len());
+        context.pushValue(new UcuValue(new UcuNumber(value.length())));
         context.nextInstruction();
     }
 }

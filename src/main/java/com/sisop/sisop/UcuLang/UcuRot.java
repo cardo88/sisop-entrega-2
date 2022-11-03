@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuRot implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuRot(rot)";
+        return getCommandName();
     }
 
     @Override

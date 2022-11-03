@@ -19,6 +19,6 @@ public class UcuAdd implements UcuCommand {
 
     @Override
     public String toString() {
-        return "UcuAdd(+)";
+        return getCommandName();
     }
 }

@@ -3,7 +3,7 @@ package com.sisop.sisop.UcuLang;
 /**
  *
  */
-public class UcuDiv implements UcuCommand {
+public class UcuNewline implements UcuCommand {
     @Override
     public String toString() {
         return getCommandName();
@@ -11,14 +11,12 @@ public class UcuDiv implements UcuCommand {
 
     @Override
     public String getCommandName() {
-        return "/";
+        return "newline";
     }
 
     @Override
     public void execute(UcuContext context) {
-        UcuValue second = context.popValue();
-        UcuValue first = context.popValue();
-        context.pushValue(first.div(second));
+        context.pushValue(new UcuValue(new UcuString("\n")));
         context.nextInstruction();
     }
 }

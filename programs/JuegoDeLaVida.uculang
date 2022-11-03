@@ -1,77 +1,42 @@
 " " .M { Celda Muerta } 
 "#" .V { Celda Viva }
 
-[]
-    "                              " +
-    "                              " +
-    "     ###                      " +
-    "                              " +
-    "                              " +
-    "     #                        " +
-    "      #                       " +
-    "    ###                       " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
-    "                              " +
+30 .ancho
+31 .anchoNl
+22 .alto
+
+"                              " newline append
+"                           #  " append newline append
+"   ##                    #    " append newline append
+"   #                     ###  " append newline append
+"   #                          " append newline append
+"                              " append newline append
+"                              " append newline append
+"                              " append newline append
+"                              " append newline append
+"                              " append newline append
+"             #####            " append newline append
+"             #####            " append newline append
+"             #####            " append newline append
+"             #####            " append newline append
+"             #####            " append newline append
+"                              " append newline append
+"                              " append newline append
+"                              " append newline append
+"                         ###  " append newline append
+"                         #    " append newline append
+"                          #   " append newline append
+"                              " append newline append
 .tablero
 
-[]
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-    " " 30 * +
-.tableroB
-
-
-@juego-de-la-vida
-
-:swap-tableros
-    $tableroB 
-    $tablero 
-    .tableroB 
-    .tablero
-    return
-
+" " $ancho * newline append $alto * .tableroB
 
 :juego-de-la-vida
-
     console.clear
-    $tablero (imprimir-tablero) 
-    100 sleep
+    $tablero print
 
     1 ..fila
     ::iterFila
-        $tablero $$fila at ..tabFila
-
         1 ..columna
         ::iterCol
             $$fila $$columna (vecinosVivos)
@@ -82,24 +47,24 @@
             drop
 
             $$columna 1 + ..columna
-        $$columna $$tabFila len 1 - < @:iterCol
+        $$columna $ancho 1 - < @:iterCol
         $$fila 1 + ..fila
-    $$fila $tablero len 1 - < @:iterFila
+    $$fila $alto 1 - < @:iterFila
     
-    (swap-tableros)
+    $tableroB $tablero .tableroB .tablero
 
     @juego-de-la-vida
 
     ::set-muerta
-        $tableroB $$fila at $$columna $M set
+        $tableroB $$fila $anchoNl * $$columna + $M set
         return 
 
     ::set-viva
-        $tableroB $$fila at $$columna $V set
+        $tableroB $$fila $anchoNl * $$columna + $V set
         return 
 
     ::actualizar-viva
-        $$tabFila $$columna at $M = return
+        $tablero $$fila $anchoNl * $$columna + at $M = return
         dup 2 < (:set-muerta)
         dup 3 > (:set-muerta)
         dup 2 = (:set-viva)
@@ -107,7 +72,7 @@
         return
 
     ::actualizar-muerta
-        $$tabFila $$columna at $V = return
+        $tablero $$fila $anchoNl * $$columna + at $V = return
         dup 3 = (:set-viva)
         dup 3 < (:set-muerta)
         dup 3 > (:set-muerta)
@@ -127,41 +92,27 @@
     ..columna
     ..fila
 
-    $$columna 1 - ..columna
-    $$fila 1 - ..fila
+    $$fila 1 - $anchoNl * $$columna 1 - + ..indice
 
     0 ..conteo
 
-    $tablero dup $$fila 0 + at $$columna 0 + at $V = (:incrementar)
-    $tablero dup $$fila 0 + at $$columna 1 + at $V = (:incrementar)
-    $tablero dup $$fila 0 + at $$columna 2 + at $V = (:incrementar)
+    $tablero $$indice at $V = (:incrementar) $$indice 1 + ..indice
+    $tablero $$indice at $V = (:incrementar) $$indice 1 + ..indice
+    $tablero $$indice at $V = (:incrementar) 
 
-    $tablero dup $$fila 1 + at $$columna 0 + at $V = (:incrementar)
-    $tablero dup $$fila 1 + at $$columna 2 + at $V = (:incrementar)
+    $$indice $anchoNl + 2 - ..indice
 
-    $tablero dup $$fila 2 + at $$columna 0 + at $V = (:incrementar)
-    $tablero dup $$fila 2 + at $$columna 1 + at $V = (:incrementar)
-    $tablero dup $$fila 2 + at $$columna 2 + at $V = (:incrementar)
+    $tablero $$indice at $V = (:incrementar) $$indice 2 + ..indice
+    $tablero $$indice at $V = (:incrementar) 
+
+    $$indice $anchoNl + 2 - ..indice
+
+    $tablero $$indice at $V = (:incrementar) $$indice 1 + ..indice
+    $tablero $$indice at $V = (:incrementar) $$indice 1 + ..indice
+    $tablero $$indice at $V = (:incrementar) 
 
     $$conteo return
 
     ::incrementar
         $$conteo 1 + ..conteo
         return
-
-:imprimir-tablero
-    {
-        Entrada:
-                * tablero
-    }
-
-    ..tablero
-
-    0 ..fila
-    ::iter
-        $$tablero $$fila at println
-        $$fila 1 + ..fila
-    $$fila $$tablero len < @:iter
-
-    return
-

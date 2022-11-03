@@ -12,7 +12,7 @@ public class UcuCall implements UcuInstruction {
 
     @Override
     public String toString() {
-        return "UcuCall(" + label + ")";
+        return "call (" + label + ")";
     }
 
     @Override

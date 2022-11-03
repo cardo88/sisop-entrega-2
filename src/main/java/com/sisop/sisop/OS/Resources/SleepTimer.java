@@ -1,15 +1,19 @@
-package com.sisop.sisop.OS;
+package com.sisop.sisop.OS.Resources;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
+import com.sisop.sisop.OS.ElapsedTime;
+import com.sisop.sisop.OS.ProcessId;
+import com.sisop.sisop.OS.Scheduler;
 
 /**
  *
  */
 public class SleepTimer {
+    public static final ResourceId resourceId = new ResourceId();
+
     private final HashMap<ProcessId, ElapsedTime> timers = new HashMap<>();
 
     private final Scheduler scheduler;
@@ -20,7 +24,7 @@ public class SleepTimer {
 
     public void addProcess(ProcessId pid, long waitForMillis) {
         timers.put(pid, new ElapsedTime(waitForMillis));
-        scheduler.blockProcess(pid);
+        scheduler.blockProcess(pid, SleepTimer.resourceId);
     }
 
     public void step() {
@@ -33,8 +37,8 @@ public class SleepTimer {
         }
 
         for (var process : toNotify) {
+            scheduler.unblockProcess(process, resourceId);
             timers.remove(process);
-            scheduler.unblockProcess(process);
         }
     }
 }

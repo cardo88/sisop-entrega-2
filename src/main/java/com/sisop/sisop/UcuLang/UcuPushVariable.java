@@ -12,7 +12,7 @@ public class UcuPushVariable implements UcuInstruction {
 
     @Override
     public String toString() {
-        return "UcuPushVariable(" + variableName + ")";
+        return "push variable (" + variableName + ")";
     }
 
     @Override

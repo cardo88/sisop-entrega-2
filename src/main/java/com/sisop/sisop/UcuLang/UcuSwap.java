@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuSwap implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuSwap(swap)";
+        return getCommandName();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.sisop.sisop.OS;
+package com.sisop.sisop.OS.UI;
 
 import java.awt.Component;
 import java.awt.event.*;

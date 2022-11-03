@@ -1,29 +1,20 @@
 (cargarDatos) .fotogramas
-              .alturaFotograma
               .cantidadFotogramas
 
-0 .inicioFotograma
 0 .indice
 
 :bucle
-    { Imprime una línea del fotograma }
-    $fotogramas $inicioFotograma $indice + at println
+    { Imprime un fotograma }
+    $fotogramas $indice at print
 
-    { Siguiente línea }
+    { Siguiente fotograma }
     $indice 1 + .indice
 
-    $indice $alturaFotograma < @bucle
+    80 sleep
+    $indice $cantidadFotogramas < @bucle
 
-150 sleep
 console.clear
-
-{ Siguiente Fotograma }
-
-$inicioFotograma $alturaFotograma + .inicioFotograma
-0 .indice
-$inicioFotograma $cantidadFotogramas $alturaFotograma * < @bucle 
-0 .inicioFotograma @bucle
-
+0 .indice @bucle
 exit
 
 
@@ -32,385 +23,398 @@ exit
         Carga la animación 
         Devuelve:
             * cantidadDeFotogramas
-            * alturaDeUnFotograma
             * datos
         Uso:
             (cargarDatos) .fotogramas
-                          .alturaFotograma
                           .cantidadFotogramas
     }
     
     16 { Cantidad Fotogramas }
-    22 { Altura Fotogramas }
     [] { Fotogramas }
-    "                  :                     " +
-    "                  57i:.                 " +
-    "                  7jrvuUU7:             " +
-    "           .:i;LLYLU::,::7LY;,          " +
-    "       7PUjLvr7i:.          ,rL:        " +
-    "       .:7LYr;:                ir.      " +
-    "            1i                   rr     " +
-    "           r.                     i7    " +
-    "          7,  ..,.                 r:   " +
-    "         ,r  :.::Uv         ,ji..   Y   " +
-    "         :,   :: MB         U rj.:  v.  " +
-    "       ,iSi   jBBB8        ,kUBB    ::  " +
-    "      .Y28k   ,BUYr        :BBBM    ji  " +
-    "        .ur                 Y:.   .JMki " +
-    "          U         .              LEi, " +
-    "          ;2        i;,:;          J    " +
-    "           iF,        .          rU     " +
-    "             LYr.             ,7Yi      " +
-    "              L7r7Yri:i:::;rLruu        " +
-    "             7..   ,:77L77:.   :i       " +
-    "            7 .:              ,  i.     " +
-    "           iu:2,              .S:L:     " +
+    "                  :                     " newline append
+    "                  57i:.                 " newline append append
+    "                  7jrvuUU7:             " newline append append
+    "           .:i;LLYLU::,::7LY;,          " newline append append
+    "       7PUjLvr7i:.          ,rL:        " newline append append
+    "       .:7LYr;:                ir.      " newline append append
+    "            1i                   rr     " newline append append
+    "           r.                     i7    " newline append append
+    "          7,  ..,.                 r:   " newline append append
+    "         ,r  :.::Uv         ,ji..   Y   " newline append append
+    "         :,   :: MB         U rj.:  v.  " newline append append
+    "       ,iSi   jBBB8        ,kUBB    ::  " newline append append
+    "      .Y28k   ,BUYr        :BBBM    ji  " newline append append
+    "        .ur                 Y:.   .JMki " newline append append
+    "          U         .              LEi, " newline append append
+    "          ;2        i;,:;          J    " newline append append
+    "           iF,        .          rU     " newline append append
+    "             LYr.             ,7Yi      " newline append append
+    "              L7r7Yri:i:::;rLruu        " newline append append
+    "             7..   ,:77L77:.   :i       " newline append append
+    "            7 .:              ,  i.     " newline append append
+    "           iu:2,              .S:L:     " newline append append
+    append
 
-    "                  ;                     " +
-    "                  BXY;.                 " +
-    "                  FM10BBBXi             " +
-    "           ,;LUNG88B7;i;7SZM1:          " +
-    "       PBBMEN1FJ7:.         iUZr        " +
-    "       ,7PG81U7.               Y1:      " +
-    "            Bj                  .FU     " +
-    "           U.                     Yk    " +
-    "          ki                       S7   " +
-    "         i1                         M   " +
-    "         7:                         N,  " +
-    "       :LBY                         vi  " +
-    "      .OBBB  77ii:                  Mu  " +
-    "        ,B1   :77:          7uLJr ,MBBY " +
-    "         .B         .         .    EBJ: " +
-    "          UB        ju:rU.        .M    " +
-    "           JBi        ..         1B.    " +
-    "            .0OU:             iFOY      " +
-    "              Ek5q8FJ7L7vLuFE5BB        " +
-    "             S:.   :LSP0kFv:   ij       " +
-    "           .X ,;              i  u.     " +
-    "           jB;B:              ,BL0L     " +
+    "                  ;                     " newline append
+    "                  BXY;.                 " newline append append
+    "                  FM10BBBXi             " newline append append
+    "           ,;LUNG88B7;i;7SZM1:          " newline append append
+    "       PBBMEN1FJ7:.         iUZr        " newline append append
+    "       ,7PG81U7.               Y1:      " newline append append
+    "            Bj                  .FU     " newline append append
+    "           U.                     Yk    " newline append append
+    "          ki                       S7   " newline append append
+    "         i1                         M   " newline append append
+    "         7:                         N,  " newline append append
+    "       :LBY                         vi  " newline append append
+    "      .OBBB  77ii:                  Mu  " newline append append
+    "        ,B1   :77:          7uLJr ,MBBY " newline append append
+    "         .B         .         .    EBJ: " newline append append
+    "          UB        ju:rU.        .M    " newline append append
+    "           JBi        ..         1B.    " newline append append
+    "            .0OU:             iFOY      " newline append append
+    "              Ek5q8FJ7L7vLuFE5BB        " newline append append
+    "             S:.   :LSP0kFv:   ij       " newline append append
+    "           .X ,;              i  u.     " newline append append
+    "           jB;B:              ,BL0L     " newline append append
+    append
 
-    "                  :                     " +
-    "                  57i:.                 " +
-    "                  7jrvuUU7:             " +
-    "           .:i;LLYLU::,::7LY;,          " +
-    "       7PUjLvr7i:.          ,rL:        " +
-    "       .:7LYr;:                ir.      " +
-    "            1i                   rr     " +
-    "           r.                     i7    " +
-    "          7,  ..,.                 r:   " +
-    "         ,r  :.::Uv         ,ji..   Y   " +
-    "         :,   :: MB         U rj.:  v.  " +
-    "       ,iSi   jBBB8        ,kUBB    ::  " +
-    "      .Y28k   ,BUYr        :BBBM    ji  " +
-    "        .ur                 Y:.   .JMki " +
-    "          U         .              LEi, " +
-    "          ;2        i;,:;          J    " +
-    "           iF,        .          rU     " +
-    "             LYr.             ,7Yi      " +
-    "              L7r7Yri:i:::;rLruu        " +
-    "             7..   ,:77L77:.   :i       " +
-    "            7 .:              ,  i.     " +
-    "           iu:2,              .S:L:     " +
+    "                  :                     " newline append
+    "                  57i:.                 " newline append append
+    "                  7jrvuUU7:             " newline append append
+    "           .:i;LLYLU::,::7LY;,          " newline append append
+    "       7PUjLvr7i:.          ,rL:        " newline append append
+    "       .:7LYr;:                ir.      " newline append append
+    "            1i                   rr     " newline append append
+    "           r.                     i7    " newline append append
+    "          7,  ..,.                 r:   " newline append append
+    "         ,r  :.::Uv         ,ji..   Y   " newline append append
+    "         :,   :: MB         U rj.:  v.  " newline append append
+    "       ,iSi   jBBB8        ,kUBB    ::  " newline append append
+    "      .Y28k   ,BUYr        :BBBM    ji  " newline append append
+    "        .ur                 Y:.   .JMki " newline append append
+    "          U         .              LEi, " newline append append
+    "          ;2        i;,:;          J    " newline append append
+    "           iF,        .          rU     " newline append append
+    "             LYr.             ,7Yi      " newline append append
+    "              L7r7Yri:i:::;rLruu        " newline append append
+    "             7..   ,:77L77:.   :i       " newline append append
+    "            7 .:              ,  i.     " newline append append
+    "           iu:2,              .S:L:     " newline append append
+    append
 
-    "                  ;                     " +
-    "                  BXY;.                 " +
-    "                  FM10BBBXi             " +
-    "           ,;LUNG88B7;i;7SZM1:          " +
-    "       PBBMEN1FJ7:.         iUZr        " +
-    "       ,7PG81U7.               Y1:      " +
-    "            Bj                  .FU     " +
-    "           U.                     Yk    " +
-    "          ki                       S7   " +
-    "         i1                         M   " +
-    "         7:                         N,  " +
-    "       :LBY                         vi  " +
-    "      .OBBB  77ii:                  Mu  " +
-    "        ,B1   :77:          7uLJr ,MBBY " +
-    "         .B         .         .    EBJ: " +
-    "          UB        ju:rU.        .M    " +
-    "           JBi        ..         1B.    " +
-    "            .0OU:             iFOY      " +
-    "              Ek5q8FJ7L7vLuFE5BB        " +
-    "             S:.   :LSP0kFv:   ij       " +
-    "           .X ,;              i  u.     " +
-    "           jB;B:              ,BL0L     " +
+    "                  ;                     " newline append
+    "                  BXY;.                 " newline append append
+    "                  FM10BBBXi             " newline append append
+    "           ,;LUNG88B7;i;7SZM1:          " newline append append
+    "       PBBMEN1FJ7:.         iUZr        " newline append append
+    "       ,7PG81U7.               Y1:      " newline append append
+    "            Bj                  .FU     " newline append append
+    "           U.                     Yk    " newline append append
+    "          ki                       S7   " newline append append
+    "         i1                         M   " newline append append
+    "         7:                         N,  " newline append append
+    "       :LBY                         vi  " newline append append
+    "      .OBBB  77ii:                  Mu  " newline append append
+    "        ,B1   :77:          7uLJr ,MBBY " newline append append
+    "         .B         .         .    EBJ: " newline append append
+    "          UB        ju:rU.        .M    " newline append append
+    "           JBi        ..         1B.    " newline append append
+    "            .0OU:             iFOY      " newline append append
+    "              Ek5q8FJ7L7vLuFE5BB        " newline append append
+    "             S:.   :LSP0kFv:   ij       " newline append append
+    "           .X ,;              i  u.     " newline append append
+    "           jB;B:              ,BL0L     " newline append append
+    append
     
 
-    "                  :                     " +
-    "                  57i:.                 " +
-    "                  7jrvuUU7:             " +
-    "           .:i;LLYLU::,::7LY;,          " +
-    "       7PUjLvr7i:.          ,rL:        " +
-    "       .:7LYr;:                ir.      " +
-    "            1i                   rr     " +
-    "           r.                     i7    " +
-    "          7,  ..,.                 r:   " +
-    "         ,r  :.::Uv         ,ji..   Y   " +
-    "         :,   :: MB         U rj.:  v.  " +
-    "       ,iSi   jBBB8        ,kUBB    ::  " +
-    "      .Y28k   ,BUYr        :BBBM    ji  " +
-    "        .ur                 Y:.   .JMki " +
-    "          U         .              LEi, " +
-    "          ;2        i;,:;          J    " +
-    "           iF,        .          rU     " +
-    "             LYr.             ,7Yi      " +
-    "              L7r7Yri:i:::;rLruu        " +
-    "             7..   ,:77L77:.   :i       " +
-    "            7 .:              ,  i.     " +
-    "           iu:2,              .S:L:     " +
+    "                  :                     " newline append
+    "                  57i:.                 " newline append append
+    "                  7jrvuUU7:             " newline append append
+    "           .:i;LLYLU::,::7LY;,          " newline append append
+    "       7PUjLvr7i:.          ,rL:        " newline append append
+    "       .:7LYr;:                ir.      " newline append append
+    "            1i                   rr     " newline append append
+    "           r.                     i7    " newline append append
+    "          7,  ..,.                 r:   " newline append append
+    "         ,r  :.::Uv         ,ji..   Y   " newline append append
+    "         :,   :: MB         U rj.:  v.  " newline append append
+    "       ,iSi   jBBB8        ,kUBB    ::  " newline append append
+    "      .Y28k   ,BUYr        :BBBM    ji  " newline append append
+    "        .ur                 Y:.   .JMki " newline append append
+    "          U         .              LEi, " newline append append
+    "          ;2        i;,:;          J    " newline append append
+    "           iF,        .          rU     " newline append append
+    "             LYr.             ,7Yi      " newline append append
+    "              L7r7Yri:i:::;rLruu        " newline append append
+    "             7..   ,:77L77:.   :i       " newline append append
+    "            7 .:              ,  i.     " newline append append
+    "           iu:2,              .S:L:     " newline append append
+    append
 
-    "                   .L                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLuYYLJ::,:iJJL,         " +
-    "         JZPUriii,..         :77:       " +
-    "           ,iYui.              .;7      " +
-    "             ii                  .v:    " +
-    "            7.                     v:   " +
-    "           7.  .,::                 J.  " +
-    "          :i .:.:.U1          :,.   .Y  " +
-    "          L.   LLiB8         5;i::,  v  " +
-    "       .YJZv   BBBBJ        iu.BM ,  7. " +
-    "        rLGi   iM:7         8BBB0    r  " +
-    "          L.                rBiv   .;E, " +
-    "          iL        ..             iMqY." +
-    "           j7       .r::i.         :5:  " +
-    "            Lj.                   rL    " +
-    "             .Jki.             .rui     " +
-    "              i::vY7r:i:::::rrJN:       " +
-    "             7..    ,irL7vrr.  ,:       " +
-    "            7 .:              ,  i.     " +
-    "           iU:2.              .5iL:     " +
+    "                   .L                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLuYYLJ::,:iJJL,         " newline append append
+    "         JZPUriii,..         :77:       " newline append append
+    "           ,iYui.              .;7      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     v:   " newline append append
+    "           7.  .,::                 J.  " newline append append
+    "          :i .:.:.U1          :,.   .Y  " newline append append
+    "          L.   LLiB8         5;i::,  v  " newline append append
+    "       .YJZv   BBBBJ        iu.BM ,  7. " newline append append
+    "        rLGi   iM:7         8BBB0    r  " newline append append
+    "          L.                rBiv   .;E, " newline append append
+    "          iL        ..             iMqY." newline append append
+    "           j7       .r::i.         :5:  " newline append append
+    "            Lj.                   rL    " newline append append
+    "             .Jki.             .rui     " newline append append
+    "              i::vY7r:i:::::rrJN:       " newline append append
+    "             7..    ,irL7vrr.  ,:       " newline append append
+    "            7 .:              ,  i.     " newline append append
+    "           iU:2.              .5iL:     " newline append append
+    append
 
-    "                   .L                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLuYYLJ::,:iJJL,         " +
-    "         JZPUriii,..         :77:       " +
-    "           ,iYui.              .;7      " +
-    "             ii                  .v:    " +
-    "            7.                     v:   " +
-    "           7.  .,::                 J.  " +
-    "          :i .:.:.U1          :,.   .Y  " +
-    "          L.   LLiB8         5;i::,  v  " +
-    "       .YJZv   BBBBJ        iu.BM ,  7. " +
-    "        rLGi   iM:7         8BBBN    r  " +
-    "          L.                rBi7   .;E, " +
-    "          iL         7Ur:       .  iOXY." +
-    "           j7        U10r      iri r1.  " +
-    "            Lj.      rkY   .r.;:.q.L:.  " +
-    "             .UPi.   ,J    .J :: .:Y:Y. " +
-    "             ,:.:vY7i::.:::.YU      :YL " +
-    "           :i. .    .ii77vr:,B:    :7   " +
-    "          :Z: ,.             iJrY5P:    " +
-    "            :7F.              :Y,:      " +
+    "                   .L                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLuYYLJ::,:iJJL,         " newline append append
+    "         JZPUriii,..         :77:       " newline append append
+    "           ,iYui.              .;7      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     v:   " newline append append
+    "           7.  .,::                 J.  " newline append append
+    "          :i .:.:.U1          :,.   .Y  " newline append append
+    "          L.   LLiB8         5;i::,  v  " newline append append
+    "       .YJZv   BBBBJ        iu.BM ,  7. " newline append append
+    "        rLGi   iM:7         8BBBN    r  " newline append append
+    "          L.                rBi7   .;E, " newline append append
+    "          iL         7Ur:       .  iOXY." newline append append
+    "           j7        U10r      iri r1.  " newline append append
+    "            Lj.      rkY   .r.;:.q.L:.  " newline append append
+    "             .UPi.   ,J    .J :: .:Y:Y. " newline append append
+    "             ,:.:vY7i::.:::.YU      :YL " newline append append
+    "           :i. .    .ii77vr:,B:    :7   " newline append append
+    "          :Z: ,.             iJrY5P:    " newline append append
+    "            :7F.              :Y,:      " newline append append
+    append
 
-    "                   .L                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLuYYLJ::,:iJJL,         " +
-    "         JZPUriii,..         :77:       " +
-    "           ,iYui.              .;7      " +
-    "             ii                  .v:    " +
-    "            7.                     v:   " +
-    "           7.  .,::                 J.  " +
-    "          :i .:.:.U1          :,.   .Y  " +
-    "          L.   LLiB8         5;i::,  v  " +
-    "       .YJZv   BBBBJ        iu.BM ,  7. " +
-    "        ;LGi   iM:7         8BBBN    r  " +
-    "          L.                rBi7   .i0, " +
-    "      .   :v         7Ur:          :ESY." +
-    "   ,,,,,.. UL        U10r        i:rFi  " +
-    "  . :  . ...ju.      rkY     7i;7.F2,:  " +
-    ".,     .  ..  uPi.   ,J      ; .: ii7:i." +
-    "..,    .  ,  ,:.:vY7i::.::::iGi     :7L " +
-    "  ,  , ....:i. .    .ii77vri,Er     :7: " +
-    "   .,,:,, :0, ,.             :L7YL7r,   " +
-    "            :7F.              :Y:i      " +
+    "                   .L                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLuYYLJ::,:iJJL,         " newline append append
+    "         JZPUriii,..         :77:       " newline append append
+    "           ,iYui.              .;7      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     v:   " newline append append
+    "           7.  .,::                 J.  " newline append append
+    "          :i .:.:.U1          :,.   .Y  " newline append append
+    "          L.   LLiB8         5;i::,  v  " newline append append
+    "       .YJZv   BBBBJ        iu.BM ,  7. " newline append append
+    "        ;LGi   iM:7         8BBBN    r  " newline append append
+    "          L.                rBi7   .i0, " newline append append
+    "      .   :v         7Ur:          :ESY." newline append append
+    "   ,,,,,.. UL        U10r        i:rFi  " newline append append
+    "  . :  . ...ju.      rkY     7i;7.F2,:  " newline append append
+    ".,     .  ..  uPi.   ,J      ; .: ii7:i." newline append append
+    "..,    .  ,  ,:.:vY7i::.::::iGi     :7L " newline append append
+    "  ,  , ....:i. .    .ii77vri,Er     :7: " newline append append
+    "   .,,:,, :0, ,.             :L7YL7r,   " newline append append
+    "            :7F.              :Y:i      " newline append append
+    append
 
-    "                   .L                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLuYYLJ::,:iJJL,         " +
-    "         JZPUriii,..         :77:       " +
-    "           ,iYui.              .;7      " +
-    "             ii                  .v:    " +
-    "            7.                     v:   " +
-    "           7.  .,::                 J.  " +
-    "          :i .:.:.U1          :,.   .Y  " +
-    "          L.   LLiB8         5;i::,  v  " +
-    "       .YJZv   BBBBJ        iu.BM ,  7. " +
-    "        ivGi   iM:7         8BBB0    r  " +
-    "          7.                rBi7   .;E, " +
-    "   .:ir:, :7         7Ur:          iGkY." +
-    "  :i7,::.;:NX.       U10r      .   :X:  " +
-    ".i. i  , :;:vv.      rkY      ir7i:,r . " +
-    ":7:    :  r:  uPi.   ,J       7. L Yi,7." +
-    " :7  : .  7  .:.:vY7i::.::::iXN     L7::" +
-    "  :,,v:iri.,i. .    .ii77vri:2r.    .7L." +
-    "    ::r:. .0, ,.             :vYY:::::: " +
-    "            :7F.              :Y;i..    " +
+    "                   .L                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLuYYLJ::,:iJJL,         " newline append append
+    "         JZPUriii,..         :77:       " newline append append
+    "           ,iYui.              .;7      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     v:   " newline append append
+    "           7.  .,::                 J.  " newline append append
+    "          :i .:.:.U1          :,.   .Y  " newline append append
+    "          L.   LLiB8         5;i::,  v  " newline append append
+    "       .YJZv   BBBBJ        iu.BM ,  7. " newline append append
+    "        ivGi   iM:7         8BBB0    r  " newline append append
+    "          7.                rBi7   .;E, " newline append append
+    "   .:ir:, :7         7Ur:          iGkY." newline append append
+    "  :i7,::.;:NX.       U10r      .   :X:  " newline append append
+    ".i. i  , :;:vv.      rkY      ir7i:,r . " newline append append
+    ":7:    :  r:  uPi.   ,J       7. L Yi,7." newline append append
+    " :7  : .  7  .:.:vY7i::.::::iXN     L7::" newline append append
+    "  :,,v:iri.,i. .    .ii77vri:2r.    .7L." newline append append
+    "    ::r:. .0, ,.             :vYY:::::: " newline append append
+    "            :7F.              :Y;i..    " newline append append
+    append
 
-    "                   .Y                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLjYYYJ::::ijjL,         " +
-    "         JZqUriii,..        .:77:       " +
-    "           ,iYU;.              .rr      " +
-    "             ii                  .v:    " +
-    "            7.                     7:   " +
-    "           v.  .,::                 J.  " +
-    "          :i .:.:.U2          :,..  .Y  " +
-    "          L.   YLiB8         1;i:::  7  " +
-    "        YJZv   BBBBJ        iU.BM ,  7. " +
-    "        :rZi   iM:7         OBBBN    7  " +
-    "    .ir:  i                 rBi7   .;0, " +
-    "  :JFYUviiLUi:       7U;:          :ESY." +
-    " i: J. i.LYMP        U2Er        ::7Si  " +
-    "iF: .  i ,Urr7.      7kY     7i;7.5U,i  " +
-    ",Uv  : i  F7  uXi.   ,Y      ; .: :i7:i." +
-    " .1..U.:riL  ,:.:vL7i::.::::iGi     :7L " +
-    "   i72UUL: .i. .    .ii77vr:,Er     :7: " +
-    "          .E, ,.             :LvYY7r:   " +
-    "           .:7F.              :Y:i      " +
+    "                   .Y                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLjYYYJ::::ijjL,         " newline append append
+    "         JZqUriii,..        .:77:       " newline append append
+    "           ,iYU;.              .rr      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     7:   " newline append append
+    "           v.  .,::                 J.  " newline append append
+    "          :i .:.:.U2          :,..  .Y  " newline append append
+    "          L.   YLiB8         1;i:::  7  " newline append append
+    "        YJZv   BBBBJ        iU.BM ,  7. " newline append append
+    "        :rZi   iM:7         OBBBN    7  " newline append append
+    "    .ir:  i                 rBi7   .;0, " newline append append
+    "  :JFYUviiLUi:       7U;:          :ESY." newline append append
+    " i: J. i.LYMP        U2Er        ::7Si  " newline append append
+    "iF: .  i ,Urr7.      7kY     7i;7.5U,i  " newline append append
+    ",Uv  : i  F7  uXi.   ,Y      ; .: :i7:i." newline append append
+    " .1..U.:riL  ,:.:vL7i::.::::iGi     :7L " newline append append
+    "   i72UUL: .i. .    .ii77vr:,Er     :7: " newline append append
+    "          .E, ,.             :LvYY7r:   " newline append append
+    "           .:7F.              :Y:i      " newline append append
+    append
 
-    "                   .Y                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLjYYYJ::::ijjL,         " +
-    "         JZqUriii,..        .:77:       " +
-    "           ,iYU;.              .rr      " +
-    "             ii                  .v:    " +
-    "            7.                     7:   " +
-    "           v.  .,::                 J.  " +
-    "          :i .:.:.U2          :,..  .Y  " +
-    "          L.   YLiB8         1;i:::  7  " +
-    "        YJGv   BBBBJ        iU.BM ,  7. " +
-    "        i7Gi   iM:7         OBBBq    7  " +
-    "          ;                 ;Bir   .;0, " +
-    "   ijqE2r :r .       7U;:       .  i8XY." +
-    "  L2Mr7JiZkBBi       U2Er      i;i r5.  " +
-    ",qi U  7 vZ57r.      7kY   .r.i: q.L:.  " +
-    "vBv    L .OS  uXi.   ,Y    .Y :: .:Y:Y. " +
-    " YO .U :  B: .:.:vL7i::.:::.YU      :Yv " +
-    "  LrrBJFE1i.:. .    .ii77vr::B:    :7   " +
-    "   .7uXj:  P, ,.             iYrY5P:    " +
-    "            :7F.              :Y,:      " +
+    "                   .Y                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLjYYYJ::::ijjL,         " newline append append
+    "         JZqUriii,..        .:77:       " newline append append
+    "           ,iYU;.              .rr      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     7:   " newline append append
+    "           v.  .,::                 J.  " newline append append
+    "          :i .:.:.U2          :,..  .Y  " newline append append
+    "          L.   YLiB8         1;i:::  7  " newline append append
+    "        YJGv   BBBBJ        iU.BM ,  7. " newline append append
+    "        i7Gi   iM:7         OBBBq    7  " newline append append
+    "          ;                 ;Bir   .;0, " newline append append
+    "   ijqE2r :r .       7U;:       .  i8XY." newline append append
+    "  L2Mr7JiZkBBi       U2Er      i;i r5.  " newline append append
+    ",qi U  7 vZ57r.      7kY   .r.i: q.L:.  " newline append append
+    "vBv    L .OS  uXi.   ,Y    .Y :: .:Y:Y. " newline append append
+    " YO .U :  B: .:.:vL7i::.:::.YU      :Yv " newline append append
+    "  LrrBJFE1i.:. .    .ii77vr::B:    :7   " newline append append
+    "   .7uXj:  P, ,.             iYrY5P:    " newline append append
+    "            :7F.              :Y,:      " newline append append
+    append
 
-    "                   .Y                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLjYYYJ::::ijjL,         " +
-    "         JZqUriii,..        .:77:       " +
-    "           ,iYU;.              .rr      " +
-    "             ii                  .v:    " +
-    "            7.                     7:   " +
-    "           v.  .,::                 J.  " +
-    "          :i .:.:.U2          :,..  .Y  " +
-    "          L.   YLiB8         1;i:::  7  " +
-    "       .YJGv   BBBBJ        iU.BM ,  7. " +
-    "        i78i   iM:7         OBBBN    7  " +
-    "          7.                rBi7   .;0, " +
-    "    .:;:   :         7U;:          :ESY." +
-    "  rBBBBMUqr8XL       U2Er        ::7Si  " +
-    " YY B. Y:MBBG5.      7kY     7i;7.5U,i  " +
-    "YB7 :  2 rBM  JXi.   ,Y      ; .: :i7:i." +
-    ";B8 .; L  BS .:.:vL7i::.::::iGi     :7L " +
-    " :B..B vjLM;,  .    .ii77vr:,Er     :7: " +
-    "  .vZBBBB7,2. ,.             :LvYY7r:   " +
-    "     ...    :7F.              :Y:i      " +
+    "                   .Y                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLjYYYJ::::ijjL,         " newline append append
+    "         JZqUriii,..        .:77:       " newline append append
+    "           ,iYU;.              .rr      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     7:   " newline append append
+    "           v.  .,::                 J.  " newline append append
+    "          :i .:.:.U2          :,..  .Y  " newline append append
+    "          L.   YLiB8         1;i:::  7  " newline append append
+    "       .YJGv   BBBBJ        iU.BM ,  7. " newline append append
+    "        i78i   iM:7         OBBBN    7  " newline append append
+    "          7.                rBi7   .;0, " newline append append
+    "    .:;:   :         7U;:          :ESY." newline append append
+    "  rBBBBMUqr8XL       U2Er        ::7Si  " newline append append
+    " YY B. Y:MBBG5.      7kY     7i;7.5U,i  " newline append append
+    "YB7 :  2 rBM  JXi.   ,Y      ; .: :i7:i." newline append append
+    ";B8 .; L  BS .:.:vL7i::.::::iGi     :7L " newline append append
+    " :B..B vjLM;,  .    .ii77vr:,Er     :7: " newline append append
+    "  .vZBBBB7,2. ,.             :LvYY7r:   " newline append append
+    "     ...    :7F.              :Y:i      " newline append append
+    append
 
-    "                   .Y                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLjYYYJ::::ijjL,         " +
-    "         JZqUriii,..        .:77:       " +
-    "           ,iYU;.              .rr      " +
-    "             ii                  .v:    " +
-    "            7.                     7:   " +
-    "           v.  .,::                 J.  " +
-    "          :i .:.:.U2          :,..  .Y  " +
-    "          L.   YLiB8         1;i:::  7  " +
-    "       .YJGv   BBBBJ        iU.BM ,  7. " +
-    "        i78i   iM:7         OBBBN    7  " +
-    "          7.                rBi7   .;0, " +
-    "    .:;:   :         7U;:          iGkY." +
-    "  rBBBBMUqr8XL       U2Er      ,   :P:  " +
-    " YY B. Y:MBBG5.      7kY      irri:,r . " +
-    "YB7 :  2 rBM  JXi.   ,Y       7  L Yi,7." +
-    ";B8 .; L  BS .:.:vL7i::.::::iXN     L7::" +
-    " :B..B vjLM;,  .    .ii77vri:2r.    .7Y." +
-    "  .vZBBBB7,2. ,.             :vYL:::::: " +
-    "     ...    :7F.              ,Y;i..    " +
+    "                   .Y                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLjYYYJ::::ijjL,         " newline append append
+    "         JZqUriii,..        .:77:       " newline append append
+    "           ,iYU;.              .rr      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     7:   " newline append append
+    "           v.  .,::                 J.  " newline append append
+    "          :i .:.:.U2          :,..  .Y  " newline append append
+    "          L.   YLiB8         1;i:::  7  " newline append append
+    "       .YJGv   BBBBJ        iU.BM ,  7. " newline append append
+    "        i78i   iM:7         OBBBN    7  " newline append append
+    "          7.                rBi7   .;0, " newline append append
+    "    .:;:   :         7U;:          iGkY." newline append append
+    "  rBBBBMUqr8XL       U2Er      ,   :P:  " newline append append
+    " YY B. Y:MBBG5.      7kY      irri:,r . " newline append append
+    "YB7 :  2 rBM  JXi.   ,Y       7  L Yi,7." newline append append
+    ";B8 .; L  BS .:.:vL7i::.::::iXN     L7::" newline append append
+    " :B..B vjLM;,  .    .ii77vri:2r.    .7Y." newline append append
+    "  .vZBBBB7,2. ,.             :vYL:::::: " newline append append
+    "     ...    :7F.              ,Y;i..    " newline append append
+    append
 
-    "                   .Y                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLjYYYJ::::ijjL,         " +
-    "         JZqUriii,..        .:77:       " +
-    "           ,iYU;.              .rr      " +
-    "             ii                  .v:    " +
-    "            7.                     7:   " +
-    "           v.  .,::                 J.  " +
-    "          :i .:.:.U2          :,..  .Y  " +
-    "          L.   YLiB8         1;i:::  7  " +
-    "       .YJGv   BBBBJ        iU.BM ,  7. " +
-    "        i78i   iM:7         OBBBN    7  " +
-    "          7.                rBi7   .;0, " +
-    "    .:;:   :         7U;:          :ESY." +
-    "  rBBBBMUqr8XL       U2Er        ::7Si  " +
-    " YY B. Y:MBBG5.      7kY     7i;7.5U,i  " +
-    "YB7 :  2 rBM  JXi.   ,Y      ; .: :i7:i." +
-    ";B8 .; L  BS .:.:vL7i::.::::iGi     :7L " +
-    " :B..B vjLM;,  .    .ii77vr:,Er     :7: " +
-    "  .vZBBBB7,2. ,.             :LvYY7r:   " +
-    "     ...    :7F.              :Y:i      " +
+    "                   .Y                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLjYYYJ::::ijjL,         " newline append append
+    "         JZqUriii,..        .:77:       " newline append append
+    "           ,iYU;.              .rr      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     7:   " newline append append
+    "           v.  .,::                 J.  " newline append append
+    "          :i .:.:.U2          :,..  .Y  " newline append append
+    "          L.   YLiB8         1;i:::  7  " newline append append
+    "       .YJGv   BBBBJ        iU.BM ,  7. " newline append append
+    "        i78i   iM:7         OBBBN    7  " newline append append
+    "          7.                rBi7   .;0, " newline append append
+    "    .:;:   :         7U;:          :ESY." newline append append
+    "  rBBBBMUqr8XL       U2Er        ::7Si  " newline append append
+    " YY B. Y:MBBG5.      7kY     7i;7.5U,i  " newline append append
+    "YB7 :  2 rBM  JXi.   ,Y      ; .: :i7:i." newline append append
+    ";B8 .; L  BS .:.:vL7i::.::::iGi     :7L " newline append append
+    " :B..B vjLM;,  .    .ii77vr:,Er     :7: " newline append append
+    "  .vZBBBB7,2. ,.             :LvYY7r:   " newline append append
+    "     ...    :7F.              :Y:i      " newline append append
+    append
 
-    "                   .Y                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLjYYYJ::::ijjL,         " +
-    "         JZqUriii,..        .:77:       " +
-    "           ,iYU;.              .rr      " +
-    "             ii                  .v:    " +
-    "            7.                     7:   " +
-    "           v.  .,::                 J.  " +
-    "          :i .:.:.U2          :,..  .Y  " +
-    "          L.   YLiB8         1;i:::  7  " +
-    "       .YJGv   BBBBJ        iU.BM ,  7. " +
-    "        i78i   iM:7         OBBBq    7  " +
-    "          7.                ;Bir   .;0, " +
-    "    .:;:   :         7U;:       .  i8XY." +
-    "  rBBBBMUqr8XL       U2Er      i;i r5.  " +
-    " YY B. Y:MBBG5.      7kY   .r.i: q.L:.  " +
-    "YB7 :  2 rBM  JXi.   ,Y    .Y :: .:Y:Y. " +
-    ";B8 .; L  BS .:.:vL7i::.:::.YU      :Yv " +
-    " :B..B vjLM;,  .    .ii77vr::B:    :7   " +
-    "  .vZBBBB7,2. ,.             iYrY5P:    " +
-    "     ...    :7F.              :Y,:      " +
+    "                   .Y                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLjYYYJ::::ijjL,         " newline append append
+    "         JZqUriii,..        .:77:       " newline append append
+    "           ,iYU;.              .rr      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     7:   " newline append append
+    "           v.  .,::                 J.  " newline append append
+    "          :i .:.:.U2          :,..  .Y  " newline append append
+    "          L.   YLiB8         1;i:::  7  " newline append append
+    "       .YJGv   BBBBJ        iU.BM ,  7. " newline append append
+    "        i78i   iM:7         OBBBq    7  " newline append append
+    "          7.                ;Bir   .;0, " newline append append
+    "    .:;:   :         7U;:       .  i8XY." newline append append
+    "  rBBBBMUqr8XL       U2Er      i;i r5.  " newline append append
+    " YY B. Y:MBBG5.      7kY   .r.i: q.L:.  " newline append append
+    "YB7 :  2 rBM  JXi.   ,Y    .Y :: .:Y:Y. " newline append append
+    ";B8 .; L  BS .:.:vL7i::.:::.YU      :Yv " newline append append
+    " :B..B vjLM;,  .    .ii77vr::B:    :7   " newline append append
+    "  .vZBBBB7,2. ,.             iYrY5P:    " newline append append
+    "     ...    :7F.              :Y,:      " newline append append
+    append
 
-    "                   .Y                   " +
-    "                    U7i:                " +
-    "                    vLrL2UJ:            " +
-    "         ,,::;rLLjYYYJ::::ijjL,         " +
-    "         JZqUriii,..        .:77:       " +
-    "           ,iYU;.              .rr      " +
-    "             ii                  .v:    " +
-    "            7.                     7:   " +
-    "           v.  .,::                 J.  " +
-    "          :i .:.:.U2          :,..  .Y  " +
-    "          L.   YLiB8         1;i:::  7  " +
-    "       .YJGv   BBBBJ        iU.BM ,  7. " +
-    "        i78i   iM:7         OBBBN    7  " +
-    "          7.                rBi7   .rE, " +
-    "    .:;:   :         7U;:          iMqY." +
-    "  rBBBBMUqr8XL       U2Er          :F:  " +
-    " YY B. Y:MBBG5.      7kY          ;L    " +
-    "YB7 :  2 rBM  LSi.   ,Y        .rui     " +
-    ";B8 .; L  BE  i::vL7i::.::::rrJ0:       " +
-    " :B..B vjYB  r,.    .ii77vri.  ::       " +
-    "  .vZBBBBY  r .,              ,  i.     " +
-    "     ...   iU:1.              .5iL:     " +
+    "                   .Y                   " newline append
+    "                    U7i:                " newline append append
+    "                    vLrL2UJ:            " newline append append
+    "         ,,::;rLLjYYYJ::::ijjL,         " newline append append
+    "         JZqUriii,..        .:77:       " newline append append
+    "           ,iYU;.              .rr      " newline append append
+    "             ii                  .v:    " newline append append
+    "            7.                     7:   " newline append append
+    "           v.  .,::                 J.  " newline append append
+    "          :i .:.:.U2          :,..  .Y  " newline append append
+    "          L.   YLiB8         1;i:::  7  " newline append append
+    "       .YJGv   BBBBJ        iU.BM ,  7. " newline append append
+    "        i78i   iM:7         OBBBN    7  " newline append append
+    "          7.                rBi7   .rE, " newline append append
+    "    .:;:   :         7U;:          iMqY." newline append append
+    "  rBBBBMUqr8XL       U2Er          :F:  " newline append append
+    " YY B. Y:MBBG5.      7kY          ;L    " newline append append
+    "YB7 :  2 rBM  LSi.   ,Y        .rui     " newline append append
+    ";B8 .; L  BE  i::vL7i::.::::rrJ0:       " newline append append
+    " :B..B vjYB  r,.    .ii77vri.  ::       " newline append append
+    "  .vZBBBBY  r .,              ,  i.     " newline append append
+    "     ...   iU:1.              .5iL:     " newline append append
+    append
 
     return
  

@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuPrintLn implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuPrintLn(println)";
+        return getCommandName();
     }
 
     @Override

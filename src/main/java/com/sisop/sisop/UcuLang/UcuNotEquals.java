@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuNotEquals implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuNotEquals(!=)";
+        return getCommandName();
     }
 
     @Override
@@ -19,7 +19,7 @@ public class UcuNotEquals implements UcuCommand {
         UcuValue second = context.popValue();
         UcuValue first = context.popValue();
 
-        if (first.notEqual(second)) {
+        if (!first.equals(second)) {
             context.nextInstruction();
         } else {
             context.skipOneInstruction();

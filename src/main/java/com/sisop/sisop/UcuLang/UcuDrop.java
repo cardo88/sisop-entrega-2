@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuDrop implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuDrop(drop)";
+        return getCommandName();
     }
 
     @Override

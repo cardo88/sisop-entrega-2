@@ -12,7 +12,7 @@ public class UcuJump implements UcuInstruction {
 
     @Override
     public String toString() {
-        return "UcuJump(" + label + ")";
+        return "jump (" + label + ")";
     }
 
     @Override

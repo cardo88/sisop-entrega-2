@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuDup implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuDup(dup)";
+        return getCommandName();
     }
 
     @Override
@@ -16,7 +16,7 @@ public class UcuDup implements UcuCommand {
 
     @Override
     public void execute(UcuContext context) {
-        context.pushValue(context.peekValue().clone());
+        context.pushValue(context.peekValue().duplicate());
         context.nextInstruction();
     }
 }

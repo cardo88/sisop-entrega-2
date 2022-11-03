@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuReturn implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuReturn()";
+        return getCommandName();
     }
 
     @Override

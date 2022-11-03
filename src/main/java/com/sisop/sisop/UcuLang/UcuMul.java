@@ -6,7 +6,7 @@ package com.sisop.sisop.UcuLang;
 public class UcuMul implements UcuCommand {
     @Override
     public String toString() {
-        return "UcuMul(*)";
+        return getCommandName();
     }
 
     @Override
