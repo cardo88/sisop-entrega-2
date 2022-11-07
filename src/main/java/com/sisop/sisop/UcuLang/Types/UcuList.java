@@ -7,26 +7,27 @@ public class UcuList implements UcuType,
                                 UcuLengthOp,
                                 UcuAppendOp,
                                 UcuGetOp,
-                                UcuSetOp {
+                                UcuSetOp,
+                                UcuAssignOp {
    
-    private final List<UcuType> list;
+    private List<UcuType> value;
 
     public UcuList() {
-        this.list = new LinkedList<>();
+        this.value = new LinkedList<>();
     }
 
     public UcuList(List<UcuType> data) {
-        this.list = new LinkedList<>(data);
+        this.value = new LinkedList<>(data);
     }
     
     @Override
     public String toString() {
-        return list.toString();
+        return value.toString();
     }
 
     @Override
     public int length() {
-        return list.size();
+        return value.size();
     }
 
     @Override
@@ -36,28 +37,38 @@ public class UcuList implements UcuType,
 
     @Override
     public UcuType append(UcuType other) {
-        list.add(other);
+        value.add(other);
         return this;
     }
 
     @Override
     public UcuType copy() {
-        return new UcuList(list);
+        return new UcuList(value);
     }
 
     @Override
     public UcuType get(UcuType key) {
         if (key instanceof UcuNumber index) {
-            return list.get(index.intValue());
+            return value.get(index.intValue());
         } else {
             throw new RuntimeException("FIXME");
         }
     }
 
     @Override
-    public UcuType set(UcuType key, UcuType value) {
+    public UcuType set(UcuType key, UcuType object) {
         if (key instanceof UcuNumber index) {
-            return list.set(index.intValue(), value);
+            return value.set(index.intValue(), object);
+        } else {
+            throw new RuntimeException("FIXME");
+        }
+    }
+
+    @Override
+    public UcuType assign(UcuType other) {
+        if (other instanceof UcuList o) {
+            value = o.value;
+            return this;
         } else {
             throw new RuntimeException("FIXME");
         }

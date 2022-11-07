@@ -8,6 +8,7 @@ public class UcuString implements UcuType,
                                   UcuGetOp, 
                                   UcuSetOp, 
                                   UcuMulOp,
+                                  UcuAssignOp,
                                   Comparable {
 
     private StringBuilder value;
@@ -162,6 +163,24 @@ public class UcuString implements UcuType,
         } else {
             throw new InvalidTypesRuntimeException(
                 "UcuString.compareTo", 
+                new String[][] { 
+                    { UcuString.class.getName() }
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() }
+                }
+            );
+        }
+    }
+
+    @Override
+    public UcuType assign(UcuType other) {
+        if (other instanceof UcuString o) {
+            value = o.value;
+            return this;
+        } else {
+            throw new InvalidTypesRuntimeException(
+                "UcuString.assign", 
                 new String[][] { 
                     { UcuString.class.getName() }
                 }, 
