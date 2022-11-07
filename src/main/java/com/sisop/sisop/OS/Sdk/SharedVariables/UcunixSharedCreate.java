@@ -1,7 +1,5 @@
 package com.sisop.sisop.OS.Sdk.SharedVariables;
 
-import java.io.PipedInputStream;
-
 import com.sisop.sisop.OS.ProcessId;
 import com.sisop.sisop.UcuLang.UcuCommand;
 import com.sisop.sisop.UcuLang.UcuContext;

@@ -91,16 +91,31 @@ public class RoundRobinScheduler implements Scheduler {
             var interpreter = running.getInterpreter();
             var process = running;
             for (int i = 0; i < instructionCountTimeout; i++) {
-                if (process.getState() == Process.State.Running) {
-                    boolean stillGoing = interpreter.run();
-                    if (!stillGoing) {
-                        kill(process.getPid());
-                        break;
-                    }
-                } else {
-                    break;
+                // Antes de ejecutar una instrucción hay que
+                // verificar el estado del proceso ya que 
+                // pudo haber sido bloqueado por la instrucción
+                // anterior.
+                if (process.getState() != Process.State.Running) {
+                    return;
+                }
+
+                boolean stillGoing = interpreter.run();
+
+                if (!stillGoing) {
+                    kill(process.getPid());
+                    return;
                 }
             }
+            moveRunningToReady();
+            setNextRunningProcess();
+        }
+    }
+
+    private void moveRunningToReady() {
+        if (running != null) {
+            running.setState(Process.State.Ready);
+            ready.add(running);
+            running = null;
         }
     }
 

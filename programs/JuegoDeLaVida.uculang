@@ -6,36 +6,36 @@
 22 .alto
 
 "                              \n"
-"                           #  \n" append
-"   ##                    #    \n" append
-"   # ##                  ###  \n" append
-"   #                          \n" append
-"                              \n" append
-"                              \n" append
-"                              \n" append
-"                              \n" append
-"                              \n" append
-"             #####            \n" append
-"             #####            \n" append
-"             #####            \n" append
-"             #####            \n" append
-"             #####            \n" append
-"                              \n" append
-"                              \n" append
-"                              \n" append
-"                         ###  \n" append
-"                         #    \n" append
-"                          #   \n" append
-"                              \n" append
+"                           #  \n" ++
+"   ##                    #    \n" ++
+"   # ##                  ###  \n" ++
+"   #                          \n" ++
+"                              \n" ++
+"                              \n" ++
+"                              \n" ++
+"                              \n" ++
+"                              \n" ++
+"             #####            \n" ++
+"             #####            \n" ++
+"             #####            \n" ++
+"             #####            \n" ++
+"             #####            \n" ++
+"                              \n" ++
+"                              \n" ++
+"                              \n" ++
+"                         ###  \n" ++
+"                         #    \n" ++
+"                          #   \n" ++
+"                              \n" ++
 .tablero
 
-" " $ancho * "\n" append $alto * .tableroB
+" " $ancho * "\n" ++ $alto * .tableroB
 
 :juego-de-la-vida
     console.clear
     $tablero console.print
     200 timer.sleep
-
+    
     0 ..fila
     ::iterFila
         0 ..columna

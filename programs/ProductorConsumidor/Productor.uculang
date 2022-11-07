@@ -1,34 +1,39 @@
 {PRODUCTOR}
 
-4 .tamaño
+"p-buffer" [] 0 ++
+              0 ++
+              0 ++
+              0 ++
+shared.get-or-create .BUFFER
 
-"pc-1" $tamaño sharedQueue.create .queue
+"p-wh" 0 shared.get-or-create .WH
+"p-rh" 0 shared.get-or-create .RH
 
-"pc-1-n" 0 semaphore.create .N
-"pc-1-s" 1 semaphore.create .S
-"pc-1-e" $tamaño semaphore.create .E
+"p-pc-1-n" 0 semaphore.create .N
+"p-pc-1-s" 1 semaphore.create .S
+"p-pc-1-e" $BUFFER len semaphore.create .E
 
-[] "😀" append
-   "🤣" append
-   "😍" append
-   "😇" append
-   "🤪" append
-   "🥸" append
-   "🥳" append
-   "🥺" append
-   "🤩" append
-   "🤬" append
-   "🥶" append
-   "🏈" append
-   "🥌" append
-   "🚌" append
-   "🚝" append
-   "🛞" append
-   "🥝" append
-   "🍓" append
-   "🍙" append
-   "🍿" append
-   "👩‍" append
+[] "😀" ++
+   "🤣" ++
+   "😍" ++
+   "😇" ++
+   "🤪" ++
+   "🥸" ++
+   "🥳" ++
+   "🥺" ++
+   "🤩" ++
+   "🤬" ++
+   "🥶" ++
+   "🏈" ++
+   "🥌" ++
+   "🚌" ++
+   "🚝" ++
+   "🛞" ++
+   "🥝" ++
+   "🍓" ++
+   "🍙" ++
+   "🍿" ++
+   "👩‍" ++
 .lista
 
 
@@ -38,6 +43,7 @@
 
     $lista dup len random * get dup 
     console.print
+    "" swap ++ " (" ++ process.pid ++ ")" ++
     (insertar)
 
     " [OK]" console.println
@@ -48,12 +54,16 @@
 
 
 :insertar
-    $E semaphore.p
-    $S semaphore.p
+   $E semaphore.p
+   $S semaphore.p
 
-    $queue swap append drop
 
-    $S semaphore.v
-    $N semaphore.v
-    return
+   $BUFFER $WH rot set
+
+   $WH $WH 1 + $BUFFER len % <-
+
+   $S semaphore.v
+   $N semaphore.v
+
+   return
     

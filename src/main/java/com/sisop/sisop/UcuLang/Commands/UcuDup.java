@@ -19,6 +19,6 @@ public class UcuDup implements UcuCommand {
 
     @Override
     public void execute(UcuContext context) {
-        context.pushValue(context.peekValue().duplicate());
+        context.pushValue(context.peekValue());
     }
 }

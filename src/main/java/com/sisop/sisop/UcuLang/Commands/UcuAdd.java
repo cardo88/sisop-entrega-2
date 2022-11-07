@@ -24,7 +24,8 @@ public class UcuAdd implements UcuCommand {
         var first = context.popValue();
 
         if (first instanceof UcuAddOp x) {
-            context.pushValue(x.add(second));
+            var result = x.add(second);
+            context.pushValue(result);
         } else {
             throw new RuntimeException("FIXME");
         }

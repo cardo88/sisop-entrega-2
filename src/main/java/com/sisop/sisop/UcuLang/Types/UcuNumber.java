@@ -8,6 +8,7 @@ public class UcuNumber implements UcuType,
                                   UcuMulOp,
                                   UcuModOp,
                                   UcuDivOp,
+                                  UcuAssignOp,
                                   Comparable {
     private double value;
 
@@ -157,6 +158,24 @@ public class UcuNumber implements UcuType,
         } else {
             throw new InvalidTypesRuntimeException(
                 "UcuNumber.compareTo", 
+                new String[][] { 
+                    { UcuNumber.class.getName() },
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() },
+                }
+            );
+        }
+    }
+
+    @Override
+    public UcuType assign(UcuType other) {
+        if (other instanceof UcuNumber o) {
+            value = o.value;
+            return this;
+        } else {
+            throw new InvalidTypesRuntimeException(
+                "UcuNumber.assign", 
                 new String[][] { 
                     { UcuNumber.class.getName() },
                 }, 

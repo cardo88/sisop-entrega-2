@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sisop.sisop.OS.ProcessId;
+import com.sisop.sisop.UcuLang.Exceptions.InvalidTypesRuntimeException;
+import com.sisop.sisop.UcuLang.Types.UcuList;
 import com.sisop.sisop.UcuLang.Types.UcuType;
 
 public class UcunixSharedVariables {
@@ -13,6 +15,14 @@ public class UcunixSharedVariables {
     private static Map<String, Set<ProcessId>> referencedBy = new HashMap<>();
 
     public static UcuType getOrCreate(ProcessId pid, String name, UcuType value) {
+        // if (!(value instanceof UcuList)) {
+        //     throw new InvalidTypesRuntimeException(
+        //         "SharedVariables.getOrCreate", 
+        //         new String[][] {
+        //             { }
+        //         }, null)
+        // }
+
         if (!variables.containsKey(name)) {
             variables.put(name, value);
         }

@@ -2,15 +2,15 @@ package com.sisop.sisop.UcuLang.Commands;
 
 import com.sisop.sisop.UcuLang.UcuCommand;
 import com.sisop.sisop.UcuLang.UcuContext;
-import com.sisop.sisop.UcuLang.Types.UcuAppendOp;
+import com.sisop.sisop.UcuLang.Types.UcuAssignOp;
 
 /**
  *
  */
-public class UcuAppend implements UcuCommand {
+public class UcuAssign implements UcuCommand {
     @Override
     public String getCommandName() {
-        return "++";
+        return "<-";
     }
 
     @Override
@@ -23,9 +23,8 @@ public class UcuAppend implements UcuCommand {
         var second = context.popValue();
         var first = context.popValue();
 
-        if (first instanceof UcuAppendOp x) {
-            var result = x.append(second);
-            context.pushValue(result);
+        if (first instanceof UcuAssignOp x) {
+            x.assign(second);
         } else {
             throw new RuntimeException("FIXME");
         }

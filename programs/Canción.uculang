@@ -1,13 +1,13 @@
 [] 
-"-=-=-=-=-=-=-=-=-=-=-=-=-"  append
-"- Hola don Pepito"          append
-"- Hola don José"            append
-"- ¿Pasó usted ya por casa?" append
-"- Por su casa yo pasé"      append
-"- ¿Vio usted a mi abuela?"  append
-"- A su abuela yo la vi"     append
-"- Adiós don Pepito"         append
-"- Adiós don José"           append
+"-=-=-=-=-=-=-=-=-=-=-=-=-"  ++
+"- Hola don Pepito"          ++
+"- Hola don José"            ++
+"- ¿Pasó usted ya por casa?" ++
+"- Por su casa yo pasé"      ++
+"- ¿Vio usted a mi abuela?"  ++
+"- A su abuela yo la vi"     ++
+"- Adiós don Pepito"         ++
+"- Adiós don José"           ++
 
 0 { índice en el arreglo }
 

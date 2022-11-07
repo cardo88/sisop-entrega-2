@@ -1,12 +1,15 @@
-{CONSUMIDOR}
+"p-buffer"
+[] 0 ++
+   0 ++
+   0 ++
+   0 ++
+shared.get-or-create .BUFFER
+"p-wh" 0 shared.get-or-create .WH
+"p-rh" 0 shared.get-or-create .RH
 
-4 .tamaño
-
-"pc-1" $tamaño sharedQueue.create .queue
-
-"pc-1-n" 0 semaphore.create .N
-"pc-1-s" 1 semaphore.create .S
-"pc-1-e" $tamaño semaphore.create .E
+"p-pc-1-n" 0 semaphore.create .N
+"p-pc-1-s" 1 semaphore.create .S
+"p-pc-1-e" $BUFFER len semaphore.create .E
 
 :main
     "Extrayendo..." console.println
@@ -19,8 +22,11 @@
     $N semaphore.p
     $S semaphore.p
 
-    $queue sharedQueue.pop
+    $BUFFER $RH get ..k
+
+    $RH $RH 1 + $BUFFER len % <-
 
     $S semaphore.v
     $E semaphore.v
-    return
+
+    $$k return

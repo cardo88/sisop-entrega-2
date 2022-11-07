@@ -8,6 +8,7 @@ import com.sisop.sisop.OS.Debugger;
 import javax.swing.UIManager;
 
 import com.sisop.sisop.OS.ProcessId;
+import com.sisop.sisop.OS.Process;
 import com.sisop.sisop.OS.Scheduler;
 
 import java.awt.Color;
@@ -68,7 +69,7 @@ public class ProgramWindow extends javax.swing.JPanel {
         if (process != null) {
             pidLabel.setText(pid.toString());
             programPathLabel.setText(process.getName());
-            processStatusLabel.setText(process.getState().toString());
+            // processStatusLabel.setText(process.getState().toString());
         }
     }
 

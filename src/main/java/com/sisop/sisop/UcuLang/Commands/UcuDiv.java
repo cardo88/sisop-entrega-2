@@ -24,7 +24,8 @@ public class UcuDiv implements UcuCommand {
         var first = context.popValue();
 
         if (first instanceof UcuDivOp x) {
-            context.pushValue(x.div(second));
+            var result = x.div(second);
+            context.pushValue(result);
         } else {
             throw new RuntimeException("FIXME");
         }

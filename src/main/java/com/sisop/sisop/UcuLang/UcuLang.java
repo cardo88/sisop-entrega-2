@@ -58,6 +58,7 @@ public class UcuLang {
                 new UcuMod(),
                 new UcuSet(),
                 new UcuSub(),
+                new UcuAssign(),
                 // Comparadores
                 new UcuEquals(),
                 new UcuGraterThan(),

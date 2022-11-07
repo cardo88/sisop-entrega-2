@@ -29,6 +29,7 @@ public class UcunixDesktop extends javax.swing.JFrame {
     private final Scheduler scheduler;
     private final UcunixTimer timer;
     private final Debugger debugger;
+    private int maxInstructionCountTimeout = 10;
     
     /**
      * Creates new form UcunixDesktop
@@ -52,7 +53,7 @@ public class UcunixDesktop extends javax.swing.JFrame {
             while (true) {
                 try {
                     SwingUtilities.invokeAndWait(() -> {
-                        scheduler.run();
+                        scheduler.run(maxInstructionCountTimeout);
                         timer.update();
                         processesPanel.updatePrograms();
                     });
@@ -98,6 +99,10 @@ public class UcunixDesktop extends javax.swing.JFrame {
         frame.setVisible(true);
     }
     
+    private void updateMaxInstructionsCountTimeout(int value) {
+        maxInstructionCountTimeout = value;
+    }
+    
     // ==========================================================
     // ==========================================================
 
@@ -115,6 +120,8 @@ public class UcunixDesktop extends javax.swing.JFrame {
         programFilesTree = new com.sisop.sisop.OS.UI.ProgramFilesTree();
         jPanel1 = new javax.swing.JPanel();
         semaphoresButton = new javax.swing.JButton();
+        jSpinner1 = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
         processesPanel = new com.sisop.sisop.OS.UI.ProcessesPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -130,17 +137,36 @@ public class UcunixDesktop extends javax.swing.JFrame {
             }
         });
 
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(10, 1, null, 1));
+        jSpinner1.setToolTipText("Cantidad máxima de instrucciones a ejecutar en cada proceso (timeout)");
+        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                onMaxInstructionsStateChanged(evt);
+            }
+        });
+
+        jLabel1.setText("Max Instrucciones:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(semaphoresButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(semaphoresButton)
-                .addGap(243, 243, 243))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap())
         );
 
         jSplitPane1.setRightComponent(jPanel1);
@@ -157,9 +183,16 @@ public class UcunixDesktop extends javax.swing.JFrame {
         onSemaphoresButtonClicked();
     }//GEN-LAST:event_onSemaphoresButtonClicked
 
+    private void onMaxInstructionsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_onMaxInstructionsStateChanged
+        // TODO add your handling code here:
+        updateMaxInstructionsCountTimeout((Integer) jSpinner1.getModel().getValue());
+    }//GEN-LAST:event_onMaxInstructionsStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane mainHorizontalSplit;
     private com.sisop.sisop.OS.UI.ProcessesPanel processesPanel;
