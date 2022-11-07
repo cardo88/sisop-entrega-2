@@ -1,159 +1,332 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package com.sisop.sisop.OS.UI;
 
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import com.sisop.sisop.OS.Process;
-import com.sisop.sisop.OS.Resources.Debugger;
-import com.sisop.sisop.UcuLang.UcuLang.StepMode;
+import com.sisop.sisop.OS.Debugger;
+import com.sisop.sisop.OS.ProcessId;
+import com.sisop.sisop.UcuLang.UcuInterpreter.StepMode;
 
-import java.awt.BorderLayout;
+/**
+ *
+ * @author ucu
+ */
+public class DebuggerFrame extends javax.swing.JFrame {
 
-public class DebuggerFrame extends JFrame {
-    private final Process process;
+    private final ProcessId pid;
     private final Debugger debugger;
+    
+    /**
+     * Creates new form Debugger
+     * @param pid
+     * @param debugger
+     */
+    public DebuggerFrame(ProcessId pid, Debugger debugger) {
+        this.pid = pid;
+        this.debugger = debugger;
+        
+        initComponents();
 
-    private final JSplitPane mainSplitPane;
-    private final JPanel actionsPanel;
-    private final JPanel inspectionPanel;
-    private final JTable instructionsTable;
-    private final JTable variablesTable;
-    private final JTable labelsTable;
-    private final JTable stackTable;
-    private final JButton playButton;
-    private final JButton stepButton;
-    private final JButton stopButton;
-
-    public DebuggerFrame(Process proc, Debugger dbg) {
-        this.process = proc;
-        this.debugger = dbg;
-
-        setLayout(new BorderLayout());
-        setSize(1000, 700);
-        setTitle("-=- UcuLang Debugger (" + process.getName() + ") -=-");
-
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                debugger.dettach(process.getPid());
-            }
-        });
-
-        var compiledInstructions = process.getCode().getCompiledInstructions();
-        instructionsTable = new JTable(
-            IntStream.range(0, compiledInstructions.size())
-                     .mapToObj(x -> new String[] { String.valueOf(x), compiledInstructions.get(x).toString() })
-                     .collect(Collectors.toList())
-                     .toArray(new String[0][0]),
-            new String[] { "PC", "Instrucciones" }
-        );
-
-        variablesTable = new JTable();
-        labelsTable = new JTable();
-        stackTable = new JTable();
-
-        inspectionPanel = new JPanel();
-        inspectionPanel.setLayout(new BoxLayout(inspectionPanel, BoxLayout.Y_AXIS));
-        inspectionPanel.add(new JScrollPane(stackTable));
-        inspectionPanel.add(new JScrollPane(variablesTable));
-        inspectionPanel.add(new JScrollPane(labelsTable));
-
-        mainSplitPane = new JSplitPane(
-            JSplitPane.HORIZONTAL_SPLIT, 
-            new JScrollPane(instructionsTable), 
-            inspectionPanel
-        );
-
-        add(mainSplitPane, BorderLayout.CENTER);
-
-        playButton = new JButton("Play");
-        playButton.addActionListener((ActionEvent e) -> {
-            debugger.play(process.getPid());
-        });
-
-        stepButton = new JButton("Step");
-        stepButton.addActionListener((ActionEvent e) -> {
-            debugger.step(process.getPid());
-        });
-
-        stopButton = new JButton("Stop");
-        stopButton.addActionListener((ActionEvent e) -> {
-            debugger.stop(process.getPid());
-        });
-
-        actionsPanel = new JPanel();
-        actionsPanel.add(playButton);
-        actionsPanel.add(stepButton);
-        actionsPanel.add(stopButton);
-
-        add(actionsPanel, BorderLayout.NORTH);
-
-        updateInstructionTable();
-        updateVariablesTable();
-        updateStackTable();
-        updateLabelsTable();
-
-        process.getCode().addDebuggerCallback((StepMode pre, StepMode post) -> {
-            if (post == StepMode.Stop) {
-                updateVariablesTable();
-                updateStackTable();
-                updateInstructionTable();
-            }
-        });
-        debugger.attach(process.getPid());
-    }
-
-    private void updateVariablesTable() {
-        var model = new DefaultTableModel();
-        model.setDataVector(
-            process.getCode().getContext().getVariables().entrySet()
-                .stream()
-                .sorted((a, b) -> a.getKey().compareTo(b.getKey()))
-                .map(x -> new String[] { x.getKey(), x.getValue().toString() })
-                .collect(Collectors.toList())
-                .toArray(new String[0][0]), 
-            new String[] { "Variable", "Valor" }
-        );
-        variablesTable.setModel(model);
-    }
-
-    private void updateStackTable() {
-        var model = new DefaultTableModel();
-        model.setDataVector(
-            process.getCode().getContext().getStack()
-                .stream()
-                .map(x -> new String[] { x.toString() })
-                .collect(Collectors.toList())
-                .toArray(new String[0][0]), 
-            new String[] { "Stack" }
-        );
-        stackTable.setModel(model);
-    }
-
-    private void updateLabelsTable() {
-        var model = new DefaultTableModel();
-        model.setDataVector(
-            process.getCode().getContext().getLabels().entrySet()
-                .stream()
-                .sorted((a, b) -> a.getKey().compareTo(b.getKey()))
-                .map(x -> new String[] { x.getKey(), x.getValue().toString() })
-                .collect(Collectors.toList())
-                .toArray(new String[0][0]), 
-            new String[] { "Etiqueta", "PC" }
-        );
-        labelsTable.setModel(model);
-    }
-
-    private void updateInstructionTable() {
-        var pc = process.getCode().getContext().getProgramCounter();
-        if (pc < instructionsTable.getModel().getRowCount()) {
-            instructionsTable.setRowSelectionInterval(pc, pc);
-            instructionsTable.scrollRectToVisible(new Rectangle(instructionsTable.getCellRect(pc, 0, true)));
+        var process = debugger.getScheduler().get(pid);
+        var model = (DefaultTableModel) instructionsTable.getModel();
+//        var labels = process.getInterpreter().getContext().getProgram().getLabels();
+//        model.addColumn("PC");
+//        model.addColumn("Instrucción");
+        int i = 0;
+        for (var instruction : process.getInterpreter()
+                                      .getContext()
+                                      .getProgram()
+                                      .getInstructions()) {
+            model.addRow(new String[] { 
+                String.valueOf(i), 
+                instruction.toString() 
+            });
+            i++;
         }
+        
+        instructionsTable.revalidate();
+        instructionsTable.repaint();
+        
+//        debugger.attach(pid, true, (StepMode pre, StepMode post) -> {
+//            if (post == StepMode.Pause) {
+//                var pc = process.getInterpreter().getContext().getProgramCounter();
+//                if (pc < instructionsTable.getModel().getRowCount()) {
+//                    instructionsTable.setRowSelectionInterval(pc, pc);
+//                    instructionsTable.scrollRectToVisible(new Rectangle(instructionsTable.getCellRect(pc, 0, true)));
+//                }
+//
+//                var m = new DefaultTableModel();
+//                m.setDataVector(
+//                    process.getInterpreter().getContext().getStack()
+//                        .stream()
+//                        .map(x -> new String[] { x.toString() })
+//                        .collect(Collectors.toList())
+//                        .toArray(new String[0][0]), 
+//                    new String[] { "Stack" }
+//                );
+//                stackTable.setModel(m);
+//            }
+//        });
     }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jToolBar1 = new javax.swing.JToolBar();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        stepIntoButton = new javax.swing.JButton();
+        stepOverButton = new javax.swing.JButton();
+        pauseButton = new javax.swing.JButton();
+        playButton = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        jSplitPane2 = new javax.swing.JSplitPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        instructionsTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        stackTable = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        variablesTable = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        labelsTable = new javax.swing.JTable();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
+        jToolBar1.setRollover(true);
+        jToolBar1.add(filler1);
+
+        stepIntoButton.setText("Step Into");
+        stepIntoButton.setFocusable(false);
+        stepIntoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        stepIntoButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        stepIntoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onStepIntoClicked(evt);
+            }
+        });
+        jToolBar1.add(stepIntoButton);
+
+        stepOverButton.setText("Step Over");
+        stepOverButton.setFocusable(false);
+        stepOverButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        stepOverButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        stepOverButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onStepOverClicked(evt);
+            }
+        });
+        jToolBar1.add(stepOverButton);
+
+        pauseButton.setText("Pausar");
+        pauseButton.setFocusable(false);
+        pauseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        pauseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onPauseClicked(evt);
+            }
+        });
+        jToolBar1.add(pauseButton);
+
+        playButton.setText("Continuar");
+        playButton.setFocusable(false);
+        playButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        playButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onPlayClicked(evt);
+            }
+        });
+        jToolBar1.add(playButton);
+        jToolBar1.add(filler2);
+
+        instructionsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        instructionsTable.setPreferredSize(new java.awt.Dimension(400, 0));
+        jScrollPane3.setViewportView(instructionsTable);
+
+        jSplitPane2.setLeftComponent(jScrollPane3);
+
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+
+        jScrollPane1.setToolTipText("Pila de datos");
+
+        stackTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Stack"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        stackTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(stackTable);
+
+        jPanel1.add(jScrollPane1);
+
+        variablesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Variable", "Valor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        variablesTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(variablesTable);
+        if (variablesTable.getColumnModel().getColumnCount() > 0) {
+            variablesTable.getColumnModel().getColumn(0).setResizable(false);
+            variablesTable.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        jPanel1.add(jScrollPane2);
+
+        labelsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Etiqueta", "PC"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(labelsTable);
+
+        jPanel1.add(jScrollPane4);
+
+        jSplitPane2.setRightComponent(jPanel1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 925, Short.MAX_VALUE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        debugger.dettach(pid);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void onStepIntoClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onStepIntoClicked
+        debugger.stepInto(pid);
+    }//GEN-LAST:event_onStepIntoClicked
+
+    private void onStepOverClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onStepOverClicked
+        debugger.stepOver(pid);
+    }//GEN-LAST:event_onStepOverClicked
+
+    private void onPauseClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPauseClicked
+        debugger.pause(pid);
+    }//GEN-LAST:event_onPauseClicked
+
+    private void onPlayClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayClicked
+        debugger.play(pid);
+    }//GEN-LAST:event_onPlayClicked
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.JTable instructionsTable;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTable labelsTable;
+    private javax.swing.JButton pauseButton;
+    private javax.swing.JButton playButton;
+    private javax.swing.JTable stackTable;
+    private javax.swing.JButton stepIntoButton;
+    private javax.swing.JButton stepOverButton;
+    private javax.swing.JTable variablesTable;
+    // End of variables declaration//GEN-END:variables
 }

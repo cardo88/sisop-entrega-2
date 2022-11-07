@@ -5,51 +5,52 @@
 31 .anchoNl
 22 .alto
 
-"                              " newline append
-"                           #  " append newline append
-"   ##                    #    " append newline append
-"   #                     ###  " append newline append
-"   #                          " append newline append
-"                              " append newline append
-"                              " append newline append
-"                              " append newline append
-"                              " append newline append
-"                              " append newline append
-"             #####            " append newline append
-"             #####            " append newline append
-"             #####            " append newline append
-"             #####            " append newline append
-"             #####            " append newline append
-"                              " append newline append
-"                              " append newline append
-"                              " append newline append
-"                         ###  " append newline append
-"                         #    " append newline append
-"                          #   " append newline append
-"                              " append newline append
+"                              \n"
+"                           #  \n" append
+"   ##                    #    \n" append
+"   # ##                  ###  \n" append
+"   #                          \n" append
+"                              \n" append
+"                              \n" append
+"                              \n" append
+"                              \n" append
+"                              \n" append
+"             #####            \n" append
+"             #####            \n" append
+"             #####            \n" append
+"             #####            \n" append
+"             #####            \n" append
+"                              \n" append
+"                              \n" append
+"                              \n" append
+"                         ###  \n" append
+"                         #    \n" append
+"                          #   \n" append
+"                              \n" append
 .tablero
 
-" " $ancho * newline append $alto * .tableroB
+" " $ancho * "\n" append $alto * .tableroB
 
 :juego-de-la-vida
     console.clear
-    $tablero print
+    $tablero console.print
+    200 timer.sleep
 
-    1 ..fila
+    0 ..fila
     ::iterFila
-        1 ..columna
+        0 ..columna
         ::iterCol
             $$fila $$columna (vecinosVivos)
 
             (:actualizar-muerta)
             (:actualizar-viva)
-
+               
             drop
-
+            
             $$columna 1 + ..columna
-        $$columna $ancho 1 - < @:iterCol
+        $$columna $ancho < @:iterCol
         $$fila 1 + ..fila
-    $$fila $alto 1 - < @:iterFila
+    $$fila $alto < @:iterFila
     
     $tableroB $tablero .tableroB .tablero
 
@@ -95,23 +96,32 @@
     $$fila 1 - $anchoNl * $$columna 1 - + ..indice
 
     0 ..conteo
-
-    $tablero $$indice at $V = (:incrementar) $$indice 1 + ..indice
-    $tablero $$indice at $V = (:incrementar) $$indice 1 + ..indice
-    $tablero $$indice at $V = (:incrementar) 
-
-    $$indice $anchoNl + 2 - ..indice
-
-    $tablero $$indice at $V = (:incrementar) $$indice 2 + ..indice
-    $tablero $$indice at $V = (:incrementar) 
+    
+    $tablero $$indice (:getOrM) $V = (:incrementar) $$indice 1 + ..indice
+    $tablero $$indice (:getOrM) $V = (:incrementar) $$indice 1 + ..indice
+    $tablero $$indice (:getOrM) $V = (:incrementar) 
 
     $$indice $anchoNl + 2 - ..indice
 
-    $tablero $$indice at $V = (:incrementar) $$indice 1 + ..indice
-    $tablero $$indice at $V = (:incrementar) $$indice 1 + ..indice
-    $tablero $$indice at $V = (:incrementar) 
+    $tablero $$indice (:getOrM) $V = (:incrementar) $$indice 2 + ..indice
+    $tablero $$indice (:getOrM) $V = (:incrementar) 
+
+    $$indice $anchoNl + 2 - ..indice
+
+    $tablero $$indice (:getOrM) $V = (:incrementar) $$indice 1 + ..indice
+    $tablero $$indice (:getOrM) $V = (:incrementar) $$indice 1 + ..indice
+    $tablero $$indice (:getOrM) $V = (:incrementar) 
 
     $$conteo return
+
+    ::getOrM
+        dup 0 < @:getOrM-retM
+        over len over <= @:getOrM-retM
+        at return
+
+    ::getOrM-retM
+        drop drop
+        $M return
 
     ::incrementar
         $$conteo 1 + ..conteo

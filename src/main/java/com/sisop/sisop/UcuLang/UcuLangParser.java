@@ -3,11 +3,17 @@ package com.sisop.sisop.UcuLang;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.sisop.sisop.UcuLang.Types.UcuList;
+import com.sisop.sisop.UcuLang.Types.UcuNumber;
+import com.sisop.sisop.UcuLang.Types.UcuString;
+import com.sisop.sisop.UcuLang.Types.UcuType;
+
 /**
- * 
+ * Parser de UcuLang
  */
 public class UcuLangParser {
     public enum TokenType {
+        Whitespace,
         Label,
         LocalLabel,
         Jump,
@@ -28,9 +34,9 @@ public class UcuLangParser {
     public class Token {
         public final TokenType type;
         public final String token;
-        public final UcuValue value;
+        public final UcuType value;
 
-        public Token(TokenType type, String token, UcuValue value) {
+        public Token(TokenType type, String token, UcuType value) {
             this.type = type;
             this.token = token;
             this.value = value;
@@ -43,45 +49,77 @@ public class UcuLangParser {
         }
     }
 
-    private static final Pattern space = Pattern.compile("\\G\\s+");
-    private static final Pattern label = Pattern.compile("\\G:([^\\s]+)");
-    private static final Pattern localLabel = Pattern.compile("\\G::([^\\s]+)");
-    private static final Pattern jump = Pattern.compile("\\G@([^\\s]+)");
-    private static final Pattern call = Pattern.compile("\\G\\(([^\\s]+)\\)");
-    private static final Pattern localJump = Pattern.compile("\\G@:([^\\s]+)");
-    private static final Pattern localCall = Pattern.compile("\\G\\(:([^\\s]+)\\)");
-    private static final Pattern varDef = Pattern.compile("\\G\\.([^\\s]+)");
-    private static final Pattern varPush = Pattern.compile("\\G\\$([^\\s]+)");
-    private static final Pattern localVarDef = Pattern.compile("\\G\\.\\.([^\\s]+)");
-    private static final Pattern localVarPush = Pattern.compile("\\G\\$\\$([^\\s]+)");
-    private static final Pattern strLiteral = Pattern.compile("\\G\"([^\"]*)\"");
-    private static final Pattern emptyArray = Pattern.compile("\\G\\[\\s*]\\s*");
-    private static final Pattern comment = Pattern.compile("\\G\\{[^\\}]*\\}");
-    private static final Pattern anything = Pattern.compile("\\G[^\\s]+");
+    // <identificador> := cualquier caracter excepto espacio en blanco.
 
-    private final String code;
+    // Espacio en blanco
+    private static final Pattern space = Pattern.compile("\\G\\s");
+    // Comentario:
+    //   { <cualquier-caracter> }
+    private static final Pattern comment = Pattern.compile("\\G\\{[^\\}]*\\}");
+    // Etiqueta:
+    //   :<identificador>
+    private static final Pattern label = Pattern.compile("\\G:([^\\s]+)");
+    // Etiqueta local:
+    //   ::<identificador>
+    private static final Pattern localLabel = Pattern.compile("\\G::([^\\s]+)");
+    // Instrucción de salto:
+    //   @<identificador>
+    private static final Pattern jump = Pattern.compile("\\G@([^\\s]+)");
+    // Instrucción de salto local:
+    //   @:<identificador>
+    private static final Pattern localJump = Pattern.compile("\\G@:([^\\s]+)");
+    // Llamada a función:
+    //   (<identificador>)
+    private static final Pattern call = Pattern.compile("\\G\\(([^\\s]+)\\)");
+    // Llamada a función local:
+    //   (:<identificador>)
+    private static final Pattern localCall = Pattern.compile("\\G\\(:([^\\s]+)\\)");
+    // Definición de variable:
+    //   .<identificador>
+    private static final Pattern varDef = Pattern.compile("\\G\\.([^\\s]+)");
+    // Definición de variable local:
+    //   ..<identificador>
+    private static final Pattern localVarDef = Pattern.compile("\\G\\.\\.([^\\s]+)");
+    // Push de variable:
+    //   $<identificador>
+    private static final Pattern varPush = Pattern.compile("\\G\\$([^\\s]+)");
+    // Push de variable local:
+    //   $$<identificador>
+    private static final Pattern localVarPush = Pattern.compile("\\G\\$\\$([^\\s]+)");
+    // Cadena literal:
+    //   " "
+    private static final Pattern strLiteral = Pattern.compile("\\G\"([^\"]*)\"");
+    // Lista vacía:
+    //   [] 
+    private static final Pattern emptyArray = Pattern.compile("\\G\\[\\s*]\\s*");
+
+    // Cualquier cosa excepto espacio en blanco
+    private static final Pattern anything = Pattern.compile("\\G[^\\s]+");
 
     private Matcher matcher;
 
     public UcuLangParser(String sourceCode) {
-        code = sourceCode;
-        matcher = space.matcher(code);
+        matcher = space.matcher(sourceCode);
     }
     
     public Token next() {
         // Saltea espacios
         matcher.usePattern(space);
-        matcher.find();
+        if (matcher.find()) {
+            return new Token(TokenType.Whitespace, matcher.group());
+        }
 
         matcher.usePattern(strLiteral);
         if (matcher.find()) {
-            String value = matcher.group(1);
-            return new Token(TokenType.StrLiteral, value, new UcuValue(new UcuString(value)));
+            String value = matcher.group(1)
+                .replace("\\n", "\n");
+
+            return new Token(TokenType.StrLiteral, value, new UcuString(value));
         }
 
         matcher.usePattern(emptyArray);
         if (matcher.find()) {
-            return new Token(TokenType.EmptyArray, matcher.group(), new UcuValue(new UcuList()));
+            return new Token(TokenType.EmptyArray, matcher.group(), new UcuList());
         }
 
         matcher.usePattern(localLabel);
@@ -143,7 +181,7 @@ public class UcuLangParser {
         if (matcher.find()) {
             Double number = tryParseNumber(matcher.group());
             if (number != null) {
-                return new Token(TokenType.Number, matcher.group(), new UcuValue(new UcuNumber(number)));
+                return new Token(TokenType.Number, matcher.group(), new UcuNumber(number));
             } else {
                 return new Token(TokenType.Command, matcher.group());
             }

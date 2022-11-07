@@ -1,0 +1,26 @@
+{CONSUMIDOR}
+
+4 .tamaño
+
+"pc-1" $tamaño sharedQueue.create .queue
+
+"pc-1-n" 0 semaphore.create .N
+"pc-1-s" 1 semaphore.create .S
+"pc-1-e" $tamaño semaphore.create .E
+
+:main
+    "Extrayendo..." console.println
+    (extraer) " -> " console.print console.println
+    1500 timer.sleep
+
+@main
+
+:extraer
+    $N semaphore.p
+    $S semaphore.p
+
+    $queue sharedQueue.pop
+
+    $S semaphore.v
+    $E semaphore.v
+    return

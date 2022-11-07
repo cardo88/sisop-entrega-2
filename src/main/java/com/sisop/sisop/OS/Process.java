@@ -1,10 +1,9 @@
 package com.sisop.sisop.OS;
 
-import com.sisop.sisop.OS.Resources.ResourceId;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.sisop.sisop.UcuLang.UcuLang;
+import com.sisop.sisop.UcuLang.UcuInterpreter;
 
 /**
  *
@@ -20,14 +19,14 @@ public class Process {
     private final String name;
     private final ProcessId pid;
 
+    private final UcuInterpreter interpreter;
+    private final Set<ResourceId> blockedBy;
+
     private State state;
-    private UcuLang code;
 
-    private HashSet<ResourceId> blockedBy;
-
-    public Process(String name, ProcessId pid, UcuLang code) {
+    public Process(String name, ProcessId pid, UcuInterpreter interpreter) {
         this.pid = pid;
-        this.code = code;
+        this.interpreter = interpreter;
         this.name = name;
         this.state = State.Ready;
         this.blockedBy = new HashSet<>();
@@ -49,12 +48,8 @@ public class Process {
         return state;
     }
 
-    public UcuLang getCode() {
-        return code;
-    }
-
-    public boolean step() {
-        return code.next();
+    public UcuInterpreter getInterpreter() {
+        return interpreter;
     }
 
     public void addBlockedBy(ResourceId id) {
@@ -70,7 +65,7 @@ public class Process {
     }
 
     public boolean isBlockedByAnything() {
-        return blockedBy.size() != 0;
+        return !blockedBy.isEmpty();
     }
 
     public Set<ResourceId> getBlockedBy() {

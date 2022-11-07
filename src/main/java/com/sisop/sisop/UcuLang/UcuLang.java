@@ -1,170 +1,111 @@
 package com.sisop.sisop.UcuLang;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import com.sisop.sisop.UcuLang.Commands.*;
+import com.sisop.sisop.UcuLang.Exceptions.DuplicatedLabel;
+import com.sisop.sisop.UcuLang.Exceptions.DuplicatedLocalLabel;
+import com.sisop.sisop.UcuLang.Exceptions.LocalLabelWithoutParent;
+import com.sisop.sisop.UcuLang.Exceptions.LocalVariableWithoutParent;
+import com.sisop.sisop.UcuLang.Exceptions.UnknownCommand;
 
 /**
  * 
  */
 public class UcuLang {
-    public enum StepMode {
-        Play,
-        Stop,
-        PlayOne,
+
+    /**
+     *
+     * @param src
+     * @return
+     */
+    public static UcuProgram compile(String src) 
+            throws UnknownCommand, 
+                   LocalLabelWithoutParent,
+                   LocalVariableWithoutParent,
+                   DuplicatedLabel,
+                   DuplicatedLocalLabel
+    {
+        return UcuLang.compile(src, Arrays.asList(new UcuCommand[0]));
     }
 
-    public interface DebuggerCallback {
-        public void onStepModeChange(StepMode pre, StepMode post);
-    }
-
-    // Lista de instrucciones del programa compilado.
-    private ArrayList<UcuInstruction> instructions; 
-
-    // Código fuente original
-    private String sourceCode; 
-
-    // Contexto de ejecución del programa
-    private UcuContext context = new UcuContext();
-
-    private StepMode stepMode = StepMode.Play;
-
-    private LinkedList<DebuggerCallback> debuggerCallback = new LinkedList<>();
-
-    public UcuLang() {
-        compile("exit", new UcuCommand[0]);
-    }
-
-    public UcuLang(String src) {
-        this(src, new UcuCommand[0]);
-    }
-
-    public UcuLang(String src, UcuCommand[] extraCommands) {
-        compile(src, extraCommands);
-    }
-
-    public String getSourceCode() {
-        return sourceCode;
-    }
-
-    public ArrayList<UcuInstruction> getCompiledInstructions() {
-        return instructions;
-    }
-
-    public UcuContext getContext() {
-        return context;
-    }
-
-    public void addDebuggerCallback(DebuggerCallback callback) {
-        debuggerCallback.add(callback);
-    }
-
-    public void removeDebuggerCallback(DebuggerCallback callback) {
-        debuggerCallback.remove(callback);
-    }
-
-    public void clearAllDebuggerCallbacks() {
-        debuggerCallback.clear();
-    }
-
-    public void setStepMode(StepMode mode) {
-        var pre = stepMode;
-        stepMode = mode;
-        for (var cb : debuggerCallback) {
-            cb.onStepModeChange(pre, mode);
-        }
-    }
-
-    public StepMode getStepMode() {
-        return stepMode;
-    }
-
-    public boolean next() {
-        if (context.getProgramCounter() < instructions.size()) {
-            switch (stepMode) {
-                case Stop -> { /* no-op */ }
-                case Play -> runNextInstruction();
-                case PlayOne -> {
-                    runNextInstruction();
-                    setStepMode(StepMode.Stop);
-                }
+    /**
+     *
+     * @param src
+     * @param extraCommands
+     * @return
+     */
+    public static UcuProgram compile(String src, List<UcuCommand> extraCommands) 
+            throws UnknownCommand, 
+                   LocalLabelWithoutParent,
+                   LocalVariableWithoutParent,
+                   DuplicatedLabel,
+                   DuplicatedLocalLabel
+    {
+        var instructionMap = commandsToMap(Arrays.asList(
+            new UcuCommand[] {
+                // Operadores
+                new UcuAdd(),
+                new UcuAppend(),
+                new UcuAt(),
+                new UcuDiv(),
+                new UcuLen(),
+                new UcuMul(),
+                new UcuSet(),
+                new UcuSub(),
+                // Comparadores
+                new UcuEquals(),
+                new UcuGraterThan(),
+                new UcuGreaterThanOrEqual(),
+                new UcuLessThan(),
+                new UcuLessThanOrEqual(),
+                new UcuNotEquals(),
+                // Operaciones de pila
+                new UcuOver(),
+                new UcuRot(),
+                new UcuSwap(),
+                new UcuDrop(),
+                new UcuDup(),
+                // Otros comandos
+                new UcuExit(),
+                new UcuPrint(),
+                new UcuPrintLn(),
+                new UcuRandom(),
+                new UcuReturn(),
             }
-            return true;
-        } else {
-            return false;
-        }
-    }
+        ));
 
-    private void runNextInstruction() {
-        UcuInstruction instruction = instructions.get(context.getProgramCounter());
-        if (instruction == null) {
-            context.nextInstruction();
-        } else {
-            instruction.execute(context);
-        }
-    }
-
-    public void compile(String src, UcuCommand[] extraCommands) {
-        sourceCode = src;
-
-        instructions = new ArrayList<>();
-
-        String currentTopLevelLabel = "";
-
-        var instructionMap = commandsToMap(new UcuCommand[] {
-            new UcuAdd(),
-            new UcuAppend(),
-            new UcuAt(),
-            new UcuDiv(),
-            new UcuDrop(),
-            new UcuDup(),
-            new UcuEquals(),
-            new UcuExit(),
-            new UcuGraterThan(),
-            new UcuGreaterThanOrEqual(),
-            new UcuLen(),
-            new UcuNewline(),
-            new UcuLessThan(),
-            new UcuLessThanOrEqual(),
-            new UcuMul(),
-            new UcuNotEquals(),
-            new UcuOver(),
-            new UcuPrint(),
-            new UcuPrintLn(),
-            new UcuRandom(),
-            new UcuReturn(),
-            new UcuRot(),
-            new UcuSet(),
-            new UcuSub(),
-            new UcuSwap(),
-        });
-        
         instructionMap.putAll(commandsToMap(extraCommands));
 
-        context = new UcuContext();
+        var instructions = new ArrayList<UcuInstruction>();
+        var labels = new HashMap<String, Integer>();
+        var currentTopLevelLabel = "";
 
         var parser = new UcuLangParser(src);
         for (var token = parser.next(); token != null; token = parser.next()) {
             switch (token.type) {
-                case Comment -> { /* Ignora Comentarios */}
+                case Whitespace, Comment -> {
+                    /* Ignora Comentarios y espacios */
+                }
                 case LocalLabel -> {
                     var label = getLocalLabelAbsoluteName(currentTopLevelLabel, token.token);
-                    if (context.getLabel(label) == null) {
-                        context.setLabel(label, instructions.size());
+                    if (labels.get(label) == null) {
+                        labels.put(label, instructions.size());
                     } else {
-                        throw new RuntimeException(
-                            "Etiqueta local duplicada: " + token.token + 
-                            " bajo la etiqueta: " + currentTopLevelLabel
-                        );
+                        throw new DuplicatedLocalLabel(currentTopLevelLabel, token.token);
                     }
                 }
                 case Label -> {
                     var label = token.token;
-                    if (context.getLabel(token.token) == null) {
+                    if (labels.get(token.token) == null) {
                         currentTopLevelLabel = label;
-                        context.setLabel(label, instructions.size());
+                        labels.put(label, instructions.size());
                     } else {
-                        throw new RuntimeException("Etiqueta duplicada: " + label);
+                        throw new DuplicatedLabel(label);
                     }
                 }
                 case Call -> {
@@ -179,9 +120,9 @@ public class UcuLang {
                 case LocalJump -> {
                     instructions.add(new UcuJump(getLocalLabelAbsoluteName(currentTopLevelLabel, token.token)));
                 }
-                case Number -> instructions.add(new UcuPushValue(new UcuValue(new UcuNumber(Double.valueOf(token.token)))));
-                case StrLiteral -> instructions.add(new UcuPushValue(new UcuValue(new UcuString(token.token))));
-                case EmptyArray -> instructions.add(new UcuPushValue(new UcuValue(new UcuList())));
+                case Number -> instructions.add(new UcuPushValue(token.value));
+                case StrLiteral -> instructions.add(new UcuPushValue(token.value));
+                case EmptyArray -> instructions.add(new UcuPushValue(token.value));
                 case VariableDefinition -> instructions.add(new UcuDefineVariable(token.token));
                 case VariablePush -> instructions.add(new UcuPushVariable(token.token));
                 case LocalVariableDefinition -> {
@@ -193,29 +134,36 @@ public class UcuLang {
                 case Command -> {
                     UcuInstruction instruction = instructionMap.get(token.token);
                     if (instruction == null) {
-                        throw new RuntimeException("Unknown instruction: " + token.token);
+                        throw new UnknownCommand(token.token);
                     }
                     instructions.add(instruction);
                 }
             }
         }
+
+        return new UcuProgram(src, instructions, labels);
     }
 
-    private String getLocalLabelAbsoluteName(String currentTopLevelLabel, String localLabel) {
+    private static String joinIdentifiers(String a, String b) {
+        return a + " | " + b;
+    }
+
+    private static String getLocalLabelAbsoluteName(String currentTopLevelLabel, String localLabel) throws LocalLabelWithoutParent {
         if (currentTopLevelLabel.isEmpty()) {
-            throw new RuntimeException("Se intentó utilizar una etiqueta local sin una etiqueta padre: " + localLabel);
+            throw new LocalLabelWithoutParent(localLabel);
         }
-        return currentTopLevelLabel + " " + localLabel;
+        return joinIdentifiers(currentTopLevelLabel, localLabel);
     }
 
-    private String getLocalVariableAbsoluteName(String currentTopLevelLabel, String localVariable) {
+    private static String getLocalVariableAbsoluteName(String currentTopLevelLabel, String localVariable) throws LocalVariableWithoutParent {
         if (currentTopLevelLabel.isEmpty()) {
-            throw new RuntimeException("Se intentó utilizar una variable local sin una etiqueta padre: " + localVariable);
+            throw new LocalVariableWithoutParent(localVariable);
         }
-        return currentTopLevelLabel + " " + localVariable;
+
+        return joinIdentifiers(currentTopLevelLabel, localVariable);
     }
 
-    private HashMap<String, UcuCommand> commandsToMap(UcuCommand[] commands) {
+    private static Map<String, UcuCommand> commandsToMap(List<UcuCommand> commands) {
         var result = new HashMap<String, UcuCommand>();
 
         for (var cmd : commands) {

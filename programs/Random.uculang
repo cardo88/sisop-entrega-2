@@ -1,4 +1,4 @@
 :bucle
-    random println
-    500 sleep
-    @bucle
+    random console.println
+    500 timer.sleep
+@bucle

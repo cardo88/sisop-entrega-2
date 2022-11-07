@@ -1,0 +1,59 @@
+{PRODUCTOR}
+
+4 .tamaño
+
+"pc-1" $tamaño sharedQueue.create .queue
+
+"pc-1-n" 0 semaphore.create .N
+"pc-1-s" 1 semaphore.create .S
+"pc-1-e" $tamaño semaphore.create .E
+
+[] "😀" append
+   "🤣" append
+   "😍" append
+   "😇" append
+   "🤪" append
+   "🥸" append
+   "🥳" append
+   "🥺" append
+   "🤩" append
+   "🤬" append
+   "🥶" append
+   "🏈" append
+   "🥌" append
+   "🚌" append
+   "🚝" append
+   "🛞" append
+   "🥝" append
+   "🍓" append
+   "🍙" append
+   "🍿" append
+   "👩‍" append
+.lista
+
+
+:main
+
+    "Insertando: " console.print
+
+    $lista dup len random * at dup 
+    console.print
+    (insertar)
+
+    " [OK]" console.println
+
+    1000 timer.sleep
+
+@main
+
+
+:insertar
+    $E semaphore.p
+    $S semaphore.p
+
+    $queue swap append drop
+
+    $S semaphore.v
+    $N semaphore.v
+    return
+    

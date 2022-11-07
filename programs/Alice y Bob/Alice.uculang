@@ -1,0 +1,22 @@
+"alice-bob" 1 semaphore.create .sem
+
+:loop
+    "(Alice) Intenta salir al patio" console.println
+    
+    $sem semaphore.p
+    "(Alice) Pasea el perro (5s)" console.println
+
+    1000 timer.sleep
+    " -- 1s" console.println
+    1000 timer.sleep
+    " -- 2s" console.println
+    1000 timer.sleep
+    " -- 3s" console.println
+    1000 timer.sleep
+    " -- 4s" console.println
+    1000 timer.sleep
+    " -- 5s" console.println
+
+    "(Alice) Deja el patio" console.println
+    $sem semaphore.v
+@loop

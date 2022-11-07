@@ -12,8 +12,8 @@
 0 { índice en el arreglo }
 
 :bucle { arreglo, índice }
-    over over at println
+    over over at console.println
     1 +
-    1000 sleep
+    1000 timer.sleep
     over len over swap < @bucle
 drop 0 @bucle
