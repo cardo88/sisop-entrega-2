@@ -17,11 +17,15 @@ import java.awt.Color;
  * @author ucu
  */
 public class ProgramWindow extends javax.swing.JPanel {
+    public interface OnCloseCallback {
+        void onClose();
+    }
     
     private final Scheduler scheduler;
     private final Debugger debugger;
     private final ProcessId pid;
     private final Color backgroundColor;
+    private OnCloseCallback onCloseCallback;
     
     /**
      * Creates new form ProgramWindow
@@ -32,10 +36,15 @@ public class ProgramWindow extends javax.swing.JPanel {
         this.pid = pid;
         this.scheduler = scheduler;
         this.debugger = debugger;
+        this.onCloseCallback = null;
         
         initComponents();
         
         backgroundColor = getBackground();
+    }
+
+    public void setOnCloseCallback(OnCloseCallback callback) {
+        this.onCloseCallback = callback;
     }
 
     private void setStoppedColor() {
@@ -49,12 +58,16 @@ public class ProgramWindow extends javax.swing.JPanel {
     public ConsoleWidget getConsoleWidget() {
         return consoleWidget;
     }
+
+    public void killProcess() {
+        scheduler.kill(pid);
+    }
     
     public void update() {
         var process = scheduler.get(pid);
-        pidLabel.setText(pid.toString());
-        programPathLabel.setText(process.getName());
         if (process != null) {
+            pidLabel.setText(pid.toString());
+            programPathLabel.setText(process.getName());
             processStatusLabel.setText(process.getState().toString());
         }
     }
@@ -177,11 +190,13 @@ public class ProgramWindow extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-        // TODO add your handling code here:
+        if (onCloseCallback != null) {
+            onCloseCallback.onClose();
+        }
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void debuggerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debuggerButtonActionPerformed
-        var frame = new DebuggerFramef(pid, debugger);
+        var frame = new DebuggerFrame(pid, debugger);
         frame.setVisible(true);
     }//GEN-LAST:event_debuggerButtonActionPerformed
 

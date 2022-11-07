@@ -1,0 +1,34 @@
+"p-buffer"
+[] 0 append
+   0 append
+   0 append
+   0 append
+shared.get-or-create .BUFFER
+"p-wh" [] 0 append shared.get-or-create .WH
+"p-rh" [] 0 append shared.get-or-create .RH
+
+"p-pc-1-n" 0 semaphore.create .N
+"p-pc-1-s" 1 semaphore.create .S
+"p-pc-1-e" $BUFFER len semaphore.create .E
+
+:main
+    "Extrayendo..." console.println
+    (extraer) " -> " console.print console.println
+    1500 timer.sleep
+
+@main
+
+:extraer
+    $N semaphore.p
+    $S semaphore.p
+
+    $BUFFER 
+    $RH 0 get get ..k
+
+    $RH 0 $RH 0 get 1 + $BUFFER len % set
+
+
+    $S semaphore.v
+    $E semaphore.v
+
+    $$k return

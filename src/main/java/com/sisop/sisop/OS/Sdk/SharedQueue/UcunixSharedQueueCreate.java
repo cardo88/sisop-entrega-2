@@ -1,8 +1,5 @@
 package com.sisop.sisop.OS.Sdk.SharedQueue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.sisop.sisop.UcuLang.UcuCommand;
 import com.sisop.sisop.UcuLang.UcuContext;
 import com.sisop.sisop.UcuLang.Types.UcuNumber;

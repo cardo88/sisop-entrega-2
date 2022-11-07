@@ -8,12 +8,9 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import com.sisop.sisop.OS.Process;
 import com.sisop.sisop.OS.ProcessId;
 import com.sisop.sisop.UcuLang.UcuInterpreter.StepMode;
 import com.sisop.sisop.OS.Debugger;
-// import com.sisop.sisop.OS.Resources.Debugger;
-// import com.sisop.sisop.UcuLang.UcuLang.StepMode;
 
 import java.awt.BorderLayout;
 

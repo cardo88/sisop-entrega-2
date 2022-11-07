@@ -1,17 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.sisop.sisop.OS.UI;
-
-import java.awt.Rectangle;
-import java.util.stream.Collectors;
 
 import javax.swing.table.DefaultTableModel;
 
 import com.sisop.sisop.OS.Debugger;
 import com.sisop.sisop.OS.ProcessId;
-import com.sisop.sisop.UcuLang.UcuInterpreter.StepMode;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  *
@@ -34,25 +28,23 @@ public class DebuggerFrame extends javax.swing.JFrame {
         initComponents();
 
         var process = debugger.getScheduler().get(pid);
-        var model = (DefaultTableModel) instructionsTable.getModel();
-//        var labels = process.getInterpreter().getContext().getProgram().getLabels();
-//        model.addColumn("PC");
-//        model.addColumn("Instrucción");
-        int i = 0;
-        for (var instruction : process.getInterpreter()
-                                      .getContext()
-                                      .getProgram()
-                                      .getInstructions()) {
-            model.addRow(new String[] { 
-                String.valueOf(i), 
-                instruction.toString() 
-            });
-            i++;
-        }
-        
-        instructionsTable.revalidate();
-        instructionsTable.repaint();
-        
+        var model = new DefaultTableModel();
+        var instructions = process.getInterpreter()
+                                 .getContext()
+                                 .getProgram()
+                                 .getInstructions();
+
+        model.setDataVector(
+            IntStream.range(0, instructions.size())
+                    .mapToObj(i -> new String[] { String.valueOf(i), instructions.get(i).toString() } )
+                    .collect(Collectors.toList())
+                    .toArray(new String[0][0]),
+            new String[] { "PC", "Instrucción" }
+        );
+        instructionsTable.setModel(model);
+        // revalidate();
+        // repaint();
+       
 //        debugger.attach(pid, true, (StepMode pre, StepMode post) -> {
 //            if (post == StepMode.Pause) {
 //                var pc = process.getInterpreter().getContext().getProgramCounter();
@@ -158,6 +150,7 @@ public class DebuggerFrame extends javax.swing.JFrame {
         jToolBar1.add(playButton);
         jToolBar1.add(filler2);
 
+        instructionsTable.setBackground(new java.awt.Color(255, 153, 153));
         instructionsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -166,7 +159,8 @@ public class DebuggerFrame extends javax.swing.JFrame {
 
             }
         ));
-        instructionsTable.setPreferredSize(new java.awt.Dimension(400, 0));
+        instructionsTable.setMinimumSize(new java.awt.Dimension(400, 200));
+        instructionsTable.setRequestFocusEnabled(false);
         jScrollPane3.setViewportView(instructionsTable);
 
         jSplitPane2.setLeftComponent(jScrollPane3);
@@ -281,7 +275,7 @@ public class DebuggerFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
+                .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

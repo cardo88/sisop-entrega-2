@@ -1,12 +1,15 @@
-{PRODUCTOR}
+"p-buffer"
+[] 0 append
+   0 append
+   0 append
+   0 append
+shared.get-or-create .BUFFER
+"p-wh" [] 0 append shared.get-or-create .WH
+"p-rh" [] 0 append shared.get-or-create .RH
 
-4 .tamaño
-
-"pc-1" $tamaño sharedQueue.create .queue
-
-"pc-1-n" 0 semaphore.create .N
-"pc-1-s" 1 semaphore.create .S
-"pc-1-e" $tamaño semaphore.create .E
+"p-pc-1-n" 0 semaphore.create .N
+"p-pc-1-s" 1 semaphore.create .S
+"p-pc-1-e" $BUFFER len semaphore.create .E
 
 [] "😀" append
    "🤣" append
@@ -38,6 +41,7 @@
 
     $lista dup len random * get dup 
     console.print
+    "" swap append " (" append process.pid append ")" append
     (insertar)
 
     " [OK]" console.println
@@ -48,12 +52,18 @@
 
 
 :insertar
-    $E semaphore.p
-    $S semaphore.p
+   $E semaphore.p
+   $S semaphore.p
 
-    $queue swap append drop
 
-    $S semaphore.v
-    $N semaphore.v
-    return
+   $BUFFER swap
+   $WH 0 get swap 
+   set
+
+   $WH 0 $WH 0 get 1 + $BUFFER len % set
+
+
+   $S semaphore.v
+   $N semaphore.v
+   return
     

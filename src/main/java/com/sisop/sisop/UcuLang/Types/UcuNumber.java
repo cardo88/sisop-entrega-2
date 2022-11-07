@@ -1,5 +1,7 @@
 package com.sisop.sisop.UcuLang.Types;
 
+import com.sisop.sisop.UcuLang.Exceptions.InvalidTypesRuntimeException;
+
 public class UcuNumber implements UcuType,
                                   UcuAddOp,
                                   UcuSubOp,
@@ -7,82 +9,122 @@ public class UcuNumber implements UcuType,
                                   UcuModOp,
                                   UcuDivOp,
                                   Comparable {
-    private double number;
+    private double value;
 
     public UcuNumber(double number) {
-        this.number = number;
+        this.value = number;
     }
 
     public UcuNumber(int number) {
-        this.number = number;
+        this.value = number;
     }
 
     public int intValue() {
-        return (int)number;
+        return (int)value;
     }
 
     @Override
     public String toString() {
-        return String.valueOf(number);
+        return String.valueOf(value);
     }
     
     public double getValue() {
-        return number;
+        return value;
+    }
+
+    @Override
+    public UcuType duplicate() {
+        return new UcuNumber(value);
+    }
+
+    @Override
+    public UcuType copy() {
+        return duplicate();
     }
 
     @Override
     public UcuType div(UcuType other) {
         if (other instanceof UcuNumber o) {
-            return new UcuNumber(number / o.number);
+            return new UcuNumber(value / o.value);
         } else {
-            throw new RuntimeException("FIXME");
+            throw new InvalidTypesRuntimeException(
+                "UcuNumber.div", 
+                new String[][] { 
+                    { UcuNumber.class.getName() },
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() },
+                }
+            );
         }
     }
 
     @Override
     public UcuType mod(UcuType other) {
         if (other instanceof UcuNumber o) {
-            return new UcuNumber(number % o.number);
+            return new UcuNumber(value % o.value);
         } else {
-            throw new RuntimeException("FIXME");
+            throw new InvalidTypesRuntimeException(
+                "UcuNumber.mod", 
+                new String[][] { 
+                    { UcuNumber.class.getName() },
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() },
+                }
+            );
         }
     }
 
     @Override
     public UcuType mul(UcuType other) {
         if (other instanceof UcuNumber o) {
-            return new UcuNumber(number * o.number);
+            return new UcuNumber(value * o.value);
         } else {
-            throw new RuntimeException("FIXME");
+            throw new InvalidTypesRuntimeException(
+                "UcuNumber.mul", 
+                new String[][] { 
+                    { UcuNumber.class.getName() },
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() },
+                }
+            );
         }
     }
 
     @Override
     public UcuType sub(UcuType other) {
         if (other instanceof UcuNumber o) {
-            return new UcuNumber(number - o.number);
+            return new UcuNumber(value - o.value);
         } else {
-            throw new RuntimeException("FIXME");
+            throw new InvalidTypesRuntimeException(
+                "UcuNumber.sub", 
+                new String[][] { 
+                    { UcuNumber.class.getName() },
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() },
+                }
+            );
         }
     }
 
     @Override
     public UcuType add(UcuType other) {
         if (other instanceof UcuNumber o) {
-            return new UcuNumber(number + o.number);
+            return new UcuNumber(value + o.value);
         } else {
-            throw new RuntimeException("FIXME");
+            throw new InvalidTypesRuntimeException(
+                "UcuNumber.add", 
+                new String[][] { 
+                    { UcuNumber.class.getName() },
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() },
+                }
+            );
         }
-    }
-
-    @Override
-    public UcuType duplicate() {
-        return new UcuNumber(number);
-    }
-
-    @Override
-    public UcuType copy() {
-        return duplicate();
     }
     
     /**
@@ -97,7 +139,7 @@ public class UcuNumber implements UcuType,
         }
         
         if (other instanceof UcuNumber o) {
-            return number == o.number;
+            return value == o.value;
         }
         
         return false;
@@ -105,17 +147,23 @@ public class UcuNumber implements UcuType,
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 17 * hash + (int) (Double.doubleToLongBits(this.number) ^ (Double.doubleToLongBits(this.number) >>> 32));
-        return hash;
+        return Double.hashCode(value);
     }
 
     @Override
-    public int compareTo(Object o) {
-        if (o instanceof UcuNumber x) {
-            return Double.compare(number, x.number);
+    public int compareTo(Object other) {
+        if (other instanceof UcuNumber o) {
+            return Double.compare(value, o.value);
         } else {
-            throw new RuntimeException("FIXME");
+            throw new InvalidTypesRuntimeException(
+                "UcuNumber.compareTo", 
+                new String[][] { 
+                    { UcuNumber.class.getName() },
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() },
+                }
+            );
         }
     }
 }

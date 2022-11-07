@@ -2,15 +2,15 @@ package com.sisop.sisop.UcuLang.Commands;
 
 import com.sisop.sisop.UcuLang.UcuCommand;
 import com.sisop.sisop.UcuLang.UcuContext;
-import com.sisop.sisop.UcuLang.Types.UcuGetOp;
+import com.sisop.sisop.UcuLang.Types.UcuModOp;
 
 /**
  *
  */
-public class UcuAt implements UcuCommand {
+public class UcuMod implements UcuCommand {
     @Override
     public String getCommandName() {
-        return "at";
+        return "%";
     }
 
     @Override
@@ -20,11 +20,11 @@ public class UcuAt implements UcuCommand {
 
     @Override
     public void execute(UcuContext context) {
-        var index = context.popValue();
-        var value = context.popValue();
+        var second = context.popValue();
+        var first = context.popValue();
 
-        if (value instanceof UcuGetOp x) {
-            context.pushValue(x.get(index));
+        if (first instanceof UcuModOp x) {
+            context.pushValue(x.mod(second));
         } else {
             throw new RuntimeException("FIXME");
         }

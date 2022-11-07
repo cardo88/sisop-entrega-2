@@ -65,7 +65,7 @@
         return 
 
     ::actualizar-viva
-        $tablero $$fila $anchoNl * $$columna + at $M = return
+        $tablero $$fila $anchoNl * $$columna + get $M = return
         dup 2 < (:set-muerta)
         dup 3 > (:set-muerta)
         dup 2 = (:set-viva)
@@ -73,7 +73,7 @@
         return
 
     ::actualizar-muerta
-        $tablero $$fila $anchoNl * $$columna + at $V = return
+        $tablero $$fila $anchoNl * $$columna + get $V = return
         dup 3 = (:set-viva)
         dup 3 < (:set-muerta)
         dup 3 > (:set-muerta)
@@ -117,7 +117,7 @@
     ::getOrM
         dup 0 < @:getOrM-retM
         over len over <= @:getOrM-retM
-        at return
+        get return
 
     ::getOrM-retM
         drop drop

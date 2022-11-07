@@ -5,7 +5,7 @@
 
 :bucle
     { Imprime un fotograma }
-    $fotogramas $indice at console.print
+    $fotogramas $indice get console.print
 
     { Siguiente fotograma }
     $indice 1 + .indice

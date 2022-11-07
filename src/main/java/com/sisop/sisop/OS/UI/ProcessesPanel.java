@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class ProcessesPanel extends javax.swing.JPanel {
 
     private final List<ProgramWindow> programWindows = new LinkedList<>();
-    
+
     /**
      * Creates new form ProcessesPanel
      */
@@ -20,8 +20,6 @@ public class ProcessesPanel extends javax.swing.JPanel {
     }
     
     public void addProgramWindow(ProgramWindow window) {
-        processesPanel.add(window);
-        
         var container = new JPanel();
         
         container.setLayout(new FlowLayout());
@@ -29,8 +27,14 @@ public class ProcessesPanel extends javax.swing.JPanel {
         container.add(window);
         
         processesPanel.add(container);
-        
         programWindows.add(window);
+
+        window.setOnCloseCallback(() -> {
+            processesPanel.remove(container);
+            processesPanel.revalidate();
+            processesPanel.repaint();
+            window.killProcess();
+        });
 
         revalidate();
         repaint();

@@ -51,10 +51,11 @@ public class UcuLang {
                 // Operadores
                 new UcuAdd(),
                 new UcuAppend(),
-                new UcuAt(),
+                new UcuGet(),
                 new UcuDiv(),
                 new UcuLen(),
                 new UcuMul(),
+                new UcuMod(),
                 new UcuSet(),
                 new UcuSub(),
                 // Comparadores

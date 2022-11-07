@@ -46,6 +46,7 @@ public class RoundRobinScheduler implements Scheduler {
                 case Ready -> ready.remove(process);
             }
             process.setState(Process.State.Finished);
+            process.onKill();
             allProcesses.remove(pid);
         }
     }

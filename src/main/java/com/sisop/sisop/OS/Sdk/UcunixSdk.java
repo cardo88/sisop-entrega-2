@@ -12,11 +12,13 @@ import com.sisop.sisop.OS.Sdk.Console.UcunixConsolePrint;
 import com.sisop.sisop.OS.Sdk.Console.UcunixConsolePrintln;
 import com.sisop.sisop.OS.Sdk.Debugger.UcunixDebuggerBreakpoint;
 import com.sisop.sisop.OS.Sdk.Debugger.UcunixDebuggerStop;
+import com.sisop.sisop.OS.Sdk.Process.UcunixProcessPid;
 import com.sisop.sisop.OS.Sdk.Semaphore.UcunixSemaphoreCreate;
 import com.sisop.sisop.OS.Sdk.Semaphore.UcunixSemaphoreP;
 import com.sisop.sisop.OS.Sdk.Semaphore.UcunixSemaphoreV;
 import com.sisop.sisop.OS.Sdk.SharedQueue.UcunixSharedQueueCreate;
 import com.sisop.sisop.OS.Sdk.SharedQueue.UcunixSharedQueuePop;
+import com.sisop.sisop.OS.Sdk.SharedVariables.UcunixSharedCreate;
 import com.sisop.sisop.OS.Sdk.Timer.UcunixTimer;
 import com.sisop.sisop.OS.Sdk.Timer.UcunixTimerSleep;
 import com.sisop.sisop.UcuLang.UcuCommand;
@@ -44,6 +46,10 @@ public class UcunixSdk {
             // Shared Queue
             new UcunixSharedQueueCreate(),
             new UcunixSharedQueuePop(),
+            // Shared Variables
+            new UcunixSharedCreate(pid),
+            // Process
+            new UcunixProcessPid(pid),
         });
     }
 }
