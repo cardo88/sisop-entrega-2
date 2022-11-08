@@ -3,7 +3,6 @@ package com.sisop.sisop.UcuLang.Commands;
 import com.sisop.sisop.UcuLang.UcuContext;
 import com.sisop.sisop.UcuLang.UcuInstruction;
 import com.sisop.sisop.UcuLang.Types.UcuCopyOp;
-import com.sisop.sisop.UcuLang.Types.UcuType;
 
 /**
  *

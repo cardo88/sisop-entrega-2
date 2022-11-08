@@ -5,10 +5,8 @@
 package com.sisop.sisop.OS.UI;
 
 import com.sisop.sisop.OS.Debugger;
-import javax.swing.UIManager;
 
 import com.sisop.sisop.OS.ProcessId;
-import com.sisop.sisop.OS.Process;
 import com.sisop.sisop.OS.Scheduler;
 
 import java.awt.Color;
@@ -69,7 +67,6 @@ public class ProgramWindow extends javax.swing.JPanel {
         if (process != null) {
             pidLabel.setText(pid.toString());
             programPathLabel.setText(process.getName());
-            // processStatusLabel.setText(process.getState().toString());
         }
     }
 
@@ -181,7 +178,7 @@ public class ProgramWindow extends javax.swing.JPanel {
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void debuggerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debuggerButtonActionPerformed
-        var frame = new DebuggerFrame(pid, debugger);
+        var frame = new DebuggerFramef(pid, debugger);
         frame.setVisible(true);
     }//GEN-LAST:event_debuggerButtonActionPerformed
 

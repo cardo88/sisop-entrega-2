@@ -30,8 +30,10 @@ public class UcuString extends UcuType
     /**
      * Implementación de UcuCopyOp
      * 
-     * Devuelve una nueva instancia de la cadena. No 
+     * Devuelve una nueva instancia de la cadena.No 
      * comparte memoria con la cadena anterior.
+     * 
+     * @return Copia de la cadena (UcuString)
      */
     @Override
     public UcuType copy() {
@@ -40,6 +42,8 @@ public class UcuString extends UcuType
 
     /**
      * Implementación de UcuAssignOp
+     * 
+     * @param other
      */
     @Override
     public void assign(UcuType other) {
@@ -61,6 +65,8 @@ public class UcuString extends UcuType
     /**
      * Implementación de UcuAppendOp
      * 
+     * @param other
+     * @return 
      */
     @Override
     public UcuType append(UcuType other) {
@@ -167,6 +173,8 @@ public class UcuString extends UcuType
 
     /**
      * Implementación UcuLengthOp
+     * 
+     * @return 
      */
     @Override
     public int length() {
