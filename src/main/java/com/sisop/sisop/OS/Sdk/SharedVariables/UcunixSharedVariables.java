@@ -13,14 +13,6 @@ public class UcunixSharedVariables {
     private static Map<String, Set<ProcessId>> referencedBy = new HashMap<>();
 
     public static UcuType getOrCreate(ProcessId pid, String name, UcuType value) {
-        // if (!(value instanceof UcuList)) {
-        //     throw new InvalidTypesRuntimeException(
-        //         "SharedVariables.getOrCreate", 
-        //         new String[][] {
-        //             { }
-        //         }, null)
-        // }
-
         if (!variables.containsKey(name)) {
             variables.put(name, value);
         }
