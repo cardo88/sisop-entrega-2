@@ -38,7 +38,7 @@ public class UcunixSdk {
             new UcunixDebuggerBreakpoint(debugger, pid),
             new UcunixDebuggerStop(debugger, pid),
             // Semaphores
-            new UcunixSemaphoreCreate(),
+            new UcunixSemaphoreCreate(pid),
             new UcunixSemaphoreP(pid, scheduler),
             new UcunixSemaphoreV(scheduler),
             // Shared Variables

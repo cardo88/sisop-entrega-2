@@ -10,6 +10,8 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 import com.sisop.sisop.OS.Sdk.Semaphore.UcunixSemaphore;
+import com.sisop.sisop.OS.Sdk.SharedVariables.UcunixSharedVariables;
+
 import java.awt.event.ActionEvent;
 
 /**
@@ -34,7 +36,11 @@ public class SemaphoresViewerFrame extends javax.swing.JFrame {
     }
 
     private void update() {
-        var sem = UcunixSemaphore.getAll();
+        var sem = UcunixSharedVariables.getAll().values()
+            .stream()
+            .filter(x -> x instanceof UcunixSemaphore)
+            .map(x -> (UcunixSemaphore) x)
+            .toList();
 
         var model = new DefaultTableModel();
         model.setDataVector(

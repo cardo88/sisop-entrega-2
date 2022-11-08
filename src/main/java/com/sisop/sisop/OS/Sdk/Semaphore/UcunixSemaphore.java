@@ -1,9 +1,7 @@
 package com.sisop.sisop.OS.Sdk.Semaphore;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import com.sisop.sisop.OS.ProcessId;
 import com.sisop.sisop.OS.ResourceId;
@@ -11,34 +9,20 @@ import com.sisop.sisop.OS.Scheduler;
 import com.sisop.sisop.UcuLang.Types.UcuType;
 
 /**
- * Semáforo
  *
  */
 public class UcunixSemaphore extends UcuType {
-    private static final Map<String, UcunixSemaphore> semaphores = new HashMap<>();
-
     private final ResourceId resourceId;
     private final String name;
     private final LinkedList<ProcessId> blockedProcesses;
 
     private int capacity;
 
-    public static UcunixSemaphore create(String name, int capacity) {
-        if (!semaphores.containsKey(name)) {
-            semaphores.put(name, new UcunixSemaphore(name, capacity));
-        }
-        return semaphores.get(name);
-    }
-
-    private UcunixSemaphore(String name, int capacity) {
+    public UcunixSemaphore(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
         this.resourceId = new ResourceId();
         this.blockedProcesses = new LinkedList<>();
-    }
-
-    public static List<UcunixSemaphore> getAll() {
-        return semaphores.values().stream().toList();
     }
 
     public String getName() {
@@ -77,18 +61,16 @@ public class UcunixSemaphore extends UcuType {
 
     @Override
     public String toString() {
-        return "Semaphore: " + name;
+        return "UcunixSemaphore(" + name + ")";
     }
 
     @Override
     public boolean equals(Object other) {
-        // TODO Auto-generated method stub
-        return false;
+        return this == other;
     }
 
     @Override
     public int hashCode() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.getClass().hashCode();
     }
 }

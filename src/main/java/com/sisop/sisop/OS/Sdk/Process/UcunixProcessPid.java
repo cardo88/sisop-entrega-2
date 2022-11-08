@@ -1,6 +1,5 @@
 package com.sisop.sisop.OS.Sdk.Process;
 
-import com.sisop.sisop.OS.Console;
 import com.sisop.sisop.OS.ProcessId;
 import com.sisop.sisop.UcuLang.UcuCommand;
 import com.sisop.sisop.UcuLang.UcuContext;
