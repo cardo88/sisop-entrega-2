@@ -3,8 +3,11 @@ package com.sisop.sisop.UcuLang.Types;
 /**
  *
  */
-public interface UcuType { 
-    UcuType duplicate();
+public abstract class UcuType { 
 
-    UcuType copy();
+    public abstract boolean equals(Object other);
+
+    public abstract int hashCode();
+
+    public abstract String toString();
 }

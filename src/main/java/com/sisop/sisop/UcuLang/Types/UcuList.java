@@ -3,7 +3,8 @@ package com.sisop.sisop.UcuLang.Types;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UcuList implements UcuType, 
+public class UcuList extends UcuType
+                     implements UcuCopyOp,
                                 UcuLengthOp,
                                 UcuAppendOp,
                                 UcuGetOp,
@@ -31,19 +32,18 @@ public class UcuList implements UcuType,
     }
 
     @Override
-    public UcuType duplicate() {
-        return this;
+    public UcuType copy() {
+        return new UcuList(
+            value.stream()
+                 .map(x -> ((UcuCopyOp) x).copy())
+                 .toList()
+        );
     }
 
     @Override
     public UcuType append(UcuType other) {
         value.add(other);
         return this;
-    }
-
-    @Override
-    public UcuType copy() {
-        return new UcuList(value);
     }
 
     @Override
@@ -65,12 +65,23 @@ public class UcuList implements UcuType,
     }
 
     @Override
-    public UcuType assign(UcuType other) {
+    public void assign(UcuType other) {
         if (other instanceof UcuList o) {
             value = o.value;
-            return this;
         } else {
             throw new RuntimeException("FIXME");
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

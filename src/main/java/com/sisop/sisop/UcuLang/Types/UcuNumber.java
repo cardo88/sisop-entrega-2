@@ -2,14 +2,15 @@ package com.sisop.sisop.UcuLang.Types;
 
 import com.sisop.sisop.UcuLang.Exceptions.InvalidTypesRuntimeException;
 
-public class UcuNumber implements UcuType,
-                                  UcuAddOp,
+public class UcuNumber extends UcuType
+                       implements UcuAddOp,
+                                  UcuCopyOp,
                                   UcuSubOp,
                                   UcuMulOp,
                                   UcuModOp,
                                   UcuDivOp,
                                   UcuAssignOp,
-                                  Comparable {
+                                  Comparable<UcuNumber> {
     private double value;
 
     public UcuNumber(double number) {
@@ -34,13 +35,8 @@ public class UcuNumber implements UcuType,
     }
 
     @Override
-    public UcuType duplicate() {
-        return new UcuNumber(value);
-    }
-
-    @Override
     public UcuType copy() {
-        return duplicate();
+        return new UcuNumber(value);
     }
 
     @Override
@@ -152,27 +148,14 @@ public class UcuNumber implements UcuType,
     }
 
     @Override
-    public int compareTo(Object other) {
-        if (other instanceof UcuNumber o) {
-            return Double.compare(value, o.value);
-        } else {
-            throw new InvalidTypesRuntimeException(
-                "UcuNumber.compareTo", 
-                new String[][] { 
-                    { UcuNumber.class.getName() },
-                }, 
-                new String[][] { 
-                    { other.getClass().getName() },
-                }
-            );
-        }
+    public int compareTo(UcuNumber other) {
+        return Double.compare(value, other.value);
     }
 
     @Override
-    public UcuType assign(UcuType other) {
+    public void assign(UcuType other) {
         if (other instanceof UcuNumber o) {
             value = o.value;
-            return this;
         } else {
             throw new InvalidTypesRuntimeException(
                 "UcuNumber.assign", 

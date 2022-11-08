@@ -12,6 +12,7 @@ import com.sisop.sisop.UcuLang.Exceptions.DuplicatedLocalLabel;
 import com.sisop.sisop.UcuLang.Exceptions.LocalLabelWithoutParent;
 import com.sisop.sisop.UcuLang.Exceptions.LocalVariableWithoutParent;
 import com.sisop.sisop.UcuLang.Exceptions.UnknownCommand;
+import com.sisop.sisop.UcuLang.Types.UcuCopyOp;
 
 /**
  * 
@@ -122,9 +123,9 @@ public class UcuLang {
                 case LocalJump -> {
                     instructions.add(new UcuJump(getLocalLabelAbsoluteName(currentTopLevelLabel, token.token)));
                 }
-                case Number -> instructions.add(new UcuPushValue(token.value));
-                case StrLiteral -> instructions.add(new UcuPushValue(token.value));
-                case EmptyArray -> instructions.add(new UcuPushValue(token.value));
+                case Number -> instructions.add(new UcuPushValue((UcuCopyOp) token.value));
+                case StrLiteral -> instructions.add(new UcuPushValue((UcuCopyOp) token.value));
+                case EmptyArray -> instructions.add(new UcuPushValue((UcuCopyOp) token.value));
                 case VariableDefinition -> instructions.add(new UcuDefineVariable(token.token));
                 case VariablePush -> instructions.add(new UcuPushVariable(token.token));
                 case LocalVariableDefinition -> {

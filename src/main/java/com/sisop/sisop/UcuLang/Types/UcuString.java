@@ -2,14 +2,16 @@ package com.sisop.sisop.UcuLang.Types;
 
 import com.sisop.sisop.UcuLang.Exceptions.InvalidTypesRuntimeException;
 
-public class UcuString implements UcuType, 
-                                  UcuLengthOp, 
+public class UcuString extends UcuType 
+                       implements UcuAddOp,
                                   UcuAppendOp, 
-                                  UcuGetOp, 
-                                  UcuSetOp, 
-                                  UcuMulOp,
                                   UcuAssignOp,
-                                  Comparable {
+                                  UcuCopyOp,
+                                  UcuGetOp, 
+                                  UcuLengthOp, 
+                                  UcuMulOp,
+                                  UcuSetOp, 
+                                  Comparable<UcuString> {
 
     private StringBuilder value;
 
@@ -25,25 +27,71 @@ public class UcuString implements UcuType,
         this.value = builder;
     }
 
-    public StringBuilder getValue() {
-        return value;
-    }
-    
-    @Override
-    public String toString() {
-        return value.toString();
-    }
-
-    @Override
-    public UcuType duplicate() {
-        return this;
-    }
-
+    /**
+     * Implementación de UcuCopyOp
+     * 
+     * Devuelve una nueva instancia de la cadena. No 
+     * comparte memoria con la cadena anterior.
+     */
     @Override
     public UcuType copy() {
         return new UcuString(value.toString());
     }
 
+    /**
+     * Implementación de UcuAssignOp
+     */
+    @Override
+    public void assign(UcuType other) {
+        if (other instanceof UcuString o) {
+            value = o.value;
+        } else {
+            throw new InvalidTypesRuntimeException(
+                "UcuString.assign", 
+                new String[][] { 
+                    { UcuString.class.getName() }
+                }, 
+                new String[][] { 
+                    { other.getClass().getName() }
+                }
+            );
+        }
+    }
+
+    /**
+     * Implementación de UcuAppendOp
+     * 
+     */
+    @Override
+    public UcuType append(UcuType other) {
+        if (other instanceof UcuString str) {
+            value.append(str.value);
+        } else {
+            value.append(other.toString());
+        }
+        return this;
+    }
+
+    /**
+     * Implementación de UcuAddOp
+     * 
+     * Devuelve una nueva cadena
+     */
+    @Override
+    public UcuType add(UcuType other) {
+        return new UcuString(value.toString() + other.toString());
+    }
+
+    /**
+     * Implementación de UcuMulOp
+     * 
+     * Dada una UcuString y un UcuNumber (n), devuelve una nueva
+     * cadena con el contenido de la cadena actual repetido n veces.
+     * 
+     * Ejemplo (UcuLang):
+     *      Código:    "Abcd" 3 * 
+     *      Resultado: "AbcdAbcdAbcd"
+     */
     @Override
     public UcuType mul(UcuType other) {
         if (other instanceof UcuNumber o) {
@@ -67,6 +115,33 @@ public class UcuString implements UcuType,
         }
     }
 
+    /**
+     * Implementación de UcuGetOp
+     */
+    @Override
+    public UcuType get(UcuType key) {
+        if (key instanceof UcuNumber index) {
+            var builder = new StringBuilder();
+
+            builder.append(value.charAt(index.intValue()));
+
+            return new UcuString(builder);
+        } else {
+            throw new InvalidTypesRuntimeException(
+                "UcuString.get", 
+                new String[][] { 
+                    { UcuNumber.class.getName() }
+                }, 
+                new String[][] { 
+                    { key.getClass().getName() }
+                }
+            );
+        }
+    }
+
+    /**
+     * Implementación de UcuSetOp
+     */
     @Override
     public UcuType set(UcuType key, UcuType object) {
         if (key instanceof UcuNumber number && 
@@ -90,48 +165,17 @@ public class UcuString implements UcuType,
         }
     }
 
-    @Override
-    public UcuType get(UcuType key) {
-        if (key instanceof UcuNumber index) {
-            var builder = new StringBuilder();
-            builder.append(value.charAt(index.intValue()));
-            return new UcuString(builder);
-        } else {
-            throw new InvalidTypesRuntimeException(
-                "UcuString.get", 
-                new String[][] { 
-                    { UcuNumber.class.getName() }
-                }, 
-                new String[][] { 
-                    { key.getClass().getName() }
-                }
-            );
-        }
-    }
-
-    @Override
-    public UcuType append(UcuType other) {
-        if (other instanceof UcuString str) {
-            value.append(str.value);
-        } else if (other instanceof UcuNumber number) {
-            value.append(number.getValue());
-        } else {
-            throw new InvalidTypesRuntimeException(
-                "UcuString.append", 
-                new String[][] { 
-                    { UcuString.class.getName(), UcuNumber.class.getName() }
-                }, 
-                new String[][] { 
-                    { other.getClass().getName() }
-                }
-            );
-        }
-        return this;
-    }
-
+    /**
+     * Implementación UcuLengthOp
+     */
     @Override
     public int length() {
         return value.length();
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
     }
 
     @Override
@@ -153,41 +197,11 @@ public class UcuString implements UcuType,
     }
 
     @Override
-    public int compareTo(Object other) {
+    public int compareTo(UcuString other) {
         if (this == other) {
             return 0;
         }
         
-        if (other instanceof UcuString o) {
-            return value.toString().compareTo(o.value.toString());
-        } else {
-            throw new InvalidTypesRuntimeException(
-                "UcuString.compareTo", 
-                new String[][] { 
-                    { UcuString.class.getName() }
-                }, 
-                new String[][] { 
-                    { other.getClass().getName() }
-                }
-            );
-        }
-    }
-
-    @Override
-    public UcuType assign(UcuType other) {
-        if (other instanceof UcuString o) {
-            value = o.value;
-            return this;
-        } else {
-            throw new InvalidTypesRuntimeException(
-                "UcuString.assign", 
-                new String[][] { 
-                    { UcuString.class.getName() }
-                }, 
-                new String[][] { 
-                    { other.getClass().getName() }
-                }
-            );
-        }
+        return value.toString().compareTo(other.value.toString());
     }
 }

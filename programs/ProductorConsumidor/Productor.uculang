@@ -1,17 +1,12 @@
-{PRODUCTOR}
-
-"p-buffer" [] 0 ++
-              0 ++
-              0 ++
-              0 ++
+"pc-1-buffer" 
+[] 0 ++ 0 ++ 0 ++ 0 ++ 
 shared.get-or-create .BUFFER
 
-"p-wh" 0 shared.get-or-create .WH
-"p-rh" 0 shared.get-or-create .RH
+"pc-1-next-write" 0 shared.get-or-create .NEXT-WRITE
 
-"p-pc-1-n" 0 semaphore.create .N
-"p-pc-1-s" 1 semaphore.create .S
-"p-pc-1-e" $BUFFER len semaphore.create .E
+"pc-1-e" $BUFFER len semaphore.create .E
+"pc-1-n" 0 semaphore.create .N
+"pc-1-s" 1 semaphore.create .S
 
 [] "😀" ++
    "🤣" ++
@@ -34,14 +29,13 @@ shared.get-or-create .BUFFER
    "🍙" ++
    "🍿" ++
    "👩‍" ++
-.lista
+.EMOJIS
 
 
 :main
 
     "Insertando: " console.print
-
-    $lista dup len random * get dup 
+    (random-emoji) dup
     console.print
     "" swap ++ " (" ++ process.pid ++ ")" ++
     (insertar)
@@ -53,14 +47,19 @@ shared.get-or-create .BUFFER
 @main
 
 
+:random-emoji
+    $EMOJIS $EMOJIS len random * get
+    return
+
+
 :insertar
    $E semaphore.p
    $S semaphore.p
 
 
-   $BUFFER $WH rot set
+   $BUFFER $NEXT-WRITE rot set
 
-   $WH $WH 1 + $BUFFER len % <-
+   $NEXT-WRITE $NEXT-WRITE 1 + $BUFFER len % <-
 
    $S semaphore.v
    $N semaphore.v

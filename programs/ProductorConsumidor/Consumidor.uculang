@@ -1,15 +1,12 @@
-"p-buffer"
-[] 0 ++
-   0 ++
-   0 ++
-   0 ++
+"pc-1-buffer" 
+[] 0 ++ 0 ++ 0 ++ 0 ++ 
 shared.get-or-create .BUFFER
-"p-wh" 0 shared.get-or-create .WH
-"p-rh" 0 shared.get-or-create .RH
 
-"p-pc-1-n" 0 semaphore.create .N
-"p-pc-1-s" 1 semaphore.create .S
-"p-pc-1-e" $BUFFER len semaphore.create .E
+"pc-1-next-read"  0 shared.get-or-create .RH
+
+"pc-1-e" $BUFFER len semaphore.create .E
+"pc-1-n" 0 semaphore.create .N
+"pc-1-s" 1 semaphore.create .S
 
 :main
     "Extrayendo..." console.println

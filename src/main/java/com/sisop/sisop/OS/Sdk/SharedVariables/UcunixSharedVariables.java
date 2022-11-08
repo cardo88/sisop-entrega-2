@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sisop.sisop.OS.ProcessId;
-import com.sisop.sisop.UcuLang.Exceptions.InvalidTypesRuntimeException;
-import com.sisop.sisop.UcuLang.Types.UcuList;
 import com.sisop.sisop.UcuLang.Types.UcuType;
 
 public class UcunixSharedVariables {

@@ -14,7 +14,7 @@ import com.sisop.sisop.UcuLang.Types.UcuType;
  * Semáforo
  *
  */
-public class UcunixSemaphore implements UcuType {
+public class UcunixSemaphore extends UcuType {
     private static final Map<String, UcunixSemaphore> semaphores = new HashMap<>();
 
     private final ResourceId resourceId;
@@ -81,12 +81,14 @@ public class UcunixSemaphore implements UcuType {
     }
 
     @Override
-    public UcuType duplicate() {
-        return this;
+    public boolean equals(Object other) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
     @Override
-    public UcuType copy() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }
