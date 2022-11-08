@@ -99,6 +99,12 @@ public class UcunixDesktop extends javax.swing.JFrame {
         frame.setVisible(true);
     }
     
+    
+    private void onSharedVariablesButtonClicked() {
+        var frame = new SharedVariablesViewerFrame();
+        frame.setVisible(true);
+    }
+    
     private void updateMaxInstructionsCountTimeout(int value) {
         maxInstructionCountTimeout = value;
     }
@@ -122,6 +128,7 @@ public class UcunixDesktop extends javax.swing.JFrame {
         semaphoresButton = new javax.swing.JButton();
         jSpinner1 = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
+        sharedVariablesButton = new javax.swing.JButton();
         processesPanel = new com.sisop.sisop.OS.UI.ProcessesPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -147,22 +154,31 @@ public class UcunixDesktop extends javax.swing.JFrame {
 
         jLabel1.setText("Max Instrucciones:");
 
+        sharedVariablesButton.setText("Variables Compartidas");
+        sharedVariablesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sharedVariablesButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(semaphoresButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(semaphoresButton, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(sharedVariablesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(semaphoresButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sharedVariablesButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -188,6 +204,10 @@ public class UcunixDesktop extends javax.swing.JFrame {
         updateMaxInstructionsCountTimeout((Integer) jSpinner1.getModel().getValue());
     }//GEN-LAST:event_onMaxInstructionsStateChanged
 
+    private void sharedVariablesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sharedVariablesButtonActionPerformed
+        onSharedVariablesButtonClicked();
+    }//GEN-LAST:event_sharedVariablesButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -198,5 +218,6 @@ public class UcunixDesktop extends javax.swing.JFrame {
     private com.sisop.sisop.OS.UI.ProcessesPanel processesPanel;
     private com.sisop.sisop.OS.UI.ProgramFilesTree programFilesTree;
     private javax.swing.JButton semaphoresButton;
+    private javax.swing.JButton sharedVariablesButton;
     // End of variables declaration//GEN-END:variables
 }

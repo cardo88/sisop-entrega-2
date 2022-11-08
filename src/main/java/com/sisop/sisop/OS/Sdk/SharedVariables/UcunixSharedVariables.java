@@ -10,43 +10,38 @@ import com.sisop.sisop.OS.ProcessId;
 import com.sisop.sisop.UcuLang.Types.UcuType;
 
 public class UcunixSharedVariables {
-    private static Map<String, UcuType> variables = new HashMap<>();
-    private static Map<String, Set<ProcessId>> referencedBy = new HashMap<>();
+    private static final Map<String, UcunixSharedVariableWrapper> variables = new HashMap<>();
 
     public static UcuType getOrCreate(ProcessId pid, String name, UcuType value) {
         if (!variables.containsKey(name)) {
-            variables.put(name, value);
+            variables.put(name, new UcunixSharedVariableWrapper(value));
         }
+        
+        var wrapper = variables.get(name);
+        wrapper.referencedBy.add(pid);
 
-        if (!referencedBy.containsKey(name)) {
-            referencedBy.put(name, new HashSet<>());
-        }
-
-        referencedBy.get(name).add(pid);
-
-        return variables.get(name);
+        return wrapper.value;
     }
 
-    public static Map<String, UcuType> getAll() {
+    public static Map<String, UcunixSharedVariableWrapper> getAll() {
         return variables;
     }
 
     public static void releaseProcess(ProcessId pid) {
         LinkedList<String> toRemove = new LinkedList<>();
 
-        for (Map.Entry<String, Set<ProcessId>> entry : referencedBy.entrySet()) {
-            var value = entry.getValue();
+        for (Map.Entry<String, UcunixSharedVariableWrapper> entry : variables.entrySet()) {
             var key = entry.getKey();
+            var value = entry.getValue();
 
-            value.remove(pid);
-            if (value.size() == 0) {
-                variables.remove(key);
+            value.referencedBy.remove(pid);
+            if (value.referencedBy.isEmpty()) {
                 toRemove.add(key);
             }
         }
 
         for (var name : toRemove) {
-            referencedBy.remove(name);
+            variables.remove(name);
         }
     }
 }

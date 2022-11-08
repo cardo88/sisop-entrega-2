@@ -21,8 +21,12 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jPanel1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="sourceCodeButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="pidTextLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="pidLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="sourceCodeButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="debuggerButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="closeButton" min="-2" max="-2" attributes="0"/>
@@ -40,12 +44,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="sourceCodeButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="debuggerButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="closeButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="debuggerButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="closeButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sourceCodeButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pidTextLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pidLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="consoleWidget" min="-2" max="-2" attributes="0"/>
@@ -95,63 +99,35 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="pidTextLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="pidLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="processStatusLabel" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="programPathLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="programPathLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="pidTextLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="pidLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="processStatusLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="programPathLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
+              <Component id="programPathLabel" min="-2" max="-2" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="pidTextLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="PID:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="pidLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="1234"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="programPathLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="path/to/program.uculang"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="processStatusLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Blocked"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="pidTextLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="PID:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="pidLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1234"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

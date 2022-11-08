@@ -38,8 +38,8 @@ public class SemaphoresViewerFrame extends javax.swing.JFrame {
     private void update() {
         var sem = UcunixSharedVariables.getAll().values()
             .stream()
-            .filter(x -> x instanceof UcunixSemaphore)
-            .map(x -> (UcunixSemaphore) x)
+            .filter(x -> x.value instanceof UcunixSemaphore)
+            .map(x -> (UcunixSemaphore) x.value)
             .toList();
 
         var model = new DefaultTableModel();
