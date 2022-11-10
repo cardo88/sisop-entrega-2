@@ -1,8 +1,8 @@
 "pc-1-buffer" 
 [] 0 ++ 0 ++ 0 ++ 0 ++ 
-shared.get-or-create .BUFFER
+shared.create .BUFFER
 
-"pc-1-next-write" 0 shared.get-or-create .NEXT-WRITE
+"pc-1-next-write" 0 shared.create .NEXT-WRITE
 
 "pc-1-e" $BUFFER len semaphore.create .E
 "pc-1-n" 0 semaphore.create .N

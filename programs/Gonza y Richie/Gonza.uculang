@@ -1,0 +1,11 @@
+"gonza" 1 semaphore.create .semGonza
+"richi" 0 semaphore.create .semRichi
+
+:bucle
+    $semGonza semaphore.p
+
+    "Hola Richi!" console.println
+    1000 timer.sleep
+    
+    $semRichi semaphore.v
+@bucle

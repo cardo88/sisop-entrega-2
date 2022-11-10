@@ -1,3 +1,4 @@
+"prueba" 0 shared.create
 
 "Hola"           { A("Hola") }
 dup              { A("Hola"), A }
