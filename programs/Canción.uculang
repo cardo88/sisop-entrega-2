@@ -16,4 +16,4 @@
     1 +
     1000 timer.sleep
     over len over swap < @bucle
-drop 0 @bucle
+{ drop 0 @bucle }

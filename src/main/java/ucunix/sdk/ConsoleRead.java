@@ -6,18 +6,18 @@ import uculang.UcuString;
 import ucunix.ProcessId;
 import ucunix.Scheduler;
 
-public class ConsoleInput implements UcuCommand {
+public class ConsoleRead implements UcuCommand {
     private final ProcessId pid;
     private final Scheduler scheduler;
 
-    public ConsoleInput(ProcessId pid, Scheduler scheduler) {
+    public ConsoleRead(ProcessId pid, Scheduler scheduler) {
         this.pid = pid;
         this.scheduler = scheduler;
     }
 
     @Override
     public String getCommandName() {
-        return "console.input";
+        return "console.read";
     }
 
     @Override

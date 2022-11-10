@@ -57,7 +57,11 @@ public class UcunixDesktop extends javax.swing.JFrame {
     
     private void loadProgram(String programFile) {
         try {
-            var process = ucunix.createProcess(programFile, Files.readString(Path.of(programFile)));
+            var process = ucunix.createProcess(
+                programFile, 
+                Files.readString(Path.of(programFile)),
+                null
+            );
             
             var programWindow = new ProgramWindow(process.getPid(), ucunix.getScheduler());
             

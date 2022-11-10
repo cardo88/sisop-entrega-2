@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uculang.CompilationError;
 import uculang.DuplicatedLabel;
 import uculang.DuplicatedLocalLabel;
 import uculang.LocalLabelWithoutParent;
@@ -40,19 +41,18 @@ public class ProcessRun implements UcuCommand {
         var value = context.popValue();
         if (value instanceof UcuString path) {
             try {
-                var p = ucunix.createProcess(path.toString(), Files.readString(Path.of(path.toString())));
-                p.setConsole(ucunix.getScheduler().getProcess(pid).getConsole());
-            } catch (IOException ex) {
-                Logger.getLogger(ProcessRun.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (UnknownCommand ex) {
-                Logger.getLogger(ProcessRun.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (LocalLabelWithoutParent ex) {
-                Logger.getLogger(ProcessRun.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (LocalVariableWithoutParent ex) {
-                Logger.getLogger(ProcessRun.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (DuplicatedLabel ex) {
-                Logger.getLogger(ProcessRun.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (DuplicatedLocalLabel ex) {
+                var scheduler = ucunix.getScheduler();
+                
+                var newProcess = ucunix.createProcess(
+                    path.toString(), 
+                    Files.readString(Path.of(path.toString())),
+                    pid
+                );
+                newProcess.setConsole(scheduler.getProcess(pid).getConsole());
+                context.pushValue(newProcess);
+//                scheduler.blockProcess(pid, blockedBy);
+            } catch (IOException | 
+                     CompilationError ex) {
                 Logger.getLogger(ProcessRun.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {

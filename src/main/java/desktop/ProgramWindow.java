@@ -67,7 +67,13 @@ public class ProgramWindow extends javax.swing.JPanel {
         if (process != null) {
             pidLabel.setText(pid.toString());
             programPathLabel.setText(process.getName());
+        } else {
+            setFinishedColor();
         }
+    }
+    
+    private void setFinishedColor() {
+        setBackground(new Color(204, 204, 255));
     }
 
     /**

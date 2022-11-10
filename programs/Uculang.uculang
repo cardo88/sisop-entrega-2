@@ -37,7 +37,7 @@ console.println  { }
 
 
 :leer-entrada
-    console.input
+    console.read
     dup "" = @:reintentar
     return
 

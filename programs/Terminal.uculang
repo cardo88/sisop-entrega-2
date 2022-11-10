@@ -1,0 +1,40 @@
+
+
+:main
+
+(prompt)
+
+@main
+
+
+
+:prompt
+    "juancho" console.print "@ucunix $ " console.print
+
+    (leer-entrada) dup console.println
+
+    (ejecutar-exit)
+
+    "programs/" swap + process.run (wait) drop
+
+    return
+
+:ejecutar-exit
+    dup "exit" = exit
+    return
+
+:leer-entrada
+    console.read
+    dup "" = @:reintentar
+    return
+
+    ::reintentar
+        200 timer.sleep
+        drop
+        @leer-entrada
+
+:wait
+    dup process.get-state "Finished" = return
+    300 timer.sleep
+    @wait
+ 

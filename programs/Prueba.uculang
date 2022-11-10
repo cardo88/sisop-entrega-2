@@ -1,0 +1,5 @@
+"Hola ameo!" console.println
+1000 timer.sleep
+"Todo viento?" console.println
+1000 timer.sleep
+"Adió'" console.println

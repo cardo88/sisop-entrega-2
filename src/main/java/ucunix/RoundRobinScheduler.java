@@ -39,6 +39,15 @@ public class RoundRobinScheduler implements Scheduler {
     public void killProcess(ProcessId pid) {
         var process = allProcesses.get(pid);
         if (process != null) {
+            for (var p : allProcesses.values()) {
+                var k = p.getParent();
+                if (k != null) {
+                    if (k.equals(pid)) {
+                        killProcess(p.getPid());
+                    }                
+                }
+                
+            }
             switch (process.getState()) {
                 case Running -> setNextRunningProcess();
                 case Blocked -> blocked.remove(pid);

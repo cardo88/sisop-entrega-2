@@ -5,11 +5,12 @@ import java.util.Set;
 
 import ucunix.sdk.SharedVariables;
 import uculang.UcuInterpreter;
+import uculang.UcuType;
 
 /**
  *
  */
-public class Process {
+public class Process extends UcuType {
     public enum State {
         Ready,
         Running,
@@ -23,14 +24,16 @@ public class Process {
     private final UcuInterpreter interpreter;
     private final Set<ResourceId> blockedBy;
 
+    private final ProcessId parent;
     private State state;
     private Console console;
 
-    public Process(String name, ProcessId pid, UcuInterpreter interpreter) {
+    public Process(String name, ProcessId pid, UcuInterpreter interpreter, ProcessId parent) {
         this.name = name;
         this.pid = pid;
         this.interpreter = interpreter;
 
+        this.parent = parent;
         this.blockedBy = new HashSet<>();
         this.state = State.Ready;
 
@@ -47,6 +50,10 @@ public class Process {
     
     public Console getConsole() {
         return console;
+    }
+
+    public ProcessId getParent() {
+        return parent;
     }
 
     public void onKill() {
@@ -92,5 +99,28 @@ public class Process {
 
     public void removeBlockedBy(ResourceId id) {
         blockedBy.remove(id);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (other instanceof Process o) {
+            return pid.equals(o.getPid());
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return pid.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Process(" + pid.getId() + ")";
     }
 }

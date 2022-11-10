@@ -42,7 +42,7 @@ public class Ucunix {
         return instructionCountTimeout;
     }
     
-    public Process createProcess(String processName, String sourceCode) 
+    public Process createProcess(String processName, String sourceCode, ProcessId parent) 
         throws UnknownCommand, 
                LocalLabelWithoutParent, 
                LocalVariableWithoutParent, 
@@ -52,7 +52,7 @@ public class Ucunix {
         var pid = new ProcessId();
         var ucuProgram = UcuLang.compile(sourceCode, getCommands(pid));
         var context = new UcuContext(ucuProgram);
-        var process = new Process(processName, pid, new UcuInterpreter(context));
+        var process = new Process(processName, pid, new UcuInterpreter(context), parent);
 
         scheduler.addProcess(process);
 
@@ -70,7 +70,7 @@ public class Ucunix {
             new ConsolePrint(pid, scheduler),
             new ConsolePrintln(pid, scheduler),
             new ConsoleClear(pid, scheduler),
-            new ConsoleInput(pid, scheduler),
+            new ConsoleRead(pid, scheduler),
             // Timer
             new UcunixTimerSleep(pid, timer),
             // Debugger
@@ -85,6 +85,8 @@ public class Ucunix {
             // Process
             new ProcessPid(pid),
             new ProcessRun(pid, this),
+            new ProcessGetState(),
+            new ProcessKill(scheduler),
         });
     }
 }

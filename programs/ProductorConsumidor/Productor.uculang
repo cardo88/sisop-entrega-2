@@ -37,7 +37,7 @@ shared.create .BUFFER
     "Insertando: " console.print
     (random-emoji) dup
     console.print
-    "" swap ++ " (" ++ process.pid ++ ")" ++
+    "" swap ++ " (" ++ process.self-pid ++ ")" ++
     (insertar)
 
     " [OK]" console.println

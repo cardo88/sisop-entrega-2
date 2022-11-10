@@ -14,7 +14,7 @@ public class ProcessPid implements UcuCommand {
 
     @Override
     public String getCommandName() {
-        return "process.pid";
+        return "process.self-pid";
     }
 
     @Override
