@@ -148,8 +148,9 @@ public class UcuContext {
     }
 
     /**
+     * Mueve el program counter a la posición de una etiqueta 
      *
-     * @param label
+     * @param label Etiqueta a la cual saltar
      */
     public void jumpTo(String label) {
         var dir = program.getLabels().get(label);
@@ -160,9 +161,10 @@ public class UcuContext {
     }
 
     /**
+     * Realiza una llamada de función a una etiqeuta
      *
-     * @param label
-     * @return
+     * @param label Etiqueta a la que llamar
+     * @return Valor del program counter luego de la llamada
      */
     public Integer call(String label) {
         callStack.push(programCounter);
@@ -176,7 +178,7 @@ public class UcuContext {
 
     /**
      *
-     * @return
+     * @return Valor del program counter luego del retorno
      */
     public Integer ret() {
         programCounter = callStack.pop();

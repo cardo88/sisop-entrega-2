@@ -17,7 +17,7 @@ public class UcunixSharedCreate implements UcuCommand {
 
     @Override
     public String getCommandName() {
-        return "shared.get-or-create";
+        return "shared.create";
     }
 
     @Override

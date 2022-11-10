@@ -1,7 +1,7 @@
 package com.sisop.sisop.UcuLang.Types;
 
 /**
- *
+ * Clase base para todos los tipos de datos de UcuLang
  */
 public abstract class UcuType { 
 

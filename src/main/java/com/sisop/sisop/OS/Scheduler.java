@@ -15,8 +15,4 @@ public interface Scheduler {
     void kill(ProcessId pid);
     
     void run(int instructionCountTimeout);
-    
-    default void run() {
-        run(10);
-    }   
 }

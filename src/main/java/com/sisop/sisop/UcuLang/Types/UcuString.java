@@ -30,8 +30,8 @@ public class UcuString extends UcuType
     /**
      * Implementación de UcuCopyOp
      * 
-     * Devuelve una nueva instancia de la cadena.No 
-     * comparte memoria con la cadena anterior.
+     * Devuelve una nueva instancia de la cadena, 
+     * no comparte memoria con la cadena anterior.
      * 
      * @return Copia de la cadena (UcuString)
      */

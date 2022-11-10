@@ -3,8 +3,11 @@ package com.sisop.sisop.UcuLang;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Programa compilado de UcuLang
+ */
 public class UcuProgram {
-    
+
     private final String sourceCode;
 
     private final List<UcuInstruction> instructions;

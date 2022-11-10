@@ -71,6 +71,6 @@ public class UcunixSemaphore extends UcuType {
 
     @Override
     public int hashCode() {
-        return this.getClass().hashCode();
+        return name.hashCode();
     }
 }
