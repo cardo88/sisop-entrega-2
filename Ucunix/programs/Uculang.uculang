@@ -1,0 +1,46 @@
+"prueba" 0 shared.create
+
+"Hola"           { A("Hola") }
+dup              { A("Hola"), A }
+"Pepe"           { A("Hola"), A, B("Pepe") }
++                { A("Hola"), C("HolaPepe") }
+console.println  { A("Hola") }
+console.println  { }
+
+"------------" console.println
+
+"Hola"           { A("Hola") }
+dup              { A("Hola"), A }
+"Pepe"           { A("Hola"), A, B("Pepe") }
+++               { A("HolaPepe"), A }
+console.println
+console.println
+
+"------------" console.println
+
+"Hola"           { A("Hola") }
+dup              { A("Hola"), A }
+"Pepe"           { A("Hola"), A, B("Pepe") }
++                { A("Hola"), C("HolaPepe") }
+over             { A("Hola"), C("HolaPepe"), A }
+swap             { A("Hola"), A, C("HolaPepe") }
+<-               { A("HolaPepe") }
+console.println  { }
+
+
+:loop
+    "Poné algo ahí: " console.println
+    (leer-entrada)
+    "PUSISTE: " console.print console.println
+@loop
+
+
+
+:leer-entrada
+    console.input
+    dup "" = @:reintentar
+    return
+
+    ::reintentar
+        10 timer.sleep
+        @leer-entrada
