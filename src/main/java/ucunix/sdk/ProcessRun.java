@@ -6,15 +6,10 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uculang.CompilationError;
-import uculang.DuplicatedLabel;
-import uculang.DuplicatedLocalLabel;
-import uculang.LocalLabelWithoutParent;
-import uculang.LocalVariableWithoutParent;
 import ucunix.Ucunix;
 import uculang.UcuCommand;
 import uculang.UcuContext;
 import uculang.UcuString;
-import uculang.UnknownCommand;
 import ucunix.ProcessId;
 
 public class ProcessRun implements UcuCommand {
