@@ -12,10 +12,8 @@
     "juancho" console.print "@ucunix $ " console.print
 
     (leer-entrada) dup console.println
-
     (ejecutar-exit)
-
-    "programs/" swap + process.run (wait) drop
+    (split-por-espacio) console.println "'" console.print console.print "'" console.println
 
     return
 
@@ -37,4 +35,74 @@
     dup process.get-state "Finished" = return
     300 timer.sleep
     @wait
- 
+
+
+:saltar-espacios
+    {
+        Entrada: 
+            * Cadena
+            * Índice de comienzo
+
+        Salida:
+            * Cadena
+            * Índice al siguiente caracter 
+              que no es un espacio.
+    }
+
+    ::iter
+        over over swap     { pila: <cadena> <índice> <índice> <cadena> }
+        len >= return 
+
+        over over get      { pila: <cadena> <índice> <cadena[índice]> }
+        " " != return
+        1 +                { índice + 1 }
+    @:iter
+
+
+:split-por-espacio
+    {
+        Entrada:
+            * Cadena
+        Salida:
+            * Cadena
+            * Lista de cadenas
+
+        Ejemplo:    "A B CDE" (split-por-espacio)
+        Resultado:  "A B CDE" ["A", "B", "CDE"]
+    }
+
+    [] ..partes  { pila: <cadena> }
+
+    0   { índice de lectura }
+        { pila: <cadena> <índice> }
+
+    @:iter-condición
+    ::iter
+        over over get               { pila: <cadena> <índice> <cadena[índice]> }
+        dup " " != @:agregar-letra
+        drop                        { pila: <cadena> <índice> }
+    ::iter-condición
+        (saltar-espacios)
+
+        over over swap              { pila: <cadena> <índice> <índice> <cadena> }
+        len >= @:retornar-partes 
+
+        $$partes "" ++ ..partes
+
+        @:iter
+
+    ::agregar-letra
+        
+        $$partes $$partes len 1 -   { pila: <cadena> <índice> <cadena[índice]> 
+                                            <partes> <partes.len - 1> }
+        get                         { pila: <cadena> <índice> <cadena[índice]> <parte> }
+        swap                        { pila: <cadena> <índice> <parte> <cadena[índice]> }
+        ++
+        drop                        { pila: <cadena> <índice> }
+        1 +                         { pila: <cadena> <índice + 1> }
+        over over swap              { pila: <cadena> <índice> <índice> <cadena> }
+        len < @:iter
+
+    ::retornar-partes
+        drop $$partes               { pila: <cadena> <partes> }
+        return

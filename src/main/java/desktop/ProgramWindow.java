@@ -10,6 +10,7 @@ import ucunix.ProcessId;
 import ucunix.Scheduler;
 
 import java.awt.Color;
+import ucunix.Debugger;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ProgramWindow extends javax.swing.JPanel {
     }
     
     private final Scheduler scheduler;
-//    private final Debugger debugger;
+    private final Debugger debugger;
     private final ProcessId pid;
     private final Color backgroundColor;
     private OnCloseCallback onCloseCallback;
@@ -31,10 +32,10 @@ public class ProgramWindow extends javax.swing.JPanel {
      * 
      * @param process
      */
-    public ProgramWindow(ProcessId pid, Scheduler scheduler) {
+    public ProgramWindow(ProcessId pid, Scheduler scheduler, Debugger debugger) {
         this.pid = pid;
         this.scheduler = scheduler;
-//        this.debugger = debugger;
+        this.debugger = debugger;
         this.onCloseCallback = null;
         
         initComponents();
@@ -186,8 +187,8 @@ public class ProgramWindow extends javax.swing.JPanel {
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void debuggerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debuggerButtonActionPerformed
-//        var frame = new DebuggerFramef(pid, debugger);
-//        frame.setVisible(true);
+        var frame = new DebuggerFramef(pid, debugger);
+        frame.setVisible(true);
     }//GEN-LAST:event_debuggerButtonActionPerformed
 
     private void onSourceCodeButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onSourceCodeButtonClicked

@@ -63,7 +63,7 @@ public class UcunixDesktop extends javax.swing.JFrame {
                 null
             );
             
-            var programWindow = new ProgramWindow(process.getPid(), ucunix.getScheduler());
+            var programWindow = new ProgramWindow(process.getPid(), ucunix.getScheduler(), ucunix.getDebugger());
             
             process.setConsole(programWindow.getConsoleWidget());
             

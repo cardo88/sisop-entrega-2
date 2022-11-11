@@ -20,18 +20,24 @@ import ucunix.sdk.*;
 public class Ucunix {
     private final Scheduler scheduler;
     private final UcunixTimer timer;
+    private final Debugger debugger;
 
     private int instructionCountTimeout;
     
     public Ucunix(Scheduler scheduler) {
         this.scheduler = scheduler;
         this.timer = new UcunixTimer(scheduler);
+        this.debugger = new Debugger(scheduler);
 
         this.instructionCountTimeout = 10;
     }
     
     public Scheduler getScheduler() {
         return scheduler;
+    }
+    
+    public Debugger getDebugger() {
+        return debugger;
     }
 
     public void setInstructionCountTimeout(int timeout) {
