@@ -6,10 +6,15 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uculang.CompilationError;
+import uculang.DuplicatedLabel;
+import uculang.DuplicatedLocalLabel;
+import uculang.LocalLabelWithoutParent;
+import uculang.LocalVariableWithoutParent;
 import ucunix.Ucunix;
 import uculang.UcuCommand;
 import uculang.UcuContext;
 import uculang.UcuString;
+import uculang.UnknownCommand;
 import ucunix.ProcessId;
 
 public class ProcessRun implements UcuCommand {
@@ -32,10 +37,10 @@ public class ProcessRun implements UcuCommand {
     }
 
     @Override
-    public void execute(UcuContext context) {
+    public void execute(UcuContext context) throws Exception {
         var value = context.popValue();
         if (value instanceof UcuString path) {
-            try {
+            // try {
                 var scheduler = ucunix.getScheduler();
                 
                 var newProcess = ucunix.createProcess(
@@ -46,10 +51,10 @@ public class ProcessRun implements UcuCommand {
                 newProcess.setConsole(scheduler.getProcess(pid).getConsole());
                 context.pushValue(newProcess);
 //                scheduler.blockProcess(pid, blockedBy);
-            } catch (IOException | 
-                     CompilationError ex) {
-                Logger.getLogger(ProcessRun.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            // } catch (IOException | 
+            //          CompilationError ex) {
+            //     Logger.getLogger(ProcessRun.class.getName()).log(Level.SEVERE, null, ex);
+            // }
         } else {
             throw new RuntimeException("FIXME");
         }

@@ -1,78 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package desktop;
 
 import javax.swing.Timer;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 import ucunix.sdk.SharedVariables;
 
 import java.awt.event.ActionEvent;
-import java.util.stream.Collectors;
-
-
-class VarsTableModel extends AbstractTableModel {
-
-    @Override
-    public int getRowCount() {
-        return SharedVariables.getAll().size();
-            //    .stream()
-            //    .map(x -> new String[] { x.getKey(), x.getValue().value.toString(), x.getValue().referencedBy.toString() })
-            //    .toList()                
-            //    .toArray(new String[0][0]);
-    }
-
-    @Override
-    public int getColumnCount() {
-        return 3;
-    }
-
-    @Override
-    public String getColumnName(int columnIndex) {
-        switch (columnIndex) {
-            case 0: return "Nombre";
-            case 1: return "Valor";
-            case 2: return "Procesos";
-            default:
-                return String.valueOf(columnIndex);
-        }
-    }
-
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        var all = SharedVariables.getAll();
-        var key = all.keySet().stream().collect(Collectors.toList()).get(rowIndex);
-        return all.get(key).value.toString();
-    }
-}
 
 /**
  *
- * @author ucu
  */
-public class SharedVariablesViewerFrame extends javax.swing.JFrame {
+public class ProcessMonitorFrame extends javax.swing.JFrame {
 
     private final Timer updateTimer;
 
     /**
      * Creates new form SharedVariablesViewerForm
      */
-    public SharedVariablesViewerFrame() {
+    public ProcessMonitorFrame() {
         initComponents();
 
-        variablesTable.setModel(new VarsTableModel());
         update();
-        updateTimer = new Timer(250, (ActionEvent e) -> {
+        updateTimer = new Timer(50, (ActionEvent e) -> {
             update();
         });
         updateTimer.start();
     }
 
     private void update() {
-        ((VarsTableModel)variablesTable.getModel()).fireTableDataChanged();
+        var model = new DefaultTableModel();
+        model.setDataVector(
+            SharedVariables.getAll().entrySet()
+                .stream()
+                .map(x -> new String[] { x.getKey(), x.getValue().value.toString(), x.getValue().referencedBy.toString() })
+                .toList()                
+                .toArray(new String[0][0]),
+            new String[] { "Nombre", "Valor", "Procesos" }
+        );
+        variablesTable.setModel(model);
     }
 
     /**
@@ -95,14 +60,17 @@ public class SharedVariablesViewerFrame extends javax.swing.JFrame {
 
         variablesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nombre", "Valor", "Procesos"
+                "PID", "Title 2", "Title 3", "Title 4"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -146,14 +114,18 @@ public class SharedVariablesViewerFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SharedVariablesViewerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcessMonitorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SharedVariablesViewerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcessMonitorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SharedVariablesViewerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcessMonitorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SharedVariablesViewerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProcessMonitorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -162,7 +134,7 @@ public class SharedVariablesViewerFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SharedVariablesViewerFrame().setVisible(true);
+                new ProcessMonitorFrame().setVisible(true);
             }
         });
     }

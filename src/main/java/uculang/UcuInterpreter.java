@@ -85,7 +85,7 @@ public class UcuInterpreter {
      * 
      * @return 
      */
-    public boolean run() {
+    public boolean run() throws Exception {
         if (context.isFinished()) {
             return false;
         }

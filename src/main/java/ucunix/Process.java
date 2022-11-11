@@ -1,6 +1,8 @@
 package ucunix;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ucunix.sdk.SharedVariables;
@@ -26,8 +28,10 @@ public class Process extends UcuType {
 
     private final ProcessId parent;
     private State state;
-    private Console console;
 
+    private Console console;
+    private List<String> parameters;
+    
     public Process(String name, ProcessId pid, UcuInterpreter interpreter, ProcessId parent) {
         this.name = name;
         this.pid = pid;
@@ -36,7 +40,8 @@ public class Process extends UcuType {
         this.parent = parent;
         this.blockedBy = new HashSet<>();
         this.state = State.Ready;
-
+        
+        this.parameters = new LinkedList<>();
         setConsole(null);
     }
     
@@ -54,6 +59,14 @@ public class Process extends UcuType {
 
     public ProcessId getParent() {
         return parent;
+    }
+
+    public void setParameters(List<String> parameters) {
+        this.parameters = parameters;
+    }
+
+    public List<String> getParameters() {
+        return parameters;
     }
 
     public void onKill() {

@@ -83,10 +83,12 @@ public class Ucunix {
             // Shared Variables
             new SharedCreate(pid),
             // Process
-            new ProcessPid(pid),
+            new ProcessSelf(pid, scheduler),
+            new ProcessGetPid(),
             new ProcessRun(pid, this),
             new ProcessGetState(),
             new ProcessKill(scheduler),
+            new ProcessGetParameters(),
         });
     }
 }

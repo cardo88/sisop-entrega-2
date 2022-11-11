@@ -174,7 +174,7 @@ public class UcuString extends UcuType
     /**
      * Implementación UcuLengthOp
      * 
-     * @return 
+     * @return La cantidad de caracteres de la cadena
      */
     @Override
     public int length() {
