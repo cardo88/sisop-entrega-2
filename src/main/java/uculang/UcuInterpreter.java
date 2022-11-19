@@ -117,6 +117,7 @@ public class UcuInterpreter {
                     // Si el program counter volvió a la posición de 
                     // retorno, entonces se pausa la ejecución del programa.
                     setStepMode(StepMode.Pause);
+                    stepOverReturnAddress = -1;
                 }
             }
         }
