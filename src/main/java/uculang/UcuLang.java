@@ -21,8 +21,8 @@ public class UcuLang {
 
     /**
      *
-     * @param src
-     * @return
+     * @param src Recibe el código fuente en forma de String
+     * @return Devuelve un UcuProgram con el código fuente compilado
      */
     public static UcuProgram compile(String src) 
             throws UnknownCommand, 
@@ -36,9 +36,9 @@ public class UcuLang {
 
     /**
      *
-     * @param src
-     * @param extraCommands
-     * @return
+     * @param src // Recibe el código fuente en forma de String
+     * @param extraCommands // Recibe una lista de comandos extra
+     * @return // Devuelve un UcuProgram con el código fuente compilado
      */
     public static UcuProgram compile(String src, List<UcuCommand> extraCommands) 
             throws UnknownCommand, 
@@ -144,6 +144,7 @@ public class UcuLang {
 
         return new UcuProgram(src, instructions, labels);
     }
+
 
     private static String joinIdentifiers(String a, String b) {
         return a + " | " + b;
