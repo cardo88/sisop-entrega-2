@@ -67,6 +67,7 @@ public class ProgramWindow extends javax.swing.JPanel {
         var process = scheduler.getProcess(pid);
         if (process != null) {
             pidLabel.setText(pid.toString());
+            userNameLabel.setText(process.getUser().getUserName());
             programPathLabel.setText(process.getName());
         } else {
             onProcessFinished();
@@ -94,6 +95,7 @@ public class ProgramWindow extends javax.swing.JPanel {
         sourceCodeButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         programPathLabel = new javax.swing.JLabel();
+        userNameLabel = new javax.swing.JLabel();
         pidTextLabel = new javax.swing.JLabel();
         pidLabel = new javax.swing.JLabel();
 
@@ -122,17 +124,23 @@ public class ProgramWindow extends javax.swing.JPanel {
 
         programPathLabel.setText("path/to/program.uculang");
 
+        userNameLabel.setText("USER");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(programPathLabel)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(userNameLabel)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(programPathLabel)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(programPathLabel)
+                .addComponent(userNameLabel))
         );
 
         pidTextLabel.setText("PID:");
@@ -214,5 +222,6 @@ public class ProgramWindow extends javax.swing.JPanel {
     private javax.swing.JLabel pidTextLabel;
     private javax.swing.JLabel programPathLabel;
     private javax.swing.JButton sourceCodeButton;
+    private javax.swing.JLabel userNameLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,0 +1,10 @@
+process.self process.get-parameters .params
+
+$params len 0 = @error
+
+$params 0 get filesystem.open file.get-content console.println
+
+exit
+
+:error
+    "Falta nombre de archivo" console.println

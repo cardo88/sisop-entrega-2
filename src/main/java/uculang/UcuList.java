@@ -26,6 +26,10 @@ public class UcuList extends UcuType
         return value.toString();
     }
 
+    public List<UcuType> getList() {
+        return value;
+    }
+
     @Override
     public int length() {
         return value.size();

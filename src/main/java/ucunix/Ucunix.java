@@ -1,5 +1,8 @@
 package ucunix;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,15 +24,41 @@ public class Ucunix {
     private final Scheduler scheduler;
     private final UcunixTimer timer;
     private final Debugger debugger;
+    private final Filesystem filesystem;
+    private final List<User> users;
+    private User currentUser;
 
     private int instructionCountTimeout;
     
-    public Ucunix(Scheduler scheduler) {
+    public Ucunix(Scheduler scheduler) throws IOException {
         this.scheduler = scheduler;
         this.timer = new UcunixTimer(scheduler);
         this.debugger = new Debugger(scheduler);
+        this.filesystem = new Filesystem(Path.of("root"));
+        
+        users = Arrays.asList(
+            Files.readString(Path.of("root", "config"))
+                    .split("\n")
+        ).stream().map(x -> {
+            var k = x.split(" ");
+            return new User(k[0], Arrays.asList(Arrays.copyOfRange(k, 1, k.length)));
+        }).toList();
+        
+        currentUser = users.get(0);
 
         this.instructionCountTimeout = 10;
+    }
+    
+    public List<User> getUsers() {
+        return users;
+    }
+    
+    public User getCurrentUser() {
+        return currentUser;
+    }
+    
+    public void setCurrentUser(String username) {
+        currentUser = users.stream().filter(x -> x.getUserName().equals(username)).toList().get(0);
     }
     
     public Scheduler getScheduler() {
@@ -58,7 +87,7 @@ public class Ucunix {
         var pid = new ProcessId();
         var ucuProgram = UcuLang.compile(sourceCode, getCommands(pid));
         var context = new UcuContext(ucuProgram);
-        var process = new Process(processName, pid, new UcuInterpreter(context), parent);
+        var process = new Process(processName, pid, currentUser, new UcuInterpreter(context), parent);
 
         scheduler.addProcess(process);
 
@@ -93,8 +122,15 @@ public class Ucunix {
             new ProcessGetPid(),
             new ProcessRun(pid, this),
             new ProcessGetState(),
+            new ProcessGetUsername(),
             new ProcessKill(scheduler),
             new ProcessGetParameters(),
+            // Filesystem
+            new FilesystemList(pid, scheduler, filesystem),
+            new FilesystemOpen(pid, scheduler, filesystem),
+            new FileGetContent(pid, scheduler, filesystem),
+            new FileGetName(),
+            new FileGetMeta(),
         });
     }
 }

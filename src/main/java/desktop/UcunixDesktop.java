@@ -10,6 +10,8 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import ucunix.RoundRobinScheduler;
@@ -27,7 +29,11 @@ public class UcunixDesktop extends javax.swing.JFrame {
      * 
      */
     public UcunixDesktop() {
-        ucunix = new Ucunix(new RoundRobinScheduler());
+        try {
+            ucunix = new Ucunix(new RoundRobinScheduler());
+        } catch (IOException ex) {
+            throw new RuntimeException(ex.toString());
+        }
         
         initComponents();        
         doLoop();
@@ -35,6 +41,10 @@ public class UcunixDesktop extends javax.swing.JFrame {
         programFilesTree.loadProgramFilesTree(new File("programs"), (File path) -> {
             loadProgram(path.getPath());
         });
+        
+        for (var user : ucunix.getUsers()) {
+            usersComboBox.addItem(user.getUserName());
+        }
     }
     
     private void doLoop() {
@@ -111,6 +121,8 @@ public class UcunixDesktop extends javax.swing.JFrame {
         jSpinner1 = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
         sharedVariablesButton = new javax.swing.JButton();
+        usersComboBox = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
         processesPanel = new desktop.ProcessesPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,16 +155,37 @@ public class UcunixDesktop extends javax.swing.JFrame {
             }
         });
 
+        usersComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usersComboBoxActionPerformed(evt);
+            }
+        });
+        usersComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                usersComboBoxPropertyChange(evt);
+            }
+        });
+
+        jLabel2.setText("Usuario:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(semaphoresButton, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(sharedVariablesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(usersComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sharedVariablesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(semaphoresButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,7 +193,11 @@ public class UcunixDesktop extends javax.swing.JFrame {
                 .addComponent(semaphoresButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sharedVariablesButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -190,9 +227,19 @@ public class UcunixDesktop extends javax.swing.JFrame {
         onSharedVariablesButtonClicked();
     }//GEN-LAST:event_sharedVariablesButtonActionPerformed
 
+    private void usersComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_usersComboBoxPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usersComboBoxPropertyChange
+
+    private void usersComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usersComboBoxActionPerformed
+        // TODO add your handling code here:
+        ucunix.setCurrentUser((String) usersComboBox.getSelectedItem());
+    }//GEN-LAST:event_usersComboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSplitPane jSplitPane1;
@@ -201,5 +248,6 @@ public class UcunixDesktop extends javax.swing.JFrame {
     private desktop.ProgramFilesTree programFilesTree;
     private javax.swing.JButton semaphoresButton;
     private javax.swing.JButton sharedVariablesButton;
+    private javax.swing.JComboBox<String> usersComboBox;
     // End of variables declaration//GEN-END:variables
 }

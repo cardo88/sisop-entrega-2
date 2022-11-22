@@ -1,46 +1,31 @@
-"prueba" 0 shared.create
+"Hola esto es una cadena" console.println
+"10 + 20 = " console.print
+10 20 + console.println
 
-"Hola"           { A("Hola") }
-dup              { A("Hola"), A }
-"Pepe"           { A("Hola"), A, B("Pepe") }
-+                { A("Hola"), C("HolaPepe") }
-console.println  { A("Hola") }
-console.println  { }
+[] 10 ++
+   "Hola" ++
+   30 ++ 
+.miVariable
 
-"------------" console.println
+$miVariable console.println
 
-"Hola"           { A("Hola") }
-dup              { A("Hola"), A }
-"Pepe"           { A("Hola"), A, B("Pepe") }
-++               { A("HolaPepe"), A }
-console.println
-console.println
+0   { Este número lo voy a usar como un índice }
+:iter
+    $miVariable { Pila: <índice> <miVariable> }
+    swap        { Pila: <miVariable> <índice> }
+    over        { Pila: <miVariable> <índice> <miVariable> }
+    over        { Pila: <miVariable> <índice> <miVariable> <índice> }
+    get         { Pila: <miVariable> <índice> <miVariable[índice]> }
 
-"------------" console.println
+    " >> " console.print console.println 
 
-"Hola"           { A("Hola") }
-dup              { A("Hola"), A }
-"Pepe"           { A("Hola"), A, B("Pepe") }
-+                { A("Hola"), C("HolaPepe") }
-over             { A("Hola"), C("HolaPepe"), A }
-swap             { A("Hola"), A, C("HolaPepe") }
-<-               { A("HolaPepe") }
-console.println  { }
+    1 +         { Pila: <miVariable> <índice + 1> }
+    over 
+    len         { Pila: <miVariable> <índice + 1> <miVariable.length> }
+    over        { Pila: <miVariable> <índice + 1> <miVariable.length> <índice + 1> }
+    swap        { Pila: <miVariable> <índice + 1> <índice + 1> <miVariable.length> }
+    < @iter     { Si <índice + 1> es menor que <miVariable.length> ejecuto la instrucción:
+                  @iter, sino, se saltea esa instrucción y continúa la ejecución del programa }
 
+"(FIN)" console.println
 
-:loop
-    "Poné algo ahí: " console.println
-    (leer-entrada)
-    "PUSISTE: " console.print console.println
-@loop
-
-
-
-:leer-entrada
-    console.read
-    dup "" = @:reintentar
-    return
-
-    ::reintentar
-        10 timer.sleep
-        @leer-entrada

@@ -117,6 +117,7 @@ public class RoundRobinScheduler implements Scheduler {
                     }
                 } catch (Exception e) {
                     killProcess(process.getPid()); // FIXME: mostrar algo
+                    System.out.println(e.toString());
                     return;
                 }
             }

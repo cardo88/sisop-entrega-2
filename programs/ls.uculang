@@ -1,0 +1,8 @@
+filesystem.list 0 
+:loop
+    over over get
+    dup file.get-name console.println
+    "  > " console.print file.get-meta console.println
+    1 +
+    over len over swap < @loop
+

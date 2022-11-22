@@ -27,12 +27,13 @@ public class Process extends UcuType {
     private final Set<ResourceId> blockedBy;
 
     private final ProcessId parent;
+    private final User user;
     private State state;
 
     private Console console;
     private List<String> parameters;
     
-    public Process(String name, ProcessId pid, UcuInterpreter interpreter, ProcessId parent) {
+    public Process(String name, ProcessId pid, User user, UcuInterpreter interpreter, ProcessId parent) {
         this.name = name;
         this.pid = pid;
         this.interpreter = interpreter;
@@ -40,8 +41,10 @@ public class Process extends UcuType {
         this.parent = parent;
         this.blockedBy = new HashSet<>();
         this.state = State.Ready;
+        this.user = user;
         
         this.parameters = new LinkedList<>();
+
         setConsole(null);
     }
     
@@ -53,6 +56,10 @@ public class Process extends UcuType {
         }
     }
     
+    public User getUser() {
+        return user;
+    }
+
     public Console getConsole() {
         return console;
     }
