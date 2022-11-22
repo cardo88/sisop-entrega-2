@@ -2,8 +2,8 @@ process.self process.get-parameters .params
 
 $params len 0 = @error-falta-archivo
 
-$params 0 get filesystem.open "OK" != @error-filesystem-open 
-file.get-content "OK" != @error-file-get-content 
+$params 0 get filesystem.open "ERROR" = @error-filesystem-open 
+file.get-content "ERROR" = @error-file-get-content 
 console.println
 
 exit
@@ -13,7 +13,7 @@ exit
     exit
 
 :error-filesystem-open
-    "Error al abrir el archivo (filesystem.open)" console.println
+    "No se pudo abrir el archivo" console.println
     exit
 
 :error-file-get-content
